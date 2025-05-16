@@ -1,0 +1,12 @@
+<div class="backdrop" *ngIf="isLoading">
+  <div class="spinner-container">
+    <mat-progress-spinner
+      color="primary"
+      mode="indeterminate"
+      diameter="60"
+      strokeWidth="5">
+    </mat-progress-spinner>
+    <p class="loading-text">{{ message }}</p>
+  </div>
+</div>
+

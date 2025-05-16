@@ -1,0 +1,122 @@
+// Theme Colors
+$primary-blue: #1a73e8
+$blue-dark: #174ea6
+$accent-blue: #4285f4
+$light-bg: #f0f4f8
+$white: #ffffff
+$text-dark: #1f1f1f
+$card-radius: 14px
+$shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
+$transition: all 0.3s ease
+$gap: 1.5rem
+
+// Container for history section
+.history-container
+  width: 90%
+  margin: 2rem auto
+  background: $white
+  border-radius: $card-radius
+  box-shadow: $shadow
+  padding: 1.5rem 2rem
+  transition: $transition
+
+  h2
+    color: $primary-blue
+    margin-bottom: 1rem
+    font-weight: 600
+
+// Table styling
+table
+  width: 100%
+  border-collapse: collapse
+  border-radius: $card-radius
+  overflow: hidden
+  box-shadow: $shadow
+  background: $white
+
+  thead
+    background: lighten($primary-blue, 45%)
+    th
+      color: $blue-dark
+      font-weight: 600
+      padding: 1rem
+      text-align: left
+      border-bottom: 2px solid $accent-blue
+
+  tbody
+    tr
+      transition: background-color 0.3s ease
+
+      &:hover
+        background-color: lighten($accent-blue, 80%)
+
+    td
+      padding: 1rem
+      color: $text-dark
+      border-bottom: 1px solid #e0e0e0
+
+// Action button inside table
+.action-cell button.btn-clear
+  background: transparent
+  border: none
+  font-size: 1.2rem
+  cursor: pointer
+  color: $accent-blue
+  transition: color 0.3s ease
+
+  &:hover
+    color: darken($accent-blue, 15%)
+
+// Pagination buttons container
+.pagination-buttons
+  display: flex
+  justify-content: center
+  gap: 1rem
+  margin-top: 1.5rem
+
+  button
+    background-color: $accent-blue
+    color: $white
+    border: none
+    padding: 0.5rem 1.2rem
+    border-radius: 6px
+    font-weight: 600
+    cursor: pointer
+    transition: $transition
+
+    &:disabled
+      background-color: lighten($accent-blue, 40%)
+      cursor: not-allowed
+      opacity: 0.6
+
+    &:hover:not(:disabled)
+      background-color: darken($accent-blue, 10%)
+
+// Empty state styling
+.empty-state
+  text-align: center
+  margin-top: 4rem
+  color: $blue-dark
+
+  &__icon
+    font-size: 3rem
+    margin-bottom: 1rem
+
+  &__text
+    font-weight: 500
+    font-size: 1.1rem
+
+// Responsive adjustments
+@media (max-width: 768px)
+  .history-container
+    width: 95%
+    padding: 1rem
+
+  table
+    font-size: 0.85rem
+
+  .pagination-buttons
+    flex-direction: column
+    gap: 0.8rem
+    button
+      width: 100%

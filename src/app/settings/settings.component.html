@@ -1,0 +1,46 @@
+<app-navigation></app-navigation>
+
+<div class="settings-container">
+  <h2 class="title">Account Settings</h2>
+
+  <div class="card user-card">
+    <h3>User Info</h3>
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+    <p><strong>Full Name:</strong> {{ userData?.fullName || '—' }}</p>
+    <p><strong>Date of Birth:</strong> {{ userData?.birthDate || '—' }}</p>
+  </div>
+
+  <div class="card password-card">
+    <h3>Password</h3>
+    <button class="action-btn" (click)="openPasswordChangeForm()" *ngIf="!showPasswordForm">Change Password</button>
+
+    <form *ngIf="showPasswordForm" (ngSubmit)="changePassword()" class="password-form">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>New Password</mat-label>
+        <input matInput [(ngModel)]="newPassword" name="newPassword" type="password" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required />
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-button type="submit" color="primary">Save</button>
+        <button mat-button type="button" (click)="cancelPasswordChange()">Cancel</button>
+      </div>
+
+      <p class="success-message" *ngIf="passwordChangeMessage">{{ passwordChangeMessage }}</p>
+    </form>
+  </div>
+
+  <div class="card danger-zone">
+    <h3>Danger Zone</h3>
+    <button mat-button color="warn" (click)="deleteAccount()">Delete Account</button>
+  </div>
+
+  <div class="logout">
+    <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
+  </div>
+</div>
+

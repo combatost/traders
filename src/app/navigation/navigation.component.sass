@@ -1,0 +1,186 @@
+// _variables.sass 
+$primary-color: #1f1f1f
+
+$accent-color: #1a73e8
+$bg-light: #f8f9fa
+$bg-surface: #ffffff
+$shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+$transition: 0.3s ease
+$radius: 12px
+
+
+.navbar
+  display: flex
+  justify-content: space-between
+  align-items: center
+  background-color: $bg-surface
+  padding: 1rem 2rem
+  border-radius: 0 0 $radius $radius
+  box-shadow: $shadow
+  position: sticky
+  top: 0
+  z-index: 1000
+  transition: transform 0.3s ease
+  width: 90%
+  margin: 0 auto
+
+  &.hidden
+    transform: translateY(-100%)
+
+  &__brand
+    font-size: 1.6rem
+    font-weight: 600
+    color: $primary-color
+    cursor: pointer
+    transition: color $transition
+
+    &:hover
+      color: $accent-color
+
+  &__toggle
+    display: none
+    background: transparent
+    border: none
+    color: $primary-color
+    font-size: 1.8rem
+    cursor: pointer
+    transition: color $transition
+
+    &:hover
+      color: $accent-color
+
+  &__menu
+    display: flex
+    align-items: center
+    gap: 1.5rem
+    transition: max-height $transition
+
+    a
+      text-decoration: none
+      color: $primary-color
+      font-size: 1rem
+      font-weight: 500
+      padding: 0.5rem 0.75rem
+      border-radius: $radius
+      transition: background $transition, color $transition
+
+      &.active
+        background-color: rgba(26, 115, 232, 0.1)
+        color: $accent-color
+
+      &.active::after
+        content: ''
+        position: absolute
+        bottom: -2px
+        left: 0
+        width: 100%
+        height: 2px
+        background-color: $accent-color
+
+      &:hover
+        background-color: rgba(26, 115, 232, 0.05)
+        color: $accent-color
+
+    &.open
+      display: flex
+      flex-direction: column
+      align-items: flex-start
+      background: $bg-surface
+      width: 100%
+      padding: 1rem 2rem
+      position: absolute
+      top: 64px
+      left: 0
+      border-radius: 0 0 $radius $radius
+      box-shadow: $shadow
+      z-index: 999
+
+  &__logout
+    background: none
+    border: none
+    color: $primary-color
+    font-size: 1.4rem
+    cursor: pointer
+    transition: color $transition
+
+    &:hover
+      color: $accent-color
+
+.dropdown-container
+  position: relative
+  display: inline-block
+
+.dropdown-btn
+  background: none
+  border: none
+  color: $primary-color
+  font-size: 1rem
+  font-weight: 500
+  padding: 0.5rem 0.75rem
+  border-radius: $radius
+  cursor: pointer
+  transition: background $transition, color $transition
+  display: flex
+  align-items: center
+  gap: 0.25rem
+
+  &:hover
+    background-color: rgba(26, 115, 232, 0.05)
+    color: $accent-color
+
+  .dropdown-icon
+    font-size: 1.2rem
+    transition: transform 0.3s ease
+
+    &.rotated
+      transform: rotate(180deg)
+
+.dropdown-menu
+  display: flex
+  flex-direction: column
+  background-color: $bg-surface
+  box-shadow: $shadow
+  border-radius: $radius
+  padding: 0.5rem 0
+  margin-top: 0.5rem
+  position: absolute
+  top: 100%
+  right: 0
+  z-index: 1000
+  min-width: 160px
+  opacity: 0
+  transform: translateY(-10px)
+  transition: opacity 0.3s ease, transform 0.3s ease
+  pointer-events: none
+
+  &.open
+    opacity: 1
+    transform: translateY(0)
+    pointer-events: auto
+
+  a
+    padding: 0.5rem 1rem
+    font-size: 0.95rem
+    text-decoration: none
+    color: $primary-color
+    transition: background $transition, color $transition
+
+    &:hover
+      background-color: rgba(26, 115, 232, 0.05)
+      color: $accent-color
+
+    &.active
+      background-color: rgba(26, 115, 232, 0.1)
+      color: $accent-color
+
+@media (max-width: 768px)
+  .navbar
+    flex-wrap: wrap
+
+    &__toggle
+      display: block
+
+    &__menu
+      display: none
+      flex-direction: column
+      width: 100%

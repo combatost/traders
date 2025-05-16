@@ -1,0 +1,35 @@
+<header class="navbar" [class.hidden]="isNavbarHidden">
+  <div class="navbar__brand" (click)="navigateToHome()">SHEIN TRADERS</div>
+
+  <button class="navbar__toggle" (click)="toggleMenu()" aria-label="Toggle menu">
+    <i class="material-icons">{{ isNavbarOpen ? "close" : "menu" }}</i>
+  </button>
+
+  <nav class="navbar__menu" [class.open]="isNavbarOpen">
+    <a (click)="navigateToHome()" [class.active]="currentSection === 'home'">Home</a>
+    <a (click)="navigateToClient()" [class.active]="currentSection === 'client'">Clients</a>
+    <a (click)="navigateToAnalytics()" [class.active]="currentSection === 'analytics'">Analytics</a>
+    <a (click)="navigateToAbout()" [class.active]="currentSection === 'about'">About</a>
+
+    <!-- Dropdown Container -->
+    <div class="dropdown-container">
+      <button class="dropdown-btn" (click)="toggleDropdown()">
+        Settings
+        <i class="material-icons dropdown-icon" [class.rotated]="isDropdownOpen">expand_more</i>
+      </button>
+
+      <div class="dropdown-menu" [class.open]="isDropdownOpen">
+        <a (click)="navigateToSettings()" [class.active]="currentSection === 'settings'">Settings</a>
+        <a (click)="navigateToHistory()" [class.active]="currentSection === 'history'">History</a>
+      </div>
+    </div>
+
+    <button class="navbar__logout" (click)="logout()" aria-label="Log out">
+      <i class="material-icons">logout</i>
+    </button>
+  </nav>
+</header>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>

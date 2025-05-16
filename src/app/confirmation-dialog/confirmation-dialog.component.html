@@ -1,0 +1,13 @@
+<div class="dialog-container">
+  <div class="dialog-icon">
+    <img src="../../assets/icons/trash-svgrepo-com.svg" alt="Trash Icon" />
+  </div>
+
+  <h2 class="dialog-title">{{ data.title }}</h2>
+  <p class="dialog-message">{{ data.message }}</p>
+
+  <mat-dialog-actions>
+    <button mat-stroked-button class="btn cancel" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button class="btn delete" (click)="onConfirm()">Delete</button>
+  </mat-dialog-actions>
+</div>

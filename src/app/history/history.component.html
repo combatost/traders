@@ -1,0 +1,69 @@
+<app-navigation></app-navigation>
+
+<section>
+  <div
+    class="history-container"
+    *ngIf="historyRecords.length > 0; else noHistory"
+  >
+    <h2>Deleted Orders History</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Quantity</th>
+          <th>Cost</th>
+          <th>Discount (%)</th>
+          <th>Delivery</th>
+          <th>Shipping</th>
+          <th>Tax</th>
+          <th>Choice</th>
+          <th>Profit</th>
+          <th>Deleted At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of pagedRecords">
+          <td>{{ record.client }}</td>
+          <td>{{ record.quantity }}</td>
+          <td>{{ record.cost }}</td>
+          <td>{{ record.discount }}</td>
+          <td>{{ record.delivery }}</td>
+          <td>{{ record.shippingCost }}</td>
+          <td>{{ record.tax }}</td>
+          <td>{{ record.choice }}</td>
+          <td>{{ record.profit }}</td>
+          <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
+          <td class="action-cell">
+            <button
+              class="btn-clear"
+              (click)="deleteRecord(record.id)"
+              aria-label="Delete record"
+            >
+              🗑️
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination-buttons">
+    <button (click)="previousPage()" [disabled]="pageIndex === 0">
+      Previous
+    </button>
+    <button
+      (click)="nextPage()"
+      [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
+    >
+      Next
+    </button>
+  </div>
+
+  <ng-template #noHistory>
+    <section class="empty-state">
+      <div class="empty-state__icon">📭</div>
+      <p class="empty-state__text">No deleted orders history found.</p>
+    </section>
+  </ng-template>
+</section>

@@ -1,0 +1,72 @@
+:host
+  display: block
+  font-family: 'Roboto', sans-serif
+
+.dialog-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 2rem
+  max-width: 360px
+  background: white
+  border-radius: 20px
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+  text-align: center
+
+.dialog-icon
+  font-size: 3rem
+  margin-bottom: 1rem
+  animation: bounce 1s ease infinite alternate
+  color: #1a73e8 // Set the icon color for currentColor SVG
+
+  img
+    width: 54px
+    height: 54px
+    filter: invert(30%) sepia(100%) saturate(1000%) hue-rotate(180deg) brightness(90%) contrast(100%)
+
+.dialog-title
+  font-size: 1.4rem
+  font-weight: 600
+  margin-bottom: 0.5rem
+  color: #202124
+
+.dialog-message
+  font-size: 1rem
+  color: #5f6368
+  margin-bottom: 1.5rem
+
+::ng-deep mat-dialog-content
+  display: flex
+  justify-content: center
+  width: 100%
+
+::ng-deep mat-dialog-actions
+  display: flex
+  justify-content: center
+  gap: 1rem
+  margin-top: 1rem
+
+.btn
+  min-width: 100px
+  padding: 0.5rem 1rem
+  border-radius: 8px
+  font-weight: 500
+  text-transform: uppercase
+  font-size: 0.9rem
+
+.cancel
+  color: #5f6368
+
+.delete
+  background-color: #d93025
+  color: white
+
+  &:hover
+    background-color: #b1271b
+
+@keyframes bounce
+  0%
+    transform: translateY(0)
+  100%
+    transform: translateY(-8px)

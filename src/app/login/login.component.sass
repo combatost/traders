@@ -1,0 +1,221 @@
+.login-container
+  display: flex
+  height: 100vh
+  background: linear-gradient(to bottom right, #f3f6f9, #eaf0f6)
+  font-family: 'Inter', sans-serif
+  font-weight: 400 // Default weight for the body text
+  color: #333 // Default text color
+
+  .login-illustration
+    flex: 1
+    background: linear-gradient(to bottom right, #a7c6ed, #ffeedf)
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 2rem
+
+    .skeleton-graphic
+      text-align: center
+
+      img
+        max-width: 280px
+        margin-bottom: 1rem
+
+      h2
+        font-size: 1.7rem
+        font-weight: 600
+        color: #4c126d
+        margin-bottom: 0.5rem
+        font-family: 'Inter', sans-serif // Specific font style for the heading
+
+      p
+        color: #555
+        font-size: 0.95rem
+        font-family: 'Inter', sans-serif // Ensures consistency in text styling
+
+  .login-form
+    flex: 1
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 2rem
+
+    .form-box
+      width: 100%
+      max-width: 360px
+      background: #ffffff
+      padding: 2rem
+      border-radius: 18px
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08)
+      transition: all 0.3s ease-in-out
+
+      .logo-icon
+        display: block
+        margin: 0 auto 1.2rem
+        width: 90px
+
+      .divider
+        text-align: center
+        font-size: 0.9rem
+        color: #999
+        margin: 1.5rem 0 1rem
+        font-family: 'Inter', sans-serif
+
+      label
+        display: block
+        margin: 0.5rem 0 0.25rem
+        font-size: 0.85rem
+        color: #333
+        font-weight: 500
+        font-family: 'Inter', sans-serif
+
+      input
+        width: 100%
+        padding: 10px 12px
+        border-radius: 10px
+        border: 1.5px solid #d0d0d0
+        font-size: 0.9rem
+        transition: 0.25s ease
+        background: #f9f9f9
+        font-family: 'Inter', sans-serif
+
+        &:focus
+          border: 1.5px solid #506eec
+          background: #fff
+          outline: none
+
+      .form-grid
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: 1rem
+
+      .password-wrapper
+        position: relative
+
+        .toggle
+          position: absolute
+          right: 10px
+          top: 50%
+          transform: translateY(-50%)
+          cursor: pointer
+          color: #888
+          font-size: 1rem
+          font-family: 'Inter', sans-serif
+
+      .login-btn
+        width: 100%
+        margin-top: 0.5rem
+        padding: 0.75rem
+        background: #506eec
+        color: white
+        border: none
+        border-radius: 8px
+        font-size: 1rem
+        font-weight: 600
+        cursor: pointer
+        transition: 0.2s
+        font-family: 'Inter', sans-serif
+
+        &:hover
+          background: #3b56d1
+
+      .switch-auth
+        text-align: center
+        font-size: 0.85rem
+        margin-top: 1rem
+        font-family: 'Inter', sans-serif
+
+        a
+          color: #506eec
+          font-weight: 600
+          margin-left: 0.3rem
+          cursor: pointer
+          font-family: 'Inter', sans-serif
+
+  .google-btn,
+  .apple-btn
+    width: 100%
+    padding: 0.6rem
+    margin-top: 0.75rem
+    background: #f5f5f5
+    border: none
+    border-radius: 6px
+    font-weight: 500
+    cursor: pointer
+    transition: all 0.2s
+    display: flex
+    align-items: center
+    justify-content: center
+    font-family: 'Inter', sans-serif
+
+    &:hover
+      background: #e5e5e5
+
+    .icon
+      margin-right: 10px
+      font-size: 1.5rem
+
+  .google-btn
+    background-color: #4285F4 // Google blue
+    color: white
+
+    .icon
+      content: "\e88e" // Material Icon for Google
+
+  .apple-btn
+    background-color: #000000 // Apple black
+    color: white
+
+    .icon
+      content: "\e8f6" // Material Icon for Apple
+
+  .loader,
+  .message
+    text-align: center
+    font-size: 0.85rem
+    margin-top: 0.5rem
+    font-family: 'Inter', sans-serif
+
+  .options-row
+    display: flex
+    justify-content: space-between
+    align-items: center
+    font-size: 0.85rem
+    margin: 1rem 0
+    gap: 1rem
+    flex-wrap: wrap
+    font-family: 'Inter', sans-serif
+
+    .remember-me
+      display: flex
+      align-items: center
+      gap: 0.4rem
+      font-size: 0.85rem
+      color: #444
+      font-weight: 500
+      cursor: pointer
+
+      input[type="checkbox"]
+        width: 18px
+        height: 18px
+        border-radius: 4px
+        border: 2px solid #b0b0b0
+        transition: 0.3s ease
+
+      &:checked
+        background-color: #506eec
+        border-color: #506eec
+
+      label
+        font-size: 0.85rem
+        margin-left: 0.5rem
+        font-family: 'Inter', sans-serif
+
+    a
+      color: #506eec
+      text-decoration: none
+      font-weight: 500
+      font-family: 'Inter', sans-serif
+
+      &:hover
+        text-decoration: underline

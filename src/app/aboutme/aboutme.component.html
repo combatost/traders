@@ -1,0 +1,51 @@
+<app-navigation></app-navigation>
+
+<section class="about-us-container">
+  <mat-card class="hero-card mat-elevation-z8">
+    <div class="hero-content">
+      <h1 class="title">We’re Redefining E-Commerce</h1>
+      <p class="subtitle">A futuristic team pushing boundaries since 2023. Our mission: simplicity, speed, and scale.</p>
+    </div>
+  </mat-card>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card" *ngFor="let stat of stats">
+      <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+      <h3>{{ stat.title }}</h3>
+      <p>{{ stat.description }}</p>
+    </mat-card>
+  </div>
+
+  <mat-card class="vision-card mat-elevation-z4">
+    <h2>Our Vision</h2>
+    <p>We dream beyond trends — building technology that powers businesses globally with unmatched efficiency and trust.</p>
+  </mat-card>
+
+  <mat-card class="team-card mat-elevation-z4">
+    <h2>Meet the Team</h2>
+    <div class="team-grid">
+      <div class="team-member" *ngFor="let member of team">
+        <img [src]="member.photo" alt="{{ member.name }}" class="team-photo"/>
+        <h4>{{ member.name }}</h4>
+        <p>{{ member.role }}</p>
+      </div>
+    </div>
+  </mat-card>
+</section>
+
+
+<!-- Chatbot Floating Button -->
+<div class="chatbot-float-btn" (click)="toggleChat()">
+  <mat-icon>chat_bubble</mat-icon>
+</div>
+
+<!-- Chatbot UI -->
+<div *ngIf="isChatVisible" class="chat-container">
+  <div class="messages">
+    <div *ngFor="let message of messages" class="message">
+      <div *ngIf="message.fromUser" class="user-message">{{ message.text }}</div>
+      <div *ngIf="!message.fromUser" class="bot-message">{{ message.text }}</div>
+    </div>
+  </div>
+  <input [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
+</div>

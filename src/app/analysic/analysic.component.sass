@@ -1,0 +1,184 @@
+// Color Variables
+$primary-blue: #1a73e8
+$blue-dark: #174ea6
+$accent-blue: #4285f4
+$light-bg: transparent
+$white: #ffffff
+$text-dark: #1f1f1f
+$card-radius: 14px
+$shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
+$transition: all 0.3s ease
+$gap: 1.5rem
+$table-header-bg: #e8f0fe
+$table-row-hover-bg: #f4faff
+$table-border-color: #ddd
+
+// Global Styles
+.analytics-page
+  font-family: 'Roboto', sans-serif
+  background-color: $light-bg
+  padding: 2rem
+  min-height: 100vh
+  width: 90%  // Set width to 90%
+  margin: 0 auto  // Center the page content
+
+  .page-title
+    font-size: 2rem
+    font-weight: bold
+    color: $primary-blue
+    margin-bottom: 20px
+    text-align: center
+
+  .analytics-cards
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
+    gap: $gap
+    margin-top: 20px
+
+    .card
+      background-color: $white
+      border-radius: $card-radius
+      box-shadow: $shadow
+      padding: 1.5rem
+      display: flex
+      flex-direction: column
+      align-items: center
+      text-align: center
+      transition: all $transition ease-in-out
+      cursor: pointer
+
+      &:hover
+        transform: translateY(-5px)
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15)
+
+      .card-icon
+        font-size: 2.5rem
+        margin-bottom: 10px
+        color: $primary-blue
+
+      strong
+        font-size: 1.2rem
+        color: $text-dark
+
+      .card-value
+        font-size: 1.5rem
+        font-weight: bold
+        color: $text-dark
+        margin-top: 10px
+
+  .no-data-msg
+    text-align: center
+    font-size: 1.2rem
+    color: #999
+    margin-top: 30px
+
+mat-card
+  background-color: transparent
+  border: none
+  box-shadow: none
+  transition: $transition
+
+  &:hover
+    box-shadow: none  // No shadow effect on hover
+
+// Filter Options
+.filter-options
+  display: flex
+  justify-content: center
+  margin-top: 20px
+  gap: 10px
+
+  .mat-button-toggle-group
+    display: flex
+    justify-content: center
+    align-items: center
+
+  .mat-button-toggle
+    font-size: 0.9rem
+    font-weight: 400
+    padding: 0.5rem 1rem
+    background-color: #f0f0f0
+    color: $primary-blue
+    border: 2px solid transparent
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05)
+    transition: all 0.3s ease-in-out
+
+    &:hover
+      background-color: $accent-blue
+      color: $white
+      border: 2px solid $accent-blue
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1)
+
+    &.mat-button-toggle-checked
+      background-color: $primary-blue
+      color: $white
+      border: 2px solid $primary-blue
+
+// Table Styling
+.full-width-table
+  width: 100%
+  border-spacing: 0
+  border-collapse: collapse
+  background-color: $white
+  border-radius: $card-radius
+  overflow: hidden
+  box-shadow: $shadow
+  margin-top: 2rem
+
+  th, td
+    padding: 1rem
+    text-align: left
+    border-bottom: 1px solid $table-border-color
+
+  th
+    background-color: $table-header-bg
+    color: $blue-dark
+    font-weight: 600
+
+  td
+    font-size: 1rem
+    color: $text-dark
+    transition: background-color 0.3s ease
+
+  tr:hover
+    background-color: $table-row-hover-bg
+
+  .actions
+    display: flex
+    gap: 0.5rem
+
+// Table Icon Buttons (Edit and Delete)
+mat-icon-button
+  color: $blue-dark
+  &:hover
+    color: $accent-blue
+
+// Button Styles
+mat-raised-button
+  background-color: $primary-blue
+  color: $white
+  padding: 0.6rem 1.4rem
+  border-radius: 20px
+  font-size: 1rem
+  font-weight: 500
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1)
+  transition: all 0.3s ease-in-out
+
+  &:hover
+    background-color: $blue-dark
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15)
+
+mat-stroked-button
+  color: $primary-blue
+  border-color: $primary-blue
+
+// Responsive Design
+@media (max-width: 768px)
+  .analytics-cards
+    grid-template-columns: 1fr 1fr
+    gap: 15px
+  .filter-options
+    flex-direction: column
+    align-items: stretch
+  .full-width-table
+    width: 100%
