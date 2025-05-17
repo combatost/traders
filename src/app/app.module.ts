@@ -23,7 +23,14 @@ import { firebaseConfig } from './services/firebase-config';
 import { ClientComponent } from './client/client.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { HistoryComponent } from './history/history.component';
-import { SplashComponent } from './splash/splash.component'; // Import your Firebase config
+import { SplashComponent } from './splash/splash.component';
+import { FooterComponent } from './footer/footer.component'; // Import your Firebase config
+import { Directionality } from '@angular/cdk/bidi';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { SuccessfulAlertComponent } from './alreat/successful-alert/successful-alert.component';
+import { ErrorAlertComponent } from './alreat/error-alert/error-alert.component';
+import { NgChartsModule } from 'ng2-charts';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -38,7 +45,10 @@ import { SplashComponent } from './splash/splash.component'; // Import your Fire
     ClientComponent,
     LoaderComponent,
     HistoryComponent,
-    SplashComponent
+    SplashComponent,
+    FooterComponent,
+    SuccessfulAlertComponent,
+    ErrorAlertComponent
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -60,15 +70,20 @@ import { SplashComponent } from './splash/splash.component'; // Import your Fire
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     HttpClientModule,
-    MaterialModule
+    MaterialModule,
+    MatButtonToggleModule,
+    NgChartsModule,
+    MatDatepickerModule,
   ],
   providers: [
     provideClientHydration(),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideHttpClient(withFetch()) // Enable fetch API for HttpClient
-  ],  
+    provideHttpClient(withFetch()), // Enable fetch API for HttpClient
+    { provide: Directionality, useFactory: () => new Directionality('rtl') }
+   
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

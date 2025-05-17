@@ -3,7 +3,37 @@
 <section class="analytics-page">
   <mat-card class="mat-elevation-z4 p-4">
     <h2 class="page-title">Sales Analytics</h2>
+    <div class="charts-row" style="display: flex; gap: 2rem; flex-wrap: wrap">
+      <mat-card
+        class="mat-elevation-z3 chart-card"
+        style="flex: 1; min-width: 300px"
+      >
+        <h3>Monthly Sales</h3>
+        <canvas
+          baseChart
+          [data]="monthlySalesData"
+          [labels]="monthlySalesLabels"
+          [options]="barChartOptions"
+          [type]="'bar'"
+        >
+        </canvas>
+      </mat-card>
 
+      <mat-card
+        class="mat-elevation-z3 chart-card"
+        style="flex: 1; min-width: 300px"
+      >
+        <h3>Order Status Distribution</h3>
+        <canvas
+          baseChart
+          [data]="orderStatusData"
+          [labels]="orderStatusLabels"
+          [options]="doughnutChartOptions"
+          [type]="'doughnut'"
+        >
+        </canvas>
+      </mat-card>
+    </div>
     <!-- Analytics Overview Cards -->
     <div class="analytics-cards">
       <mat-card class="mat-elevation-z3 card">
@@ -19,7 +49,7 @@
       </mat-card>
 
       <mat-card class="mat-elevation-z3 card">
-        <mat-icon class="card-icon">package</mat-icon>
+        <mat-icon class="card-icon" matPrefix>grid_on</mat-icon>
         <strong>Items Sold:</strong>
         <div class="card-value">{{ totalItems }}</div>
       </mat-card>
@@ -57,64 +87,135 @@
 
     <!-- Filter Options -->
     <div class="filter-options">
-      <mat-button-toggle-group name="status" aria-label="Order Status Filter" [(ngModel)]="statusFilter" (change)="filterByStatus(statusFilter)">
+      <mat-button-toggle-group
+        name="status"
+        aria-label="Order Status Filter"
+        [(ngModel)]="statusFilter"
+        (change)="filterByStatus(statusFilter)"
+      >
         <mat-button-toggle value="Pending">Show Pending</mat-button-toggle>
         <mat-button-toggle value="Done">Show Completed</mat-button-toggle>
         <mat-button-toggle value="All">Show All</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+    <br />
+    <div class="search-bar">
+      <mat-form-field appearance="outline">
+        <mat-label>Search Sales</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          placeholder="Search by client name"
+          [(ngModel)]="analyticsSearchQuery"
+          (ngModelChange)="filterSalesData()"
+        />
+        <button
+          *ngIf="analyticsSearchQuery"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="clearAnalyticsSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
 
     <!-- Filtered Sales Table -->
     <div *ngIf="filteredSalesData.length > 0">
       <mat-card class="mat-elevation-z4 p-4">
-        <table mat-table [dataSource]="filteredSalesData" class="mat-elevation-z2 full-width-table">
-
+        <table
+          mat-table
+          [dataSource]="filteredSalesData"
+          class="mat-elevation-z2 full-width-table"
+        >
           <ng-container matColumnDef="client">
-            <th mat-header-cell *matHeaderCellDef> Client </th>
-            <td mat-cell *matCellDef="let element"> {{ element.client }} </td>
+            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <td mat-cell *matCellDef="let element">{{ element.client }}</td>
           </ng-container>
 
           <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef> Quantity </th>
-            <td mat-cell *matCellDef="let element"> {{ element.quantity }} </td>
+            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
           </ng-container>
 
           <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef> Cost </th>
-            <td mat-cell *matCellDef="let element"> {{ element.cost | currency }} </td>
+            <th mat-header-cell *matHeaderCellDef>Cost</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.cost | currency }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef> Discount (%) </th>
-            <td mat-cell *matCellDef="let element"> {{ element.discount }} </td>
+            <th mat-header-cell *matHeaderCellDef>Discount (%)</th>
+            <td mat-cell *matCellDef="let element">{{ element.discount }}</td>
           </ng-container>
 
           <ng-container matColumnDef="shippingCost">
-            <th mat-header-cell *matHeaderCellDef> Shipping </th>
-            <td mat-cell *matCellDef="let element"> {{ element.shippingCost | currency }} </td>
+            <th mat-header-cell *matHeaderCellDef>Shipping</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.shippingCost | currency }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="tax">
-            <th mat-header-cell *matHeaderCellDef> Tax </th>
-            <td mat-cell *matCellDef="let element"> {{ element.tax | currency }} </td>
+            <th mat-header-cell *matHeaderCellDef>Tax</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.tax | currency }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="profit">
-            <th mat-header-cell *matHeaderCellDef> Profit </th>
-            <td mat-cell *matCellDef="let element"> {{ calculateProfit(element) | currency }} </td>
+            <th mat-header-cell *matHeaderCellDef>Profit</th>
+            <td mat-cell *matCellDef="let element">
+              {{ calculateProfit(element) | currency }}
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element">
-              <button mat-icon-button (click)="onClean(filteredSalesData.indexOf(element))">
+              <button
+                mat-icon-button
+                (click)="onClean(filteredSalesData.indexOf(element))"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['client', 'quantity', 'cost', 'discount', 'shippingCost', 'tax', 'profit', 'actions']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['client', 'quantity', 'cost', 'discount', 'shippingCost', 'tax', 'profit', 'actions'];"></tr>
+          <tr
+            mat-header-row
+            *matHeaderRowDef="[
+              'client',
+              'quantity',
+              'cost',
+              'discount',
+              'shippingCost',
+              'tax',
+              'profit',
+              'actions'
+            ]"
+          ></tr>
+
+          <tr
+            mat-row
+            *matRowDef="
+              let row;
+              columns: [
+                'client',
+                'quantity',
+                'cost',
+                'discount',
+                'shippingCost',
+                'tax',
+                'profit',
+                'actions'
+              ]
+            "
+            [class.done-row]="row.choice === 'Done'"
+            [class.canceled-row]="row.choice === 'Cancelled'"
+          ></tr>
         </table>
       </mat-card>
     </div>
@@ -127,3 +228,4 @@
     </ng-template>
   </mat-card>
 </section>
+<app-footer></app-footer>

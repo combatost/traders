@@ -1,56 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
 html {
-    font-size: 62.5%;
-    overflow-x: hidden;
+  font-size: 62.5%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 :root {
-    --bg-color: rgb(0, 3, 0);
-    --text-color: #ffffff;
-    --main-color: rgb(255, 255, 255);
-    --white-color: rgb(255, 255, 255);
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --primary-color: #1a73e8;
-    --secondary-color: #ea4335;
-    --background-color-light: #f4f7fc;
-    --background-color-dark: #121212;
-    --text-dark: #202124;
+  --primary-color: #7f5af0;
+  --accent-color: #2cb67d;
+  --error-color: #ef4565;
+
+  --text-color: #1a1a1a;
+  --text-muted: #6b7280;
+  --bg-light: #f5f7fa;
+  --bg-dark: #121212;
+  --white: #ffffff;
+
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --border-radius: 0.8rem;
+  --transition: all 0.25s ease;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    scroll-behavior: smooth;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  scroll-behavior: smooth;
+  font-family: "Outfit", sans-serif;
+  font-size: 1rem;
 }
 
 body {
-    background-color: var(--background-color-light);
-    color: var(--text-dark);
-    transition: background-color 0.3s, color 0.3s;
-    font-family: 'Roboto', sans-serif
-
+  font-size: 1.5rem;
+  background-color: var(--bg-light);
+  color: var(--text-color);
+  transition: var(--transition);
+  line-height: 1.5;
 }
 
 body.dark-theme {
-    background-color: var(--background-color-dark);
-    color: var(--white-color);
+  background-color: var(--background-color-dark);
+  color: var(--white-color);
 }
 
 body.dark-theme .header {
-    background-color: #333333;
+  background-color: #333333;
 }
 
 body.dark-theme .navbar a {
-    color: var(--white-color);
+  color: var(--white-color);
 }
 
 body.dark-theme .navbar a:hover {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
-
 

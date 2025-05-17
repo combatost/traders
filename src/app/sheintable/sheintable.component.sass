@@ -1,5 +1,6 @@
 // Theme Colors
 $primary-blue: #1a73e8
+
 $blue-dark: #174ea6
 $accent-blue: #4285f4
 $light-bg: #f0f4f8
@@ -193,3 +194,78 @@ mat-icon-button[color='accent']
 
   .pagination-buttons
     justify-content: space-between
+
+.search-bar
+  width: 100%
+
+  margin-bottom: 1.5rem
+
+  mat-form-field
+    width: 100%
+    background: $light-bg
+    border-radius: 10px
+    box-shadow: 0 2px 6px rgba($primary-blue, 0.15)
+    transition: $transition
+
+    // Outline appearance tweaks
+    &.mat-form-field-appearance-outline
+      .mat-form-field-outline
+        color: $primary-blue
+        border-radius: 10px
+        border-width: 2px
+        transition: border-color 0.3s ease
+
+      &:hover .mat-form-field-outline
+        border-color: $accent-blue
+
+      &.mat-focused .mat-form-field-outline
+        border-color: $primary-blue
+        border-width: 2.5px
+
+    .mat-form-field-label
+      color: $blue-dark
+      font-weight: 600
+      font-size: 1rem
+      padding-left: 0.25rem
+      transition: color 0.3s ease
+
+    input.mat-input-element
+      padding: 0.6rem 2.5rem 0.6rem 0.75rem
+      font-size: 1rem
+      color: $text-dark
+
+      &::placeholder
+        color: lighten($text-dark, 40%)
+        opacity: 1
+        font-style: italic
+
+    // Suffix clear button styles
+    button.mat-icon-button
+      color: $primary-blue
+      opacity: 0.7
+      transition: opacity 0.3s ease, color 0.3s ease
+
+      &:hover
+        opacity: 1
+        color: $accent-blue
+
+      mat-icon
+        font-size: 20px
+tr.matched, td.matched
+  background-color: #d4edda !important
+  color: #155724 !important
+  transition: background-color 0.3s ease
+
+tr.matched:hover, td.matched:hover
+  background-color: #c3e6cb !important
+
+.editing-row
+  background-color: #fff59d !important // Light yellow
+.canceled-row
+  background-color: #ffebee       // Light red background
+  color: #b71c1c                  // Dark red text
+  font-weight: 500                // Optional: make canceled rows stand out
+
+.done-row
+  background-color: #e8f5e9 // light green
+  color: #2e7d32           // strong green text

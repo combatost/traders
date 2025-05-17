@@ -1,14 +1,30 @@
 <app-navigation></app-navigation>
 
 <section>
-  <div
-    class="history-container"
-    *ngIf="historyRecords.length > 0; else noHistory"
-  >
+  <div class="history-container" *ngIf="historyRecords.length > 0; else noHistory">
     <h2>Deleted Orders History</h2>
+
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="deleteSelectedRecords()"
+      [disabled]="!hasSelected()"
+      class="bulk-delete-btn"
+    >
+      Delete Selected
+    </button>
+
     <table>
       <thead>
         <tr>
+          <th>
+            <mat-checkbox
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll($event.checked)"
+              aria-label="Select all records"
+            >
+            </mat-checkbox>
+          </th>
           <th>Client</th>
           <th>Quantity</th>
           <th>Cost</th>
@@ -19,11 +35,17 @@
           <th>Choice</th>
           <th>Profit</th>
           <th>Deleted At</th>
-          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let record of pagedRecords">
+          <td>
+            <mat-checkbox
+              [(ngModel)]="selection[record.id]"
+              (click)="$event.stopPropagation()"
+              aria-label="Select record"
+            ></mat-checkbox>
+          </td>
           <td>{{ record.client }}</td>
           <td>{{ record.quantity }}</td>
           <td>{{ record.cost }}</td>
@@ -33,25 +55,14 @@
           <td>{{ record.tax }}</td>
           <td>{{ record.choice }}</td>
           <td>{{ record.profit }}</td>
-          <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
-          <td class="action-cell">
-            <button
-              class="btn-clear"
-              (click)="deleteRecord(record.id)"
-              aria-label="Delete record"
-            >
-              🗑️
-            </button>
-          </td>
+          <td>{{ record.deletedAt?.toDate() | date : 'short' }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="pagination-buttons">
-    <button (click)="previousPage()" [disabled]="pageIndex === 0">
-      Previous
-    </button>
+    <button (click)="previousPage()" [disabled]="pageIndex === 0">Previous</button>
     <button
       (click)="nextPage()"
       [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"

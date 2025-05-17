@@ -14,11 +14,13 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 export class ClientComponent implements OnInit {
   userForm: FormGroup;
   clients: Client[] = [];
-  selectedClient: Client | null = null;
+  filteredClients: Client[] = [];
   paginatedClients: Client[] = [];
+  selectedClient: Client | null = null;
   pageSize: number = 5;
   pageIndex: number = 0;
   userId: string = '';
+  searchQuery: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -32,8 +34,7 @@ export class ClientComponent implements OnInit {
       OtherPhoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       location: ['', Validators.required],
       address: ['', Validators.required],
-      address2: ['', Validators.required],
-      orderId: ['', Validators.required]
+      address2: ['', Validators.required]
     });
   }
 
@@ -46,9 +47,40 @@ export class ClientComponent implements OnInit {
             const data = doc.payload.doc.data() as Client;
             return { id: doc.payload.doc.id, ...data };
           });
-          this.updatePagination();
+          this.filterClients();
         });
       }
+    });
+  }
+
+  filterClients(): void {
+    const query = this.searchQuery.trim().toLowerCase();
+    this.filteredClients = this.clients.filter(client =>
+      client.fullName.toLowerCase().includes(query) ||
+      client.phoneNumber.includes(query) ||
+      client.OtherPhoneNumber.includes(query) ||
+      client.location.toLowerCase().includes(query) ||
+      client.address.toLowerCase().includes(query) ||
+      client.address2.toLowerCase().includes(query)
+    );
+    this.pageIndex = 0;
+    this.updatePagination();
+  }
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.filterClients();
+  }
+
+  onEdit(client: Client): void {
+    this.selectedClient = client;
+    this.userForm.patchValue({
+      fullName: client.fullName,
+      phoneNumber: client.phoneNumber,
+      OtherPhoneNumber: client.OtherPhoneNumber,
+      location: client.location,
+      address: client.address,
+      address2: client.address2
     });
   }
 
@@ -63,20 +95,13 @@ export class ClientComponent implements OnInit {
         console.log('Client updated successfully');
         this.selectedClient = null;
         this.userForm.reset();
-        this.updatePagination();
       }).catch(err => console.error('Error updating client:', err));
     } else {
       clientRef.add(formValue).then(() => {
         console.log('Client added successfully');
         this.userForm.reset();
-        this.updatePagination();
       }).catch(err => console.error('Error adding client:', err));
     }
-  }
-
-  onEdit(client: Client): void {
-    this.selectedClient = client;
-    this.userForm.patchValue(client);
   }
 
   onDelete(clientId: string): void {
@@ -89,7 +114,6 @@ export class ClientComponent implements OnInit {
       if (result && this.userId) {
         this.firestore.doc(`clients/${this.userId}/records/${clientId}`).delete().then(() => {
           console.log('Client deleted successfully');
-          this.updatePagination();
         }).catch(err => console.error('Error deleting client:', err));
       }
     });
@@ -98,11 +122,11 @@ export class ClientComponent implements OnInit {
   updatePagination(): void {
     const startIndex = this.pageIndex * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.paginatedClients = this.clients.slice(startIndex, endIndex);
+    this.paginatedClients = this.filteredClients.slice(startIndex, endIndex);
   }
 
   onNextPage(): void {
-    const totalPages = Math.ceil(this.clients.length / this.pageSize);
+    const totalPages = Math.ceil(this.filteredClients.length / this.pageSize);
     if (this.pageIndex < totalPages - 1) {
       this.pageIndex++;
       this.updatePagination();

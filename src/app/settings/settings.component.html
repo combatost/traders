@@ -1,46 +1,172 @@
 <app-navigation></app-navigation>
+<section>
+  <div class="settings-container">
+    <h2 class="title">Account Settings</h2>
 
-<div class="settings-container">
-  <h2 class="title">Account Settings</h2>
+    <!-- User Profile Card -->
+    <section class="card user-card">
+      <h3>User Info</h3>
 
-  <div class="card user-card">
-    <h3>User Info</h3>
-    <p><strong>Email:</strong> {{ user?.email }}</p>
-    <p><strong>Full Name:</strong> {{ userData?.fullName || '—' }}</p>
-    <p><strong>Date of Birth:</strong> {{ userData?.birthDate || '—' }}</p>
-  </div>
+      <p><strong>Email:</strong> {{ user?.email || "—" }}</p>
 
-  <div class="card password-card">
-    <h3>Password</h3>
-    <button class="action-btn" (click)="openPasswordChangeForm()" *ngIf="!showPasswordForm">Change Password</button>
-
-    <form *ngIf="showPasswordForm" (ngSubmit)="changePassword()" class="password-form">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>New Password</mat-label>
-        <input matInput [(ngModel)]="newPassword" name="newPassword" type="password" required />
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required />
-      </mat-form-field>
-
-      <div class="form-actions">
-        <button mat-button type="submit" color="primary">Save</button>
-        <button mat-button type="button" (click)="cancelPasswordChange()">Cancel</button>
+      <!-- Full Name -->
+      <div *ngIf="!isEditMode; else editFullName">
+        <p><strong>Full Name:</strong> {{ userData.fullName || "—" }}</p>
       </div>
+      <ng-template #editFullName>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <input matInput [(ngModel)]="userData.fullName" name="fullName" />
+        </mat-form-field>
+      </ng-template>
 
-      <p class="success-message" *ngIf="passwordChangeMessage">{{ passwordChangeMessage }}</p>
-    </form>
+      <!-- Date of Birth -->
+      <div *ngIf="!isEditMode; else editBirthDate">
+        <p>
+          <strong>Date of Birth:</strong>
+          {{
+            userData.birthDate
+              ? (userData.birthDate | date : "mediumDate")
+              : "—"
+          }}
+        </p>
+      </div>
+      <ng-template #editBirthDate>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Date of Birth</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="userData.birthDate"
+            name="birthDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </ng-template>
+
+      <!-- Bio -->
+      <div *ngIf="!isEditMode; else editBio">
+        <p><strong>Bio:</strong> {{ userData.bio || "—" }}</p>
+      </div>
+      <ng-template #editBio>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Bio</mat-label>
+          <textarea
+            matInput
+            rows="4"
+            [(ngModel)]="userData.bio"
+            name="bio"
+            maxlength="300"
+            placeholder="Write a little about yourself..."
+          ></textarea>
+          <mat-hint align="end">{{ userData.bio?.length || 0 }}/300</mat-hint>
+        </mat-form-field>
+      </ng-template>
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button
+          *ngIf="!isEditMode"
+          mat-flat-button
+          color="primary"
+          (click)="enableEdit()"
+        >
+          Edit Profile
+        </button>
+        <button
+          *ngIf="isEditMode"
+          mat-flat-button
+          color="primary"
+          (click)="saveUserData()"
+        >
+          Save Profile
+        </button>
+        <button
+          *ngIf="isEditMode"
+          mat-button
+          color="warn"
+          (click)="cancelEdit()"
+        >
+          Cancel
+        </button>
+      </div>
+    </section>
+
+    <!-- Password Section -->
+    <section class="card password-card">
+      <h3>Password</h3>
+      <button
+        class="action-btn"
+        (click)="openPasswordChangeForm()"
+        *ngIf="!showPasswordForm"
+        aria-label="Change password"
+      >
+        Change Password
+      </button>
+
+      <form
+        *ngIf="showPasswordForm"
+        (ngSubmit)="changePassword()"
+        class="password-form"
+        novalidate
+      >
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>New Password</mat-label>
+          <input
+            matInput
+            [(ngModel)]="newPassword"
+            name="newPassword"
+            type="password"
+            required
+            minlength="8"
+            aria-describedby="passwordHelp"
+          />
+          <mat-hint id="passwordHelp">At least 8 characters</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            minlength="8"
+          />
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit">Save</button>
+          <button mat-button type="button" (click)="cancelPasswordChange()">
+            Cancel
+          </button>
+        </div>
+
+        <p class="success-message" *ngIf="passwordChangeMessage">
+          {{ passwordChangeMessage }}
+        </p>
+      </form>
+    </section>
+
+    <!-- Danger Zone -->
+    <section class="card danger-zone">
+      <h3>Danger Zone</h3>
+      <button mat-flat-button color="warn" (click)="deleteAccount()">
+        Delete Account
+      </button>
+    </section>
+
+    <!-- Logout -->
+    <div class="logout">
+      <button mat-stroked-button color="primary" (click)="logout()">
+        Logout
+      </button>
+    </div>
   </div>
-
-  <div class="card danger-zone">
-    <h3>Danger Zone</h3>
-    <button mat-button color="warn" (click)="deleteAccount()">Delete Account</button>
-  </div>
-
-  <div class="logout">
-    <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
-  </div>
-</div>
-
+</section>
+<app-footer></app-footer>

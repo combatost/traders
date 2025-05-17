@@ -14,15 +14,17 @@ import { HistoryService } from '../services/history.service';
 export class SheintableComponent implements OnInit {
   userForm: FormGroup;
   onselect: any[] = [];
-  pagedData: any[] = [];  // <-- Added pagedData for pagination
+  pagedData: any[] = [];  // current page data
   switch: boolean = false;
   showCancelButton: boolean = false;
   editId: string | null = null;
   userId: string = '';
-  
+  filteredData: any[] = []; // data after filtering & sorting
+  searchTerm: string = '';
   pageIndex = 0;
   pageSize = 5;
   displayedColumns = ['client', 'quantity', 'cost', 'discount', 'delivery', 'shippingCost', 'tax', 'choice', 'profit', 'actions'];
+  editingRowId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -59,14 +61,34 @@ export class SheintableComponent implements OnInit {
         const data = doc.payload.doc.data() as any;
         return { id: doc.payload.doc.id, ...data };
       });
-      this.pageIndex = 0; // Reset page index on new data
-      this.updatePagedData();
+      this.applyFilter(); // Apply filter initially (empty filter = all)
     });
+  }
+
+  applyFilter(): void {
+    const filterValue = this.searchTerm.trim().toLowerCase();
+
+    if (filterValue) {
+      // Separate matched and unmatched to put matched on top
+      const matched = this.onselect.filter(item => item.client.toLowerCase().includes(filterValue));
+      const unmatched = this.onselect.filter(item => !item.client.toLowerCase().includes(filterValue));
+      this.filteredData = [...matched, ...unmatched];
+    } else {
+      this.filteredData = [...this.onselect];
+    }
+
+    this.pageIndex = 0;  // Reset page to first page on filter change
+    this.updatePagedData();
   }
 
   updatePagedData(): void {
     const start = this.pageIndex * this.pageSize;
-    this.pagedData = this.onselect.slice(start, start + this.pageSize);
+    this.pagedData = this.filteredData.slice(start, start + this.pageSize);
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.applyFilter();
   }
 
   nextPage(): void {
@@ -84,7 +106,13 @@ export class SheintableComponent implements OnInit {
   }
 
   maxPageIndex(): number {
-    return Math.floor((this.onselect.length - 1) / this.pageSize);
+    return Math.floor((this.filteredData.length - 1) / this.pageSize);
+  }
+
+  // Returns true if the row's client matches the searchTerm, used for highlighting
+  isMatch(clientName: string): boolean {
+    const filterValue = this.searchTerm.trim().toLowerCase();
+    return filterValue ? clientName.toLowerCase().includes(filterValue) : false;
   }
 
   private saveClientNameIfNotExists(clientName: string): void {
@@ -135,6 +163,7 @@ export class SheintableComponent implements OnInit {
     this.userForm.patchValue(item);
     this.switch = true;
     this.editId = item.id;
+    this.editingRowId = item.id;
     this.showCancelButton = true;
   }
 
@@ -206,12 +235,11 @@ export class SheintableComponent implements OnInit {
   }
 
   calculateProfit(item: any): number {
-    const discountAmount = (item.cost * item.discount) / 100;
-    const afterDiscount = item.cost - discountAmount;
-    const afterShipping = afterDiscount - item.shippingCost;
-    const afterTax = afterShipping - item.tax;
-    const quantityBonus = item.includeQuantityInProfit ? item.quantity * afterTax : 0;
-    return +((item.includeQuantityInProfit ? quantityBonus : afterTax)).toFixed(2);
+    const discountProfit = (item.cost * item.discount) / 100;
+    const afterShipping = discountProfit - (item.shippingCost || 0);
+    const afterTax = afterShipping - (item.tax || 0);
+    const quantityBonus = item.includeQuantityInProfit ? (item.quantity || 0) : 0;
+    return +(afterTax + quantityBonus).toFixed(2);
   }
 
   calculateOverallTotal(): number {
@@ -236,6 +264,7 @@ export class SheintableComponent implements OnInit {
     });
     this.switch = false;
     this.editId = null;
+    this.editingRowId = null;
     this.showCancelButton = false;
   }
 }

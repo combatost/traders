@@ -1,25 +1,31 @@
 <div class="login-container" *ngIf="!isSignedIn">
   <div class="login-illustration">
-    <div class="skeleton-graphic">
-      <img src="../../assets/image/sheintarderlogo.png" alt="Illustration" />
+    <!-- <div class="skeleton-graphic">
+      
+      <img src="../../assets/img/bg.svg" alt="Illustration" />
       <h2>Turn your ideas into reality.</h2>
       <p>Start for free and get attractive offers from the community</p>
-    </div>
+    </div>-->
   </div>
 
   <div class="login-form">
     <div class="form-box">
-      <img class="logo-icon" src="../../assets/image/sheintradermainlogo.png" alt="Logo" />
+      <img class="logo-icon" src="assets/img/logo.png" alt="Logo" />
 
       <div class="divider">
-        {{ isSignup ? 'or sign up with email' : 'or login with email' }}
+        {{ isSignup ? "or sign up with email" : "or login with email" }}
       </div>
 
       <form #authForm="ngForm">
         <div class="form-grid" *ngIf="isSignup">
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" [(ngModel)]="fullName" name="fullName" placeholder="Enter your full name" />
+            <input
+              type="text"
+              [(ngModel)]="fullName"
+              name="fullName"
+              placeholder="Enter your full name"
+            />
           </div>
           <div class="form-group">
             <label>Date of Birth</label>
@@ -28,19 +34,39 @@
         </div>
 
         <label>Email</label>
-        <input type="email" [(ngModel)]="email" name="email" placeholder="Enter your Email" required />
+        <input
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="Enter your Email"
+          required
+        />
 
         <label>Password</label>
         <div class="password-wrapper">
-          <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="Enter your Password" required />
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Enter your Password"
+            required
+          />
           <span class="toggle" (click)="togglePasswordVisibility()">
-            <mat-icon>{{ passwordVisible ? "visibility" : "visibility_off" }}</mat-icon>
+            <mat-icon>{{
+              passwordVisible ? "visibility" : "visibility_off"
+            }}</mat-icon>
           </span>
         </div>
 
         <div *ngIf="isSignup">
           <label>Confirm Password</label>
-          <input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm your Password" required />
+          <input
+            [type]="passwordVisible ? 'text' : 'password'"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm your Password"
+            required
+          />
         </div>
 
         <div class="options-row" *ngIf="!isSignup">
@@ -49,32 +75,44 @@
             <span class="checkbox-custom"></span>
             <label for="remember">Remember Me</label>
           </div>
-          <a *ngIf="showForgotPasswordLink" (click)="onForgotPassword(email)">Forgot Password?</a>
+          <a *ngIf="showForgotPasswordLink" (click)="onForgotPassword(email)"
+            >Forgot Password?</a
+          >
         </div>
 
-        <button class="login-btn" (click)="isSignup ? onSignup(email, password, confirmPassword) : onSignin(email, password)">
+        <button
+          class="login-btn"
+          (click)="
+            isSignup
+              ? onSignup(email, password, confirmPassword)
+              : onSignin(email, password)
+          "
+        >
           {{ isSignup ? "Sign up" : "Login" }}
         </button>
 
         <p class="switch-auth">
           {{ isSignup ? "Already have an account?" : "Not Registered Yet?" }}
-          <a (click)="toggleSignup()">{{ isSignup ? "Login" : "Create an account" }}</a>
+          <a (click)="toggleSignup()">{{
+            isSignup ? "Login" : "Create an account"
+          }}</a>
         </p>
       </form>
-
-      <button class="google-btn" *ngIf="isSignup" (click)="signupWithGoogle()">
-        <i class="fab fa-google icon"></i> Continue with Google
-      </button>
-      
-      <button class="apple-btn" *ngIf="isSignup" (click)="signupWithApple()">
-        <i class="fab fa-apple icon"></i> Continue with Apple
-      </button>
-      
       <div class="loader" *ngIf="isLoading"></div>
-      <div class="message">{{ signupMessage }} {{ message }}</div>
     </div>
   </div>
 </div>
-<app-loader *ngIf="isLoading"></app-loader>
+<app-loader *ngIf="isLoading" [message]="'WELCOME'"></app-loader>
+<div class="alert-container" *ngIf="showSuccess || showError">
+  <app-successful-alert
+    *ngIf="showSuccess"
+    [message]="successMessage"
+  ></app-successful-alert>
 
-<app-navigation *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-navigation>
+  <app-error-alert
+    *ngIf="showError"
+    [message]="errorMessage"
+  ></app-error-alert>
+</div>
+
+<app-sheintable *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-sheintable>

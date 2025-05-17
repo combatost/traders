@@ -1,44 +1,184 @@
 .settings-container
   max-width: 600px
-  margin: 0 auto
+  margin: 3rem auto
   padding: 2rem
-  font-family: 'Roboto', sans-serif
+  font-family: 'Roboto', 'Google Sans', Arial, sans-serif
+  color: #202124
+  background: #f9fafb
+  border-radius: 24px
+  box-shadow: 0 8px 24px rgba(32, 33, 36, 0.08)
 
 .title
-  font-size: 1.8rem
-  font-weight: 500
-  margin-bottom: 2rem
+  font-size: 2.25rem
+  font-weight: 600
+  margin-bottom: 2.5rem
   text-align: center
+  color: #1a73e8
 
 .card
   background: #fff
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05)
-  border-radius: 16px
-  padding: 1.5rem
-  margin-bottom: 1.5rem
+  box-shadow: 0 4px 18px rgba(32, 33, 36, 0.06)
+  border-radius: 20px
+  padding: 2rem 2.5rem
+  margin-bottom: 2rem
   transition: box-shadow 0.3s ease
-
+  cursor: pointer
   &:hover
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 10px 36px rgba(32, 33, 36, 0.12)
 
-.user-card, .password-card, .danger-zone
   h3
-    font-size: 1.2rem
-    margin-bottom: 1rem
+    font-size: 1.4rem
+    font-weight: 600
+    margin-bottom: 1.25rem
+    color: #3c4043
 
-.full-width
-  width: 100%
+  p
+    font-size: 1rem
+    margin: 0.4rem 0
+    color: #5f6368
 
-.form-actions
-  display: flex
-  justify-content: space-between
-  margin-top: 1rem
+.user-card
+  .profile-image-wrapper
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom: 1.5rem
 
-.success-message
-  color: green
-  margin-top: 1rem
-  font-weight: 500
+    .profile-image
+      width: 100px
+      height: 100px
+      object-fit: cover
+      border-radius: 50%
+
+    .profile-placeholder
+      width: 100px
+      height: 100px
+      display: flex
+      justify-content: center
+      align-items: center
+      background: #e4e6eb
+      border-radius: 50%
+      color: #5f6368
+
+.password-card
+  .action-btn
+    background-color: #1a73e8
+    color: #fff
+    border: none
+    border-radius: 12px
+    padding: 0.7rem 1.4rem
+    font-weight: 600
+    cursor: pointer
+    transition: background-color 0.3s ease
+    &:hover
+      background-color: #155ab6
+
+  .password-form
+    margin-top: 1rem
+
+    mat-form-field
+      margin-bottom: 1rem
+
+    .form-actions
+      display: flex
+      justify-content: flex-end
+      gap: 1rem
+      margin-top: 1.5rem
+
+    .success-message
+      color: #188038
+      font-weight: 600
+      margin-top: 1rem
+
+.danger-zone
+  h3
+    color: #d93025
+
+  button
+    background-color: #d93025
+    color: white
+    border-radius: 12px
+    padding: 0.8rem 1.6rem
+    font-weight: 600
+    cursor: pointer
+    transition: background-color 0.3s ease
+    &:hover
+      background-color: #a52714
 
 .logout
   text-align: center
-  margin-top: 2rem
+  margin-top: 3rem
+
+  button
+    font-weight: 600
+    border-radius: 20px
+    padding: 0.7rem 2rem
+    font-size: 1rem
+
+/* Modern, Clean Google 2025 Styles */
+input,
+button,
+textarea,
+select,
+mat-form-field
+  font-family: 'Roboto', 'Google Sans', Arial, sans-serif
+  border-radius: 12px
+  border: 1px solid #dadce0
+  transition: all 0.3s ease
+
+input,
+textarea,
+mat-form-field
+  padding: 0.75rem 1rem
+  font-size: 1rem
+  background: #fff
+  color: #202124
+  outline: none
+  &:focus
+    border-color: #1a73e8
+    box-shadow: 0 0 5px rgba(26, 115, 232, 0.4)
+
+button
+  background-color: #1a73e8
+  color: white
+  border: none
+  padding: 0.8rem 1.6rem
+  font-weight: 600
+  cursor: pointer
+  transition: all 0.3s ease
+  border-radius: 12px
+  &:hover
+    background-color: #155ab6
+
+button[disabled]
+  background-color: #d1e3f1
+  cursor: not-allowed
+
+mat-form-field
+  margin-bottom: 1.5rem
+  width: 100%
+
+mat-hint
+  color: #5f6368
+  font-size: 0.9rem
+  font-weight: 400
+
+.profile-image-wrapper
+  position: relative
+  cursor: pointer
+  &:hover
+    .profile-image,
+    .profile-placeholder
+      opacity: 0.7
+
+.actions
+  display: flex
+  justify-content: center
+  gap: 1rem
+  margin-top: 1.5rem
+
+.form-actions
+  display: flex
+  justify-content: flex-end
+  gap: 1rem
+  margin-top: 1.5rem

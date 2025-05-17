@@ -11,6 +11,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'; // Add MatButtonToggleModule
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; // needed for native date adapter
+
+
 
 @NgModule({
   exports: [
@@ -25,7 +30,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSlideToggleModule,
     MatButtonToggleModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule // Add MatButtonToggleModule to the exports array
+    MatProgressSpinnerModule,
+    MatCheckboxModule,
+    MatButtonModule,
+     MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatFormFieldModule,
   ]
 })
 export class MaterialModule {}

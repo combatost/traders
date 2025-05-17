@@ -6,117 +6,176 @@ $light-bg: #f0f4f8
 $white: #ffffff
 $text-dark: #1f1f1f
 $card-radius: 14px
-$shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
-$transition: all 0.3s ease
+$shadow: 0 12px 24px rgba(26, 115, 232, 0.15)
+$transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1)
 $gap: 1.5rem
 
 // Container for history section
 .history-container
   width: 90%
-  margin: 2rem auto
+  margin: 3rem auto
   background: $white
   border-radius: $card-radius
   box-shadow: $shadow
-  padding: 1.5rem 2rem
+  padding: 2rem 3rem
   transition: $transition
 
   h2
     color: $primary-blue
-    margin-bottom: 1rem
-    font-weight: 600
+    margin-bottom: 1.5rem
+    font-weight: 700
+    font-size: 2rem
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    letter-spacing: 0.05em
 
 // Table styling
 table
   width: 100%
-  border-collapse: collapse
-  border-radius: $card-radius
-  overflow: hidden
-  box-shadow: $shadow
-  background: $white
+  border-collapse: separate
+  border-spacing: 0 0.6rem
+  background: transparent
 
   thead
-    background: lighten($primary-blue, 45%)
+    background: lighten($primary-blue, 50%)
+    border-radius: $card-radius $card-radius 0 0
+
     th
       color: $blue-dark
-      font-weight: 600
-      padding: 1rem
+      font-weight: 700
+      padding: 1.2rem 1rem
       text-align: left
-      border-bottom: 2px solid $accent-blue
+      border-bottom: 3px solid $accent-blue
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+      text-transform: uppercase
+      letter-spacing: 0.07em
 
   tbody
     tr
-      transition: background-color 0.3s ease
+      background: $white
+      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.1)
+      border-radius: $card-radius
+      transition: background-color 0.3s ease, box-shadow 0.3s ease
+      cursor: pointer
 
       &:hover
-        background-color: lighten($accent-blue, 80%)
+        background-color: lighten($accent-blue, 85%)
+        box-shadow: 0 6px 18px rgba(66, 133, 244, 0.2)
 
     td
-      padding: 1rem
+      padding: 1rem 1rem
       color: $text-dark
-      border-bottom: 1px solid #e0e0e0
+      border-bottom: none
+      vertical-align: middle
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+// Checkbox column alignment
+td:first-child, th:first-child
+  width: 48px
+  text-align: center
 
 // Action button inside table
-.action-cell button.btn-clear
+.action-cell button.btn-clear,
+button[mat-icon-button]
   background: transparent
   border: none
-  font-size: 1.2rem
+  font-size: 1.4rem
   cursor: pointer
   color: $accent-blue
   transition: color 0.3s ease
 
   &:hover
-    color: darken($accent-blue, 15%)
+    color: darken($accent-blue, 20%)
+
+// Bulk Delete button
+.bulk-delete-btn
+  margin-bottom: 1.5rem
+  font-weight: 600
+  border-radius: 8px
+  box-shadow: 0 6px 14px rgba(66, 133, 244, 0.2)
+
+  &:disabled
+    background-color: lighten($accent-blue, 60%)
+    cursor: not-allowed
+    opacity: 0.7
 
 // Pagination buttons container
 .pagination-buttons
   display: flex
   justify-content: center
-  gap: 1rem
-  margin-top: 1.5rem
+  gap: $gap
+  margin-top: 2rem
 
   button
     background-color: $accent-blue
     color: $white
     border: none
-    padding: 0.5rem 1.2rem
-    border-radius: 6px
+    padding: 0.65rem 1.5rem
+    border-radius: 8px
     font-weight: 600
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
     cursor: pointer
+    box-shadow: 0 5px 12px rgba(66, 133, 244, 0.25)
     transition: $transition
 
     &:disabled
-      background-color: lighten($accent-blue, 40%)
+      background-color: lighten($accent-blue, 50%)
       cursor: not-allowed
-      opacity: 0.6
+      opacity: 0.65
+      box-shadow: none
 
     &:hover:not(:disabled)
-      background-color: darken($accent-blue, 10%)
+      background-color: darken($accent-blue, 15%)
+      box-shadow: 0 7px 20px rgba(66, 133, 244, 0.35)
 
 // Empty state styling
 .empty-state
   text-align: center
-  margin-top: 4rem
   color: $blue-dark
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 1.25rem
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 
   &__icon
-    font-size: 3rem
-    margin-bottom: 1rem
+    font-size: 5rem
+    opacity: 0.35
+    color: $accent-blue
+    transition: $transition
 
   &__text
-    font-weight: 500
-    font-size: 1.1rem
+    font-weight: 600
+    font-size: 1.25rem
+    color: $text-dark
+
+// Center entire empty state + pagination vertically and horizontally
+section
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  min-height: 80vh
+  gap: 2.5rem
+  padding: 2rem 1rem
 
 // Responsive adjustments
 @media (max-width: 768px)
   .history-container
     width: 95%
-    padding: 1rem
+    padding: 1.2rem 1.5rem
 
   table
-    font-size: 0.85rem
+    font-size: 0.9rem
+
+    thead th
+      padding: 1rem 0.5rem
+
+    tbody td
+      padding: 0.8rem 0.5rem
 
   .pagination-buttons
     flex-direction: column
-    gap: 0.8rem
+    gap: 1rem
+
     button
       width: 100%

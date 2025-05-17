@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,90 +12,145 @@ export class LoginComponent {
   isSignedIn = false;
   isSignup = false;
   isLoading = false;
-  signupMessage = '';
-  message = '';
   passwordVisible = false;
   showForgotPasswordLink = true;
+
+  // Alert state
+  showSuccess = false;
+  showError = false;
+  successMessage = '';
+  errorMessage = '';
+
+  // Form fields
   email = '';
   password = '';
   confirmPassword = '';
   fullName = '';
   birthDate = '';
 
-  constructor(public firebaseServices: FirebaseService, private auth: AngularFireAuth) {}
+  private passwordResetIntervalId: any = null;
+
+  constructor(
+    public firebaseServices: FirebaseService,
+    private auth: AngularFireAuth,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.auth.authState.subscribe(user => {
       this.isSignedIn = !!user;
+      if (this.isSignedIn) {
+        this.router.navigate(['/sheintable']);
+      }
     });
   }
 
   async onSignup(email: string, password: string, confirmPassword: string) {
+    this.resetAlerts();
+
     if (!this.isValidEmail(email)) {
-      this.signupMessage = 'Please enter a valid email address.';
-      return;
+      return this.showErrorAlert('Please enter a valid email address.');
     }
 
     if (password !== confirmPassword) {
-      this.signupMessage = 'Passwords do not match.';
-      return;
+      return this.showErrorAlert('Passwords do not match.');
     }
 
     if (!this.fullName || !this.birthDate) {
-      this.signupMessage = 'Please fill in all the fields.';
-      return;
+      return this.showErrorAlert('Please fill in all the fields.');
     }
 
     try {
       this.isLoading = true;
-      // Pass fullName and birthDate along with email and password
-      await this.firebaseServices.signup(email, password, this.fullName, this.birthDate);  
+      await this.firebaseServices.signup(email, password, this.fullName, this.birthDate);
       this.isLoading = false;
 
       if (this.firebaseServices.isLoggedIn) {
         this.isSignedIn = true;
-        this.signupMessage = 'Account created successfully!';
-        setTimeout(() => (this.signupMessage = ''), 3000);
+        this.router.navigate(['/sheintable']);
+        this.showSuccessAlert('Account created successfully!');
       } else {
-        this.signupMessage = 'Signup failed. Please try again.';
+        this.showErrorAlert('Signup failed. Please try again.');
       }
     } catch (error: any) {
       this.isLoading = false;
       if (error.code === 'auth/email-already-in-use') {
-        this.signupMessage = 'Email address is already in use.';
+        this.showErrorAlert('Email address is already in use.');
       } else {
-        this.signupMessage = 'Error during signup.';
+        this.showErrorAlert('Error during signup.');
       }
     }
   }
 
   async onSignin(email: string, password: string) {
+    this.resetAlerts();
+
     if (!this.isValidEmail(email)) {
-      this.signupMessage = 'Please enter a valid email address.';
-      return;
+      return this.showErrorAlert('Please enter a valid email address.');
     }
 
     try {
       this.isLoading = true;
       await this.firebaseServices.signin(email, password);
 
-      setTimeout(() => {
-        this.isLoading = false;
-        this.isSignedIn = this.firebaseServices.isLoggedIn;
-        if (!this.isSignedIn) {
-          this.signupMessage = 'Login failed. Please try again.';
-        }
-      }, 3000);
+      // Remove arbitrary 3 sec delay, react immediately when auth state changes
+      this.isSignedIn = this.firebaseServices.isLoggedIn;
+      this.isLoading = false;
+
+      if (this.isSignedIn) {
+        this.router.navigate(['/sheintable']);
+      } else {
+        this.showErrorAlert('Login failed. Please try again.');
+      }
     } catch {
       this.isLoading = false;
-      this.signupMessage = 'Please check your email or password';
-      setTimeout(() => (this.signupMessage = ''), 2000);
+      this.showErrorAlert('Please check your email or password.');
     }
+  }
+
+  onForgotPassword(email: string) {
+    this.resetAlerts();
+
+    if (!email) {
+      return this.showErrorAlert('Please enter your email address first.');
+    }
+
+    const lastTime = +localStorage.getItem('passwordResetLastRequestTime')!;
+    const now = Date.now();
+
+    if (lastTime && now - lastTime < 60000) {
+      this.startCountdown(lastTime);
+    } else {
+      this.auth.sendPasswordResetEmail(email).then(() => {
+        localStorage.setItem('passwordResetLastRequestTime', now.toString());
+        this.showSuccessAlert('Password reset email sent successfully');
+        this.startCountdown(now);
+      }).catch(error => {
+        this.showErrorAlert(`Error sending reset email: ${error.message}`);
+      });
+    }
+  }
+
+  private startCountdown(start: number) {
+    if (this.passwordResetIntervalId) clearInterval(this.passwordResetIntervalId);
+
+    this.passwordResetIntervalId = setInterval(() => {
+      const now = Date.now();
+      const secondsLeft = Math.ceil((60000 - (now - start)) / 1000);
+      if (secondsLeft > 0) {
+        this.showErrorAlert(`Please wait ${secondsLeft} seconds before retrying.`);
+      } else {
+        clearInterval(this.passwordResetIntervalId);
+        this.passwordResetIntervalId = null;
+        this.resetAlerts();
+        localStorage.removeItem('passwordResetLastRequestTime');
+      }
+    }, 1000);
   }
 
   toggleSignup() {
     this.isSignup = !this.isSignup;
-    this.signupMessage = '';
+    this.resetAlerts();
     this.passwordVisible = false;
   }
 
@@ -102,58 +158,36 @@ export class LoginComponent {
     this.passwordVisible = !this.passwordVisible;
   }
 
-  isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  }
-
-  onForgotPassword(email: string) {
-    if (!email) {
-      this.message = 'Please enter your email address first.';
-      return;
-    }
-
-    const lastTime = +localStorage.getItem('passwordResetLastRequestTime')!;
-    const now = Date.now();
-
-    if (lastTime && now - lastTime < 60000) {
-      this.displayCountdown(lastTime);
-    } else {
-      this.auth.sendPasswordResetEmail(email).then(() => {
-        localStorage.setItem('passwordResetLastRequestTime', now.toString());
-        this.message = 'Password reset email sent successfully';
-      }).catch(error => {
-        this.message = `Error sending reset email: ${error.message}`;
-      });
-    }
-  }
-
-  private displayCountdown(start: number) {
-    const interval = setInterval(() => {
-      const now = Date.now();
-      const secondsLeft = Math.ceil((60000 - (now - start)) / 1000);
-      if (secondsLeft > 0) {
-        this.message = `Please wait ${secondsLeft} seconds before retrying.`;
-      } else {
-        clearInterval(interval);
-        this.message = '';
-        localStorage.removeItem('passwordResetLastRequestTime');
-      }
-    }, 1000);
-  }
-
   handleLogout() {
     this.firebaseServices.logout();
     this.isSignedIn = false;
   }
 
-  signupWithGoogle() {
-    // TODO: Call FirebaseService for Google signup
-    alert('Google Sign Up not implemented yet.');
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
-  signupWithApple() {
-    // TODO: Implement Apple Sign-In if needed
-    alert('Apple Sign Up not implemented yet.');
+  private showSuccessAlert(message: string) {
+    this.successMessage = message;
+    this.showSuccess = true;
+    setTimeout(() => (this.showSuccess = false), 3000);
+  }
+
+  private showErrorAlert(message: string) {
+    this.errorMessage = message;
+    this.showError = true;
+    setTimeout(() => (this.showError = false), 3000);
+  }
+
+  private resetAlerts() {
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.showSuccess = false;
+    this.showError = false;
+    if (this.passwordResetIntervalId) {
+      clearInterval(this.passwordResetIntervalId);
+      this.passwordResetIntervalId = null;
+    }
   }
 }

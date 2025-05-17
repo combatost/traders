@@ -1,7 +1,4 @@
-<!-- app.component.html -->
-<div *ngIf="authService.loading$ | async" class="loader-overlay">
-    <mat-spinner diameter="50" strokeWidth="4" color="accent"></mat-spinner>
-  </div>
-  
+
+  <app-loader *ngIf="authService.loading$ | async" ></app-loader>
   <router-outlet *ngIf="!(authService.loading$ | async)"></router-outlet>
   

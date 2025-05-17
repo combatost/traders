@@ -4,7 +4,9 @@
   <mat-card class="hero-card mat-elevation-z8">
     <div class="hero-content">
       <h1 class="title">We’re Redefining E-Commerce</h1>
-      <p class="subtitle">A futuristic team pushing boundaries since 2023. Our mission: simplicity, speed, and scale.</p>
+      <p class="subtitle">
+        A futuristic team pushing boundaries since 2023. Our mission: simplicity, speed, and scale.
+      </p>
     </div>
   </mat-card>
 
@@ -16,16 +18,50 @@
     </mat-card>
   </div>
 
+  <div class="video-header">
+    <ng-container *ngIf="videoUrl; else loading">
+      <video
+        #bgVideo
+        autoplay
+        muted
+        loop
+        class="bg-video"
+        [src]="videoUrl"
+        (click)="toggleVideoPlay()"
+      ></video>
+
+      <div class="overlay">
+        <h1>We’re Redefining E-Commerce</h1>
+        <p>A futuristic team pushing boundaries since 2023.</p>
+      </div>
+
+   <!-- <div class="play-button" (click)="toggleVideoPlay()">
+        <svg *ngIf="!isVideoPlaying" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <svg *ngIf="isVideoPlaying" viewBox="0 0 24 24">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+        </svg>
+      </div>-->  
+    </ng-container>
+
+    <ng-template #loading>
+      <p>Loading video...</p>
+    </ng-template>
+  </div>
+
   <mat-card class="vision-card mat-elevation-z4">
     <h2>Our Vision</h2>
-    <p>We dream beyond trends — building technology that powers businesses globally with unmatched efficiency and trust.</p>
+    <p>
+      We dream beyond trends — building technology that powers businesses globally with unmatched efficiency and trust.
+    </p>
   </mat-card>
 
   <mat-card class="team-card mat-elevation-z4">
     <h2>Meet the Team</h2>
     <div class="team-grid">
       <div class="team-member" *ngFor="let member of team">
-        <img [src]="member.photo" alt="{{ member.name }}" class="team-photo"/>
+        <img [src]="member.photo" alt="{{ member.name }}" class="team-photo" />
         <h4>{{ member.name }}</h4>
         <p>{{ member.role }}</p>
       </div>
@@ -33,19 +69,4 @@
   </mat-card>
 </section>
 
-
-<!-- Chatbot Floating Button -->
-<div class="chatbot-float-btn" (click)="toggleChat()">
-  <mat-icon>chat_bubble</mat-icon>
-</div>
-
-<!-- Chatbot UI -->
-<div *ngIf="isChatVisible" class="chat-container">
-  <div class="messages">
-    <div *ngFor="let message of messages" class="message">
-      <div *ngIf="message.fromUser" class="user-message">{{ message.text }}</div>
-      <div *ngIf="!message.fromUser" class="bot-message">{{ message.text }}</div>
-    </div>
-  </div>
-  <input [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type your message..." />
-</div>
+<app-footer></app-footer>

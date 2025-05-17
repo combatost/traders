@@ -1,6 +1,19 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';  // Import Router
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { VideoService } from '../services/environment/video.service';
+
+interface Stat {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface TeamMember {
+  name: string;
+  role: string;
+  photo: string;
+}
 
 @Component({
   selector: 'app-aboutme',
@@ -11,56 +24,83 @@ import { Router } from '@angular/router';  // Import Router
       state('in', style({ opacity: 1 })),
       transition('void => *', [
         style({ opacity: 0 }),
-        animate(300)  // Adjust the duration (in milliseconds)
+        animate(300)
       ]),
-      transition('out => void', [
-        animate(300, style({ opacity: 1 }))  // Adjust the duration (in milliseconds)
+      transition('* => void', [
+        animate(300, style({ opacity: 0 }))
       ])
     ])
+    
   ]
 })
-export class AboutmeComponent {
-  stats = [
+export class AboutmeComponent implements OnInit {
+
+  @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
+
+  private _videoUrl: string | null = null;
+
+  readonly stats: Stat[] = [
     { icon: 'rocket_launch', title: 'Fast Deployments', description: 'Live in minutes, scale in hours.' },
     { icon: 'verified_user', title: 'Secure Systems', description: 'Your data is protected with bank-grade encryption.' },
     { icon: 'support_agent', title: '24/7 Support', description: 'We’ve always got your back.' },
     { icon: 'insights', title: 'AI-Driven Insights', description: 'Smarter decisions with every click.' }
   ];
 
-  team = [
-    { name: 'Ayman', role: 'Founder & Visionary', photo: 'assets/team/ayman.jpg' },
-    { name: 'Sara', role: 'UI/UX Designer', photo: 'assets/team/sara.jpg' },
-    { name: 'Ziad', role: 'Full Stack Developer', photo: 'assets/team/ziad.jpg' },
-    { name: 'Layla', role: 'Marketing Head', photo: 'assets/team/layla.jpg' }
+  readonly team: TeamMember[] = [
+    { name: 'Ali Amhaz', role: 'Main Owner', photo: 'assets/image/user-icon.png' },
+    { name: 'Sara', role: 'UI/UX Designer', photo: 'assets/image/user-icon.png' },
+    { name: 'Ziad', role: 'Full Stack Developer', photo: 'assets/image/user-icon.png' },
+    { name: 'Layla', role: 'Marketing Head', photo: 'assets/image/user-icon.png' }
   ];
-  isChatVisible = false;
-  messages = [
-    { text: 'Hello, how can I assist you today?', fromUser: false }
-  ];
-  userMessage = '';
 
-  toggleChat() {
-    this.isChatVisible = !this.isChatVisible;
+  isVideoPlaying = true;
+
+  constructor(
+    private readonly router: Router,
+    private readonly videoService: VideoService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadFuturisticVideo();
   }
 
-  sendMessage() {
-    if (this.userMessage.trim()) {
-      this.messages.push({ text: this.userMessage, fromUser: true });
-      this.userMessage = '';
+  get videoUrl(): string | null {
+    return this._videoUrl;
+  }
 
-      setTimeout(() => {
-        this.messages.push({ text: 'I am your friendly bot. How can I help?', fromUser: false });
-      }, 1000);
+  private loadFuturisticVideo(): void {
+    this.videoService.getFuturisticVideo().subscribe({
+      next: (response) => {
+        const video = response.videos?.[0];
+        if (!video) {
+          console.warn('No videos found in response');
+          this._videoUrl = null;
+          return;
+        }
+
+        const mp4Video = video.video_files.find((file: any) =>
+          file.file_type === 'video/mp4' && file.quality === 'sd'
+        );
+
+        this._videoUrl = mp4Video?.link || video.video_files?.[0]?.link || null;
+      },
+      error: (err) => {
+        console.error('Failed to load video from API', err);
+        this._videoUrl = null;
+      }
+    });
+  }
+
+  toggleVideoPlay(): void {
+    if (!this.bgVideo) return;
+    const videoEl = this.bgVideo.nativeElement;
+
+    if (videoEl.paused) {
+      videoEl.play();
+      this.isVideoPlaying = true;
+    } else {
+      videoEl.pause();
+      this.isVideoPlaying = false;
     }
-  }
-  hideContent = false;
-  constructor(private router: Router) {} // Inject Router
-
-  toggleVisibility() {
-    this.hideContent = !this.hideContent;
-  }
-
-  navigateToAbout(): void {
-    this.router.navigate(['aboutme']);  // Navigate to AboutMe component
   }
 }

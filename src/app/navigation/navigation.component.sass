@@ -1,13 +1,10 @@
-// _variables.sass 
 $primary-color: #1f1f1f
-
 $accent-color: #1a73e8
 $bg-light: #f8f9fa
 $bg-surface: #ffffff
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
 $transition: 0.3s ease
 $radius: 12px
-
 
 .navbar
   display: flex
@@ -28,10 +25,12 @@ $radius: 12px
     transform: translateY(-100%)
 
   &__brand
-    font-size: 1.6rem
-    font-weight: 600
-    color: $primary-color
-    cursor: pointer
+    font-family: 'Montserrat', sans-serif
+    font-weight: 700
+    font-size: 2rem
+    color: #FF660
+    text-transform: uppercase
+    letter-spacing: .1em
     transition: color $transition
 
     &:hover
@@ -54,8 +53,10 @@ $radius: 12px
     align-items: center
     gap: 1.5rem
     transition: max-height $transition
+    position: relative
 
     a
+      position: relative
       text-decoration: none
       color: $primary-color
       font-size: 1rem
@@ -64,22 +65,17 @@ $radius: 12px
       border-radius: $radius
       transition: background $transition, color $transition
 
+      // Hover and active styling - NO underline border line
+      &:hover,
       &.active
         background-color: rgba(26, 115, 232, 0.1)
         color: $accent-color
+        cursor: pointer
 
-      &.active::after
-        content: ''
-        position: absolute
-        bottom: -2px
-        left: 0
-        width: 100%
-        height: 2px
-        background-color: $accent-color
-
-      &:hover
-        background-color: rgba(26, 115, 232, 0.05)
-        color: $accent-color
+      // Remove underline border pseudo elements completely
+      &.active::after,
+      &:hover::after
+        content: none !important
 
     &.open
       display: flex
@@ -165,10 +161,8 @@ $radius: 12px
     color: $primary-color
     transition: background $transition, color $transition
 
-    &:hover
-      background-color: rgba(26, 115, 232, 0.05)
-      color: $accent-color
-
+    // Hover and active states without underline border
+    &:hover,
     &.active
       background-color: rgba(26, 115, 232, 0.1)
       color: $accent-color

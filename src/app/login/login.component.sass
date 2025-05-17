@@ -1,37 +1,45 @@
 .login-container
   display: flex
+  flex-direction: row
   height: 100vh
   background: linear-gradient(to bottom right, #f3f6f9, #eaf0f6)
   font-family: 'Inter', sans-serif
-  font-weight: 400 // Default weight for the body text
-  color: #333 // Default text color
+  font-weight: 400
+  color: #333
+  overflow: hidden
 
   .login-illustration
     flex: 1
-    background: linear-gradient(to bottom right, #a7c6ed, #ffeedf)
+    background-image: url('../../assets/img/sheinbg.png')
+    background-repeat: no-repeat
+    background-size: cover
     display: flex
     justify-content: center
     align-items: center
-    padding: 2rem
+    padding: 5rem
+    min-height: 280px
+    animation: slideInLeft 0.8s ease-out both
 
     .skeleton-graphic
       text-align: center
 
       img
-        max-width: 280px
+        max-width: 300px
         margin-bottom: 1rem
+        animation: float 3s ease-in-out infinite
 
       h2
         font-size: 1.7rem
         font-weight: 600
-        color: #4c126d
+        color: white
         margin-bottom: 0.5rem
-        font-family: 'Inter', sans-serif // Specific font style for the heading
+        font-family: 'Inter', sans-serif
+        animation: fadeIn 1s ease-in-out both
 
       p
-        color: #555
+        color: #eaf0f6
         font-size: 0.95rem
-        font-family: 'Inter', sans-serif // Ensures consistency in text styling
+        font-family: 'Inter', sans-serif
 
   .login-form
     flex: 1
@@ -39,11 +47,12 @@
     justify-content: center
     align-items: center
     padding: 2rem
+    animation: slideInRight 0.8s ease-out both
 
     .form-box
       width: 100%
       max-width: 360px
-      background: #ffffff
+      background: #F5F8FF
       padding: 2rem
       border-radius: 18px
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08)
@@ -88,6 +97,8 @@
         display: grid
         grid-template-columns: 1fr 1fr
         gap: 1rem
+       
+
 
       .password-wrapper
         position: relative
@@ -156,18 +167,18 @@
       font-size: 1.5rem
 
   .google-btn
-    background-color: #4285F4 // Google blue
+    background-color: #4285F4
     color: white
 
     .icon
-      content: "\e88e" // Material Icon for Google
+      content: "\e88e"
 
   .apple-btn
-    background-color: #000000 // Apple black
+    background-color: #000000
     color: white
 
     .icon
-      content: "\e8f6" // Material Icon for Apple
+      content: "\e8f6"
 
   .loader,
   .message
@@ -212,10 +223,90 @@
         font-family: 'Inter', sans-serif
 
     a
-      color: #506eec
+      color:#506eec
       text-decoration: none
       font-weight: 500
       font-family: 'Inter', sans-serif
 
       &:hover
         text-decoration: underline
+
+// Responsive layout
+@media (max-width: 768px)
+  .login-container
+    flex-direction: column
+
+    .login-illustration
+      order: 2
+      height: 200px
+      background-position: center top
+      background-size: cover
+      animation: slideInBottom 0.8s ease-out both
+
+    .login-form
+      order: 1
+      padding: 1.5rem
+      animation: slideInTop 0.8s ease-out both
+
+      .form-box
+        max-width: 90%
+        padding: 1.5rem
+
+// Animations
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+@keyframes slideInRight
+  from
+    transform: translateX(100px)
+    opacity: 0
+  to
+    transform: translateX(0)
+    opacity: 1
+
+@keyframes slideInLeft
+  from
+    transform: translateX(-100px)
+    opacity: 0
+  to
+    transform: translateX(0)
+    opacity: 1
+
+@keyframes slideInTop
+  from
+    transform: translateY(-40px)
+    opacity: 0
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes slideInBottom
+  from
+    transform: translateY(40px)
+    opacity: 0
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@keyframes float
+  0%
+    transform: translateY(0)
+  50%
+    transform: translateY(-10px)
+  100%
+    transform: translateY(0)
+.alert-container
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  z-index: 1000
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 10px

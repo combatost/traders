@@ -1,0 +1,37 @@
+<footer class="google-style-footer soft-footer">
+  <div class="footer-container">
+    <div class="footer-top">
+      <span class="footer-brand">{{ translations[currentLang].brand }}</span>
+
+      <label for="language-select" class="sr-only">{{ translations[currentLang].languageLabel }}</label>
+      <select id="language-select" class="language-select" (change)="onLanguageChange($event)">
+        <option value="en" [selected]="currentLang === 'en'">English</option>
+        <option value="ar" [selected]="currentLang === 'ar'">العربية</option>
+      </select>
+    </div>
+
+    <nav class="footer-nav">
+      <a 
+        (click)="navigate('/')"
+        [class.active]="currentSection === 'home'"
+        href="javascript:void(0)"
+      >{{ translations[currentLang].home }}</a>
+
+      <a 
+        (click)="navigate('/aboutme')"
+        [class.active]="currentSection === 'about'"
+        href="javascript:void(0)"
+      >{{ translations[currentLang].about }}</a>
+
+      <a 
+        (click)="navigate('/settings')"
+        [class.active]="currentSection === 'settings'"
+        href="javascript:void(0)"
+      >{{ translations[currentLang].settings }}</a>
+    </nav>
+
+    <div class="footer-bottom">
+      <span>{{ translations[currentLang].copyright }}</span>
+    </div>
+  </div>
+</footer>
