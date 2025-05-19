@@ -27,6 +27,8 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
   lastScrollTop = 0;
   isDropdownOpen = false;
   isLoading = false;
+  isClientsDropdownOpen = false
+
 
 
   private routerSubscription!: Subscription;
@@ -91,6 +93,9 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
   navigateToHistory(): void {
     this.router.navigate(['/history']);
   }
+  navigateToList(): void {
+    this.router.navigate(['/clients']);
+  }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -107,6 +112,11 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
   }, 1000); // Optional delay for visual feedback
 }
 
+toggleClientsDropdown() {
+  this.isClientsDropdownOpen = !this.isClientsDropdownOpen
+  // close other dropdowns if needed
+  if (this.isClientsDropdownOpen) this.isDropdownOpen = false
+}
 
   toggleMenu(): void {
     this.isNavbarOpen = !this.isNavbarOpen;

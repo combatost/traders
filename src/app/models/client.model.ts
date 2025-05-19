@@ -6,5 +6,7 @@ export interface Client {
   location: string;         // Client's city or area
   address: string;          // Primary address
   address2: string;         // Additional address details
-  orderId: string;          // Linked order ID
+  orderId: string;   
+  images?: string[];          // <-- add this line
+  timestamp?: Date;       // Linked order ID
 }

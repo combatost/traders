@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Client } from '../models/client.model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client',
@@ -21,12 +22,14 @@ export class ClientComponent implements OnInit {
   pageIndex: number = 0;
   userId: string = '';
   searchQuery: string = '';
+  isShowed: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router,
   ) {
     this.userForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -82,6 +85,7 @@ export class ClientComponent implements OnInit {
       address: client.address,
       address2: client.address2
     });
+    this.isShowed = true;  // Show the form
   }
 
   onSubmit(): void {
@@ -102,8 +106,14 @@ export class ClientComponent implements OnInit {
         this.userForm.reset();
       }).catch(err => console.error('Error adding client:', err));
     }
-  }
+    this.isShowed = false;  // Hide the form
 
+  }
+  cancelEdit(): void {
+    this.isShowed = false;  // Hide the form
+    this.selectedClient = null;
+    this.userForm.reset();
+  }
   onDelete(clientId: string): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '300px',
@@ -139,4 +149,11 @@ export class ClientComponent implements OnInit {
       this.updatePagination();
     }
   }
+  openClientDetails(clientId: string) {
+    console.log('Navigating to client details:', clientId);
+    this.router.navigate(['/client-details', clientId]);
+  }
+
+
+
 }

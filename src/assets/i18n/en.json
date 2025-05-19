@@ -160,5 +160,9 @@
   },
    "HISTORY": {
     "DELETE_SELECTED": "Delete Selected"
+  },
+  "form2": {
+    "includeProfit": "Include Quantity in Profit",
+    "includeProfitExplanation": "When enabled, the profit calculation will take the quantity into account, providing a more accurate total profit."
   }
 }

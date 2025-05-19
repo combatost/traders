@@ -1,87 +1,110 @@
 <div class="login-container" *ngIf="!isSignedIn">
-  <div class="login-illustration">
-    <!-- <div class="skeleton-graphic">
-      
-      <img src="../../assets/img/bg.svg" alt="Illustration" />
-      <h2>Turn your ideas into reality.</h2>
-      <p>Start for free and get attractive offers from the community</p>
-    </div>-->
-  </div>
+  <div class="login-illustration"></div>
 
   <div class="login-form">
-    <div class="form-box">
+    <div class="form-box mat-elevation-z8">
       <img class="logo-icon" src="assets/img/logo.png" alt="Logo" />
+
+      <h3>{{ isSignup ? "Create an Account" : "Welcome Back" }}</h3>
+      <p class="sub-text">
+        {{ isSignup ? "Sign up to get started" : "Login to continue" }}
+      </p>
 
       <div class="divider">
         {{ isSignup ? "or sign up with email" : "or login with email" }}
       </div>
 
-      <form #authForm="ngForm">
+      <form #authForm="ngForm" autocomplete="off">
         <div class="form-grid" *ngIf="isSignup">
-          <div class="form-group">
-            <label>Full Name</label>
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
             <input
-              type="text"
+              matInput
               [(ngModel)]="fullName"
               name="fullName"
-              placeholder="Enter your full name"
+              placeholder="John Doe"
             />
-          </div>
-          <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="date" [(ngModel)]="birthDate" name="birthDate" />
-          </div>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Date of Birth</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [(ngModel)]="birthDate"
+              name="birthDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
         </div>
 
-        <label>Email</label>
-        <input
-          type="email"
-          [(ngModel)]="email"
-          name="email"
-          placeholder="Enter your Email"
-          required
-        />
-
-        <label>Password</label>
-        <div class="password-wrapper">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
           <input
+            matInput
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
             [type]="passwordVisible ? 'text' : 'password'"
             [(ngModel)]="password"
             name="password"
-            placeholder="Enter your Password"
             required
           />
-          <span class="toggle" (click)="togglePasswordVisibility()">
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordVisibility()"
+            type="button"
+          >
             <mat-icon>{{
               passwordVisible ? "visibility" : "visibility_off"
             }}</mat-icon>
-          </span>
-        </div>
+          </button>
+        </mat-form-field>
 
-        <div *ngIf="isSignup">
-          <label>Confirm Password</label>
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          *ngIf="isSignup"
+        >
+          <mat-label>Confirm Password</mat-label>
           <input
+            matInput
             [type]="passwordVisible ? 'text' : 'password'"
             [(ngModel)]="confirmPassword"
             name="confirmPassword"
-            placeholder="Confirm your Password"
             required
           />
-        </div>
+        </mat-form-field>
 
         <div class="options-row" *ngIf="!isSignup">
-          <div class="remember-me">
-            <input type="checkbox" id="remember" />
-            <span class="checkbox-custom"></span>
-            <label for="remember">Remember Me</label>
-          </div>
-          <a *ngIf="showForgotPasswordLink" (click)="onForgotPassword(email)"
-            >Forgot Password?</a
+          <mat-checkbox>Remember Me</mat-checkbox>
+          <a
+            class="forgot"
+            *ngIf="showForgotPasswordLink"
+            (click)="onForgotPassword(email)"
           >
+            Forgot Password?
+          </a>
         </div>
 
         <button
+          mat-flat-button
+          color="primary"
           class="login-btn"
+          [disabled]="isLoading"
           (click)="
             isSignup
               ? onSignup(email, password, confirmPassword)
@@ -98,6 +121,7 @@
           }}</a>
         </p>
       </form>
+
       <div class="loader" *ngIf="isLoading"></div>
     </div>
   </div>
@@ -109,10 +133,7 @@
     [message]="successMessage"
   ></app-successful-alert>
 
-  <app-error-alert
-    *ngIf="showError"
-    [message]="errorMessage"
-  ></app-error-alert>
+  <app-error-alert *ngIf="showError" [message]="errorMessage"></app-error-alert>
 </div>
 
 <app-sheintable *ngIf="isSignedIn" (isLogout)="handleLogout()"></app-sheintable>

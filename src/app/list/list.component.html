@@ -1,0 +1,28 @@
+<app-navigation></app-navigation>
+
+<section class="client-list-container">
+  <h2 class="section-title">Clients</h2>
+
+<mat-list-item
+  *ngFor="let item of clientsWithOrderCount; let i = index"
+  (click)="goToClientDetail(item.id)"
+  class="client-list-item"
+  tabindex="0"
+  role="listitem"
+>
+  <div
+    class="client-info"
+    [attr.aria-label]="'Client ' + item.client.fullName + ', number ' + (i + 1) + ', phone ' + item.client.phoneNumber + ', ' + item.orderCount + ' orders'"
+  >
+    <span class="client-number">{{ i + 1 }}</span>
+    <span class="client-name">Name: <strong>{{ item.client.fullName }}</strong></span>
+    <span class="client-phone">Phone: <strong>{{ item.client.phoneNumber }}</strong></span>
+    <span class="client-orders">Orders: <strong>{{ item.orderCount }}</strong></span>
+  </div>
+  <mat-icon class="navigate-icon" aria-hidden="true">arrow_forward_ios</mat-icon>
+</mat-list-item>
+
+  <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
+    No clients found.
+  </div>
+</section>

@@ -35,6 +35,8 @@ import { WindowComponent } from './window/window.component';
 import { NgParticlesModule } from "ng-particles";
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ClientDetailComponent } from './client-detail/client-detail.component';
+import { ListComponent } from './list/list.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -58,7 +60,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     SuccessfulAlertComponent,
     ErrorAlertComponent,
-    WindowComponent
+    WindowComponent,
+    ClientDetailComponent,
+    ListComponent
   ],
   imports: [
     AngularFireModule.initializeApp({

@@ -34,6 +34,7 @@
     "express": "^4.18.2",
     "file-saver": "^2.0.5",
     "firebase": "^10.14.1",
+    "idb": "^8.0.3",
     "jszip": "^3.10.1",
     "ng-particles": "^3.12.0",
     "ng2-charts": "^4.1.1",

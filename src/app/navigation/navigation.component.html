@@ -13,11 +13,17 @@
     <a (click)="navigateToHome()" [class.active]="currentSection === 'home'">{{
       "NAV.HOME" | translate
     }}</a>
-    <a
-      (click)="navigateToClient()"
-      [class.active]="currentSection === 'client'"
-      >{{ "NAV.CLIENTS" | translate }}</a
-    >
+<div class="dropdown-container">
+  <button class="dropdown-btn" (click)="toggleClientsDropdown()">
+    {{ "NAV.CLIENTS" | translate }}
+    <i class="material-icons dropdown-icon" [class.rotated]="isClientsDropdownOpen">expand_more</i>
+  </button>
+  <div class="dropdown-menu" [class.open]="isClientsDropdownOpen">
+    <a (click)="navigateToClient()" [class.active]="currentSection === 'client'">{{ "NAV.CLIENTS" | translate }}</a>
+    <a (click)="navigateToList()" [class.active]="currentSection === 'clientsList'">Clients List</a>
+  </div>
+</div>
+
     <a
       (click)="navigateToAnalytics()"
       [class.active]="currentSection === 'analytics'"

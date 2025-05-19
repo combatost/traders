@@ -14,7 +14,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'; // needed for native date adapter
-
+import { MatListModule } from '@angular/material/list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 
 @NgModule({
@@ -33,10 +35,15 @@ import { MatNativeDateModule } from '@angular/material/core'; // needed for nati
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatButtonModule,
-     MatDatepickerModule,
+    MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
     MatFormFieldModule,
+    MatListModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatButtonModule,
   ]
 })
-export class MaterialModule {}
+export class MaterialModule { }

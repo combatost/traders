@@ -1,0 +1,86 @@
+<app-navigation></app-navigation>
+
+<section class="client-detail-container" *ngIf="client$ | async as client; else loading">
+  <mat-card class="client-card">
+    <mat-card-header>
+      <mat-card-title>Client Details: {{ client.fullName }}</mat-card-title>
+      <mat-card-subtitle>{{ client.location }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item><strong>Phone:</strong> {{ client.phoneNumber }}</mat-list-item>
+        <mat-list-item><strong>Other Phone:</strong> {{ client.OtherPhoneNumber || 'N/A' }}</mat-list-item>
+        <mat-list-item><strong>Address:</strong> {{ client.address }}</mat-list-item>
+        <mat-list-item><strong>Address 2:</strong> {{ client.address2 || 'N/A' }}</mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <h3 class="section-title">Orders for {{ client.fullName }}</h3>
+  <div *ngIf="orders$ | async as orders; else noOrders">
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let order of orders">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Order ID: {{ order.id }} &nbsp; - &nbsp; Cost: ${{ order.cost }}
+          </mat-panel-title>
+          <mat-panel-description>
+            Profit: ${{ calculateProfit(order) }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-list>
+          <mat-list-item><strong>Quantity:</strong> {{ order.quantity }}</mat-list-item>
+          <mat-list-item><strong>Discount:</strong> {{ order.discount }}%</mat-list-item>
+          <mat-list-item><strong>Delivery:</strong> ${{ order.delivery }}</mat-list-item>
+          <mat-list-item><strong>Shipping Cost:</strong> ${{ order.shippingCost }}</mat-list-item>
+          <mat-list-item><strong>Tax:</strong> ${{ order.tax }}</mat-list-item>
+          <mat-list-item><strong>Choice:</strong> {{ order.choice }}</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <ng-template #noOrders>
+    <p>No orders available for this client.</p>
+  </ng-template>
+
+  <h3 class="section-title">Client Images</h3>
+  <mat-card class="image-upload-card">
+    <input
+      type="file"
+      accept="image/*"
+      (change)="onImageSelected($event)"
+      id="image-upload"
+      hidden
+    />
+    <label mat-raised-button color="primary" for="image-upload" class="upload-label">
+      Upload Image
+      <mat-icon>upload</mat-icon>
+    </label>
+  </mat-card>
+
+  <div class="uploaded-images">
+    <mat-grid-list cols="4" rowHeight="150px" gutterSize="12px">
+      <mat-grid-tile *ngFor="let image of clientImages; let i = index">
+        <mat-card class="image-card">
+          <img mat-card-image [src]="image.url" alt="Client Image" />
+          <mat-card-actions align="end">
+            <button mat-icon-button color="warn" (click)="deleteImage(i)" aria-label="Delete Image">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</section>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading client details...</p>
+  </div>
+</ng-template>
+
+<app-footer></app-footer>

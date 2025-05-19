@@ -160,5 +160,9 @@
   },
     "HISTORY": {
     "DELETE_SELECTED": "حذف المحدد"
+  },
+  "form2": {
+    "includeProfit": "تضمين الكمية في الربح",
+    "includeProfitExplanation": "عند التفعيل، سيتم حساب الربح بناءً على الكمية، مما يوفر إجمالي ربح أكثر دقة."
   }
 }
