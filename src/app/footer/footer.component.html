@@ -1,37 +1,75 @@
-<footer class="google-style-footer soft-footer">
-  <div class="footer-container">
-    <div class="footer-top">
-      <span class="footer-brand">{{ translations[currentLang].brand }}</span>
 
-      <label for="language-select" class="sr-only">{{ translations[currentLang].languageLabel }}</label>
-      <select id="language-select" class="language-select" (change)="onLanguageChange($event)">
-        <option value="en" [selected]="currentLang === 'en'">English</option>
-        <option value="ar" [selected]="currentLang === 'ar'">العربية</option>
-      </select>
+<footer [class.scrolled]="isScrolled" aria-label="Site footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="logo" (click)="navigate('/')">
+        <img src="assets/img/logo.png" alt="Site Logo" />
+        <span>SHEIN TRADERS</span>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <ul>
+          <li [class.active]="currentSection === 'home'">
+            <a (click)="navigate('/')">{{ "FOOTER.HOME" | translate }}</a>
+          </li>
+          <li [class.active]="currentSection === 'aboutme'">
+            <a (click)="navigate('/aboutme')">{{
+              "FOOTER.ABOUT" | translate
+            }}</a>
+          </li>
+          <li [class.active]="currentSection === 'settings'">
+            <a (click)="navigate('/settings')">{{
+              "FOOTER.SETTINGS" | translate
+            }}</a>
+          </li>
+          <li>
+            <a href="/contact" target="_blank" rel="noopener">{{
+              "FOOTER.CONTACT" | translate
+            }}</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="footer-controls">
+        <select
+          id="language-select"
+          (change)="onLanguageChange($event)"
+          [value]="currentLang"
+          aria-live="polite"
+          aria-label="Language Selector"
+        >
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
     </div>
 
-    <nav class="footer-nav">
-      <a 
-        (click)="navigate('/')"
-        [class.active]="currentSection === 'home'"
-        href="javascript:void(0)"
-      >{{ translations[currentLang].home }}</a>
-
-      <a 
-        (click)="navigate('/aboutme')"
-        [class.active]="currentSection === 'about'"
-        href="javascript:void(0)"
-      >{{ translations[currentLang].about }}</a>
-
-      <a 
-        (click)="navigate('/settings')"
-        [class.active]="currentSection === 'settings'"
-        href="javascript:void(0)"
-      >{{ translations[currentLang].settings }}</a>
-    </nav>
-
     <div class="footer-bottom">
-      <span>{{ translations[currentLang].copyright }}</span>
+      <p>{{ "FOOTER.COPYRIGHT" | translate : { year: currentYear } }}</p>
+
+      <div class="social-links" aria-label="Social media links">
+        <a
+          href="https://twitter.com"
+          target="_blank"
+          rel="noopener"
+          aria-label="Twitter"
+          ><i class="fab fa-twitter"></i
+        ></a>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener"
+          aria-label="Facebook"
+          ><i class="fab fa-facebook"></i
+        ></a>
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener"
+          aria-label="Instagram"
+          ><i class="fab fa-instagram"></i
+        ></a>
+      </div>
     </div>
   </div>
 </footer>

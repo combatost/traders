@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ChartData, ChartOptions } from 'chart.js/dist/types/index';
+import { combineLatest } from 'rxjs';
+
 
 @Component({
   selector: 'app-analysic',
@@ -11,6 +13,7 @@ import { ChartData, ChartOptions } from 'chart.js/dist/types/index';
 export class AnalysicComponent implements OnInit {
   filteredSalesData: any[] = [];
   salesData: any[] = [];
+  cancelledHistoryOrders: any[] = [];
   statusFilter: string = 'All';
   analyticsSearchQuery: string = '';
   totalSales: number = 0;
@@ -21,30 +24,45 @@ export class AnalysicComponent implements OnInit {
   totalTaxCost: number = 0;
   pendingCount: number = 0;
   doneCount: number = 0;
-  cancelledCount: number = 0; // added
+  cancelledCount: number = 0;
+  profitRate: number = 0;
+  totalprof: number = 0;
+  maxItems: number = 100;           // max value for items, adjust to your logic
+  maxClients: number = 50;          // max number of clients, adjust to your logic
+  totalOrders: number = 120;        // total number of orders, adjust accordingly
+
 
   userId: string = '';
 
   constructor(
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
 
-        this.firestore.collection(`sheinTables/${this.userId}/records`, ref => ref.orderBy('client'))
-          .valueChanges({ idField: 'id' })
-          .subscribe((data: any[]) => {
-            this.salesData = data;
-            this.updateStats();
-            this.filterByStatus(this.statusFilter);
-          });
+        const shein$ = this.firestore
+          .collection(`sheinTables/${this.userId}/records`, ref => ref.orderBy('client'))
+          .valueChanges({ idField: 'id' });
+
+        const history$ = this.firestore
+          .collection(`history/${this.userId}/records`, ref => ref.orderBy('deletedAt', 'desc'))
+          .valueChanges({ idField: 'id' });
+
+        combineLatest([shein$, history$]).subscribe(([sheinData, historyData]: [any[], any[]]) => {
+          this.salesData = sheinData || [];
+          this.cancelledHistoryOrders = historyData || [];
+          this.updateStats(); // now includes history
+          this.filterByStatus(this.statusFilter);
+
+        });
       }
     });
   }
+
 
   updateStats(): void {
     const clients = new Set<string>();
@@ -66,10 +84,12 @@ export class AnalysicComponent implements OnInit {
       this.totalItems += order.quantity || 0;
       this.totalDeliveryCost += order.shippingCost || 0;
       this.totalTaxCost += order.tax || 0;
+      this.cancelledCount = this.cancelledHistoryOrders.length;
+
 
       if (order.choice === 'Pending') this.pendingCount++;
       if (order.choice === 'Done') this.doneCount++;
-      if (order.choice === 'Cancelled') this.cancelledCount++;
+
 
       if (order.client) clients.add(order.client);
 
@@ -84,11 +104,19 @@ export class AnalysicComponent implements OnInit {
 
     this.uniqueClientsCount = clients.size;
 
+    this.profitRate = this.totalSales > 0 ? +((this.totalProfit / this.totalSales) * 100).toFixed(2) : 0;
+
+
+
     // Update chart data dynamically
     this.monthlySalesData.datasets[0].data = monthlyTotals;
     this.monthlySalesData = { ...this.monthlySalesData }; // trigger change detection
 
-    this.orderStatusData.datasets[0].data = [this.pendingCount, this.doneCount, this.cancelledCount];
+    this.orderStatusData.datasets[0].data = [
+      this.pendingCount,
+      this.doneCount,
+      this.cancelledCount
+    ];
     this.orderStatusData = { ...this.orderStatusData }; // trigger change detection
   }
 

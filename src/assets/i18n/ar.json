@@ -1,4 +1,8 @@
 {
+  "HOME": {
+    "TITLE": "مرحبًا",
+    "DESCRIPTION": "هذا هو الإصدار العربي."
+  },
   "ABOUT": {
     "TITLE": "نحن نعيد تعريف التجارة الإلكترونية",
     "SUBTITLE": "فريق مستقبلي يدفع الحدود منذ 2023. مهمتنا: البساطة، السرعة، والانتشار."
@@ -9,6 +13,152 @@
   },
   "TEAM": {
     "TITLE": "تعرف على الفريق"
+  },
+  "NAV": {
+    "HOME": "الرئيسية",
+    "CLIENTS": "العملاء",
+    "ANALYTICS": "التحليلات",
+    "ABOUT": "معلومات عنا",
+    "SETTINGS": "الإعدادات",
+    "HISTORY": "السجل"
+  },
+  "form": {
+    "title": "معلومات العميل",
+    "client": "العميل",
+    "fullName": "الاسم الكامل",
+    "phoneNumber": "رقم الهاتف",
+    "otherPhoneNumber": "رقم هاتف إضافي",
+    "location": "الموقع",
+    "address": "العنوان",
+    "address2": "العنوان ٢",
+    "cost": "التكلفة",
+    "delivery": "التوصيل",
+    "discount": "الخصم (%)",
+    "shippingCost": "تكلفة الشحن",
+    "quantity": "الكمية",
+    "tax": "الضريبة",
+    "choice": "الخيار",
+    "includeProfit": "تضمين الكمية في الربح",
+    "add": "إضافة",
+    "update": "تحديث",
+    "cancel": "إلغاء",
+    "clear": "مسح",
+    "search": "بحث عن عميل",
+    "searchPlaceholder": "اكتب اسم العميل"
+  },
+  "table": {
+    "title": "قائمة العملاء",
+    "actions": "الإجراءات",
+    "pending": "قيد الانتظار",
+    "done": "تم",
+    "cancelled": "ألغيت",
+    "revenue": "إجمالي الإيرادات",
+    "profit": "إجمالي الربح"
+  },
+  "SALES_ANALYTICS": {
+    "TITLE": "تحليلات المبيعات",
+    "MONTHLY_SALES": "المبيعات الشهرية",
+    "ORDER_STATUS_DISTRIBUTION": "توزيع حالة الطلب",
+    "SALES": "المبيعات",
+    "TOTAL_PROFIT": "إجمالي الربح",
+    "ITEMS_SOLD": "عدد العناصر المباعة",
+    "UNIQUE_CLIENTS": "العملاء الفريدون",
+    "TOTAL_SHIPPING": "إجمالي الشحن",
+    "TOTAL_TAX_COST": "إجمالي تكلفة الضرائب",
+    "PENDING_ORDERS": "الطلبات المعلقة",
+    "COMPLETED_ORDERS": "الطلبات المكتملة",
+    "SEARCH_SALES": "بحث المبيعات",
+    "SEARCH_PLACEHOLDER": "ابحث باسم العميل",
+    "FILTER_PENDING": "عرض المعلقة",
+    "FILTER_CANCELLED": "عرض الملغاة",
+    "FILTER_COMPLETED": "عرض المكتملة",
+    "FILTER_ALL": "عرض الكل",
+    "CLIENT": "العميل",
+    "QUANTITY": "الكمية",
+    "COST": "التكلفة",
+    "DISCOUNT": "الخصم",
+    "ACTIONS": "الإجراءات"
+  },
+  "FOOTER": {
+    "HOME": "الرئيسية",
+    "ABOUT": "من نحن",
+    "SETTINGS": "الإعدادات",
+    "CONTACT": "اتصل بنا",
+    "LANGUAGE": "اللغة",
+    "COPYRIGHT": "© {{year}} ماي سترونج فوتير. جميع الحقوق محفوظة."
+  },
+  "aboutUs": {
+    "hero": {
+      "title": "نحن نعيد تعريف التجارة الإلكترونية",
+      "subtitle": "فريق مستقبلي يتجاوز الحدود منذ عام 2023. مهمتنا: البساطة، السرعة، والتوسع."
+    },
+    "stats": [
+      {
+        "icon": "shopping_cart",
+        "title": "تسوق سهل",
+        "description": "تسوّق بسهولة وراحة."
+      },
+      {
+        "icon": "speed",
+        "title": "أداء سريع",
+        "description": "منصتنا تعمل بسرعة فائقة."
+      },
+      {
+        "icon": "security",
+        "title": "مدفوعات آمنة",
+        "description": "معاملاتك آمنة معنا."
+      },
+      {
+        "icon": "support_agent",
+        "title": "دعم على مدار الساعة",
+        "description": "نحن هنا لمساعدتك دائماً."
+      }
+    ],
+    "video": {
+      "loading": "جارٍ تحميل الفيديو..."
+    },
+    "vision": {
+      "title": "رؤيتنا",
+      "description": "نحلم بما هو أبعد من الاتجاهات — نبني تكنولوجيا تدعم الأعمال عالميًا بكفاءة وثقة لا مثيل لها."
+    },
+    "team": {
+      "title": "تعرف على الفريق"
+    }
+  },
+  "SETTINGS": {
+    "TITLE": "الإعدادات",
+    "DESCRIPTION": "إدارة تفضيلات حساب SheinTrading والمعلومات الشخصية.",
+    "PROFILE": {
+      "TITLE": "معلومات الملف الشخصي",
+      "FULL_NAME": "الاسم الكامل",
+      "BIRTH_DATE": "تاريخ الميلاد",
+      "BIO": "نبذة",
+      "EDIT": "تعديل",
+      "SAVE": "حفظ",
+      "CANCEL": "إلغاء"
+    },
+    "BUSINESS": {
+      "TITLE": "معلومات العمل",
+      "STORE_NAME": "اسم المتجر",
+      "SUBSCRIPTION": "الاشتراك",
+      "PAYMENT_METHOD": "طريقة الدفع",
+      "EDIT_PAYMENT": "تعديل معلومات الدفع"
+    },
+    "PASSWORD": {
+      "TITLE": "كلمة المرور",
+      "CHANGE": "تغيير",
+      "NEW": "كلمة المرور الجديدة",
+      "CONFIRM": "تأكيد كلمة المرور",
+      "SAVE": "حفظ كلمة المرور",
+      "CANCEL": "إلغاء"
+    },
+    "DANGER_ZONE": {
+      "TITLE": "منطقة الخطر",
+      "DELETE_ACCOUNT": "حذف الحساب"
+    },
+    "LOGOUT": "تسجيل الخروج"
+  },
+    "HISTORY": {
+    "DELETE_SELECTED": "حذف المحدد"
   }
-
 }

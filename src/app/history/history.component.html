@@ -1,8 +1,11 @@
 <app-navigation></app-navigation>
 
 <section>
-  <div class="history-container" *ngIf="historyRecords.length > 0; else noHistory">
-    <h2>Deleted Orders History</h2>
+  <div
+    class="history-container"
+    *ngIf="historyRecords.length > 0; else noHistory"
+  >
+    <h2>{{ "NAV.HISTORY" | translate }}</h2>
 
     <button
       mat-raised-button
@@ -11,7 +14,7 @@
       [disabled]="!hasSelected()"
       class="bulk-delete-btn"
     >
-      Delete Selected
+      {{ "HISTORY.DELETE_SELECTED" | translate }}
     </button>
 
     <table>
@@ -25,15 +28,15 @@
             >
             </mat-checkbox>
           </th>
-          <th>Client</th>
-          <th>Quantity</th>
-          <th>Cost</th>
-          <th>Discount (%)</th>
-          <th>Delivery</th>
-          <th>Shipping</th>
-          <th>Tax</th>
-          <th>Choice</th>
-          <th>Profit</th>
+          <th>{{ "form.client" | translate }}</th>
+          <th>{{ "form.quantity" | translate }}</th>
+          <th>{{ "form.cost" | translate }}</th>
+          <th>{{ "form.discount" | translate }}</th>
+          <th>{{ "form.delivery" | translate }}</th>
+          <th>{{ "form.shippingCost" | translate }}</th>
+          <th>{{ "form.tax" | translate }}</th>
+          <th>{{ "form.choice" | translate }}</th>
+          <th>{{ "table.profit" | translate }}</th>
           <th>Deleted At</th>
         </tr>
       </thead>
@@ -55,19 +58,21 @@
           <td>{{ record.tax }}</td>
           <td>{{ record.choice }}</td>
           <td>{{ record.profit }}</td>
-          <td>{{ record.deletedAt?.toDate() | date : 'short' }}</td>
+          <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 
   <div class="pagination-buttons">
-    <button (click)="previousPage()" [disabled]="pageIndex === 0">Previous</button>
+    <button (click)="previousPage()" [disabled]="pageIndex === 0">
+      {{ "form.cancel" | translate }}
+    </button>
     <button
       (click)="nextPage()"
       [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
     >
-      Next
+      {{ "form.update" | translate }}
     </button>
   </div>
 
@@ -78,3 +83,4 @@
     </section>
   </ng-template>
 </section>
+<app-footer></app-footer>

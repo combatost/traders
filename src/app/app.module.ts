@@ -9,7 +9,7 @@ import { AboutmeComponent } from './aboutme/aboutme.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http'; // Import necessary HttpClient functions
+import { HttpClient, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http'; // Import necessary HttpClient functions
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from './material/material.module';
 import { provideFirebaseApp } from '@angular/fire/app';
@@ -31,6 +31,15 @@ import { SuccessfulAlertComponent } from './alreat/successful-alert/successful-a
 import { ErrorAlertComponent } from './alreat/error-alert/error-alert.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { WindowComponent } from './window/window.component';
+import { NgParticlesModule } from "ng-particles";
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -48,7 +57,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     SplashComponent,
     FooterComponent,
     SuccessfulAlertComponent,
-    ErrorAlertComponent
+    ErrorAlertComponent,
+    WindowComponent
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -61,6 +71,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
       measurementId: "G-20LVKBMFHK"
     }),
 
+    TranslateModule.forRoot({
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
 
 
     BrowserModule,
@@ -74,6 +92,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatButtonToggleModule,
     NgChartsModule,
     MatDatepickerModule,
+    NgParticlesModule
   ],
   providers: [
     provideClientHydration(),
@@ -82,7 +101,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     provideFirestore(() => getFirestore()),
     provideHttpClient(withFetch()), // Enable fetch API for HttpClient
     { provide: Directionality, useFactory: () => new Directionality('rtl') }
-   
+
   ],
   bootstrap: [AppComponent]
 })

@@ -9,32 +9,17 @@ import { SettingsComponent } from './settings/settings.component';
 import { HistoryComponent } from './history/history.component';
 import { AuthGuard } from './login/auth.guard';
 
+
 const routes: Routes = [
-  // 🔐 Public route
   { path: 'login', component: LoginComponent },
-
-  // 🏠 Protected Home route
+ // { path: 'window', component: WindowComponent, canActivate: [AuthGuard] }, 
   { path: 'sheintable', component: SheintableComponent, canActivate: [AuthGuard] },
-
-  // 👥 Protected Client route
   { path: 'client', component: ClientComponent, canActivate: [AuthGuard] },
-
-  // 📊 Protected Analytics route
   { path: 'analysic', component: AnalysicComponent, canActivate: [AuthGuard] },
-
-  // 👤 Protected About page
   { path: 'aboutme', component: AboutmeComponent, canActivate: [AuthGuard] },
-
-  // ⚙️ Protected Settings
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-
-  // 🕓 Protected History
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
-
-  // 🚪 Default route redirects to login
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  // ❗ Catch-all route to handle unknown paths
   { path: '**', redirectTo: '/login' }
 ];
 

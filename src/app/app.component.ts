@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './login/auth.service'; // ✅ correct path to AuthService
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,9 @@ import { AuthService } from './login/auth.service'; // ✅ correct path to AuthS
 export class AppComponent {
   title = 'Shein';
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private translate: TranslateService) {
+    this.translate.onLangChange.subscribe(event => {
+    document.body.dir = event.lang === 'ar' ? 'rtl' : 'ltr';
+  });
+  }
 }

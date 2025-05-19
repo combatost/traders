@@ -1,60 +1,117 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap");
-html {
-  font-size: 62.5%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+
+/* Root variables */
+:root {
+  --transition: 0.3s ease;
+  --border-radius: 6px;
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --text-color: #202124;
+  --main-bg: #f0f5fa; /* Light blue-white background */
+  --primary-color: #1a73e8;
+  --primary-hover: #155db8;
+  --border-color: #e0e0e0;
+  --muted-color: #5f6368;
+  --font-family: "Outfit", sans-serif;
 }
 
-:root {
-  --primary-color: #7f5af0;
-  --accent-color: #2cb67d;
-  --error-color: #ef4565;
-
-  --text-color: #1a1a1a;
-  --text-muted: #6b7280;
-  --bg-light: #f5f7fa;
-  --bg-dark: #121212;
-  --white: #ffffff;
-
-  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --border-radius: 0.8rem;
-  --transition: all 0.25s ease;
+/* Base styles */
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   text-decoration: none;
   border: none;
   outline: none;
-  scroll-behavior: smooth;
-  font-family: "Outfit", sans-serif;
+  font-family: var(--font-family);
   font-size: 1rem;
+  transition: var(--transition);
 }
 
 body {
   font-size: 1.5rem;
-  background-color: var(--bg-light);
   color: var(--text-color);
+  background-color: var(--main-bg);
+  line-height: 1.6;
+  animation: fadeSlideIn 0.7s ease-out;
+}
+
+.section {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Links and form controls */
+a,
+input,
+textarea,
+select {
+  border-radius: var(--border-radius);
   transition: var(--transition);
-  line-height: 1.5;
 }
 
-body.dark-theme {
-  background-color: var(--background-color-dark);
-  color: var(--white-color);
+a:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-body.dark-theme .header {
-  background-color: #333333;
+input:focus,
+textarea:focus,
+select:focus {
+  transform: scale(1.01);
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
 }
 
-body.dark-theme .navbar a {
-  color: var(--white-color);
+/* Make inputs/select/textarea backgrounds transparent to show main background */
+input,
+textarea,
+select {
+  padding: 0.8rem 1.2rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  font-size: 1.4rem;
+  color: var(--text-color);
 }
 
-body.dark-theme .navbar a:hover {
-  background-color: var(--primary-color);
+/* Animations */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
+.slide-in {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

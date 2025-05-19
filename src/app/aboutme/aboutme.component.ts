@@ -5,8 +5,8 @@ import { VideoService } from '../services/environment/video.service';
 
 interface Stat {
   icon: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
 }
 
 interface TeamMember {
@@ -14,7 +14,6 @@ interface TeamMember {
   role: string;
   photo: string;
 }
-
 @Component({
   selector: 'app-aboutme',
   templateUrl: './aboutme.component.html',
@@ -33,21 +32,23 @@ interface TeamMember {
     
   ]
 })
+
 export class AboutmeComponent implements OnInit {
 
   @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
 
   private _videoUrl: string | null = null;
 
-  readonly stats: Stat[] = [
-    { icon: 'rocket_launch', title: 'Fast Deployments', description: 'Live in minutes, scale in hours.' },
-    { icon: 'verified_user', title: 'Secure Systems', description: 'Your data is protected with bank-grade encryption.' },
-    { icon: 'support_agent', title: '24/7 Support', description: 'We’ve always got your back.' },
-    { icon: 'insights', title: 'AI-Driven Insights', description: 'Smarter decisions with every click.' }
+ readonly stats: Stat[] = [
+    { icon: 'shopping_cart', titleKey: 'aboutUs.stats.0.title', descriptionKey: 'aboutUs.stats.0.description' },
+    { icon: 'speed', titleKey: 'aboutUs.stats.1.title', descriptionKey: 'aboutUs.stats.1.description' },
+    { icon: 'devices', titleKey: 'aboutUs.stats.2.title', descriptionKey: 'aboutUs.stats.2.description' },
+    { icon: 'support_agent', titleKey: 'aboutUs.stats.3.title', descriptionKey: 'aboutUs.stats.3.description' },
   ];
 
+
   readonly team: TeamMember[] = [
-    { name: 'Ali Amhaz', role: 'Main Owner', photo: 'assets/image/user-icon.png' },
+    { name: 'Ali Amhaz', role: 'Main Owner', photo: 'assets/image/ali.jpeg' },
     { name: 'Sara', role: 'UI/UX Designer', photo: 'assets/image/user-icon.png' },
     { name: 'Ziad', role: 'Full Stack Developer', photo: 'assets/image/user-icon.png' },
     { name: 'Layla', role: 'Marketing Head', photo: 'assets/image/user-icon.png' }

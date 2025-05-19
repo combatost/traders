@@ -1,19 +1,30 @@
-.google-style-footer
-  background-color: #f9f9f9
-  padding: 2rem 1.5rem
-  font-family: 'Roboto', sans-serif
-  color: #444
-  border-top: 1px solid #e0e0e0
-  font-size: 0.9rem
-  direction: ltr
+// Variables
+$color-bg: transparent      // خلفية شفافة
+$color-text: #202124
+$color-primary: #1a73e8
+$color-primary-hover: darken($color-primary, 15%)
+$color-muted: #5f6368
+$color-border: #e0e0e0
+$font-family: 'Google Sans', 'Roboto', Arial, sans-serif
+$transition-speed: 0.3s
 
-.soft-footer
-  .footer-container
-    max-width: 1100px
+footer
+  color: $color-text
+  font-family: $font-family
+  box-shadow: 0 -2px 12px rgba(32, 33, 36, 0.1)
+  padding: 2.5rem 1rem
+  user-select: none
+  width: 90%
+  margin: 0 auto
+  border-radius: 30px
+  background: white   
+
+  .container
+    max-width: 1140px
     margin: 0 auto
     display: flex
     flex-direction: column
-    gap: 1.5rem
+    gap: 2rem
 
   .footer-top
     display: flex
@@ -21,55 +32,116 @@
     align-items: center
     flex-wrap: wrap
 
-    .footer-brand
-      font-weight: 500
-      font-size: 1rem
-      color: #555
-
-    .language-select
-      padding: 0.3rem 0.5rem
-      font-size: 0.9rem
-      border-radius: 6px
-      border: 1px solid #ccc
-      background-color: #fff
+    .logo
+      display: flex
+      align-items: center
       cursor: pointer
-      min-width: 100px
+      transition: transform $transition-speed ease
+      user-select: none
 
-  .footer-nav
-    display: flex
-    justify-content: center
-    gap: 2.5rem
-    flex-wrap: wrap
+      img
+        height: 48px
+        margin-right: 0.8rem
+        filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05))
 
-    a
-      color: #666
-      text-decoration: none
-      font-weight: 500
-      font-size: 1rem
-      cursor: pointer
-      transition: color 0.3s ease
+      span
+        font-size: 1.5rem
+        font-weight: 700
+        color: $color-text
+        letter-spacing: 1.2px
+        text-transform: uppercase
 
       &:hover
-        color: #1a73e8
-        text-decoration: underline
+        transform: scale(1.05)
 
-      &.active
-        font-weight: 700
-        color: #1a73e8
-        text-decoration: underline
+    .footer-nav
+      ul
+        display: flex
+        gap: 2rem
+        list-style: none
+        margin: 0
+        padding: 0
+
+        li
+          a
+            font-weight: 600
+            font-size: 1rem
+            color: $color-muted
+            text-decoration: none
+            position: relative
+            padding: 0.2rem 0
+            transition: color $transition-speed ease
+
+            &::after
+              content: ''
+              position: absolute
+              left: 0
+              bottom: -4px
+              height: 3px
+              width: 0%
+              background-color: $color-primary
+              border-radius: 4px
+              transition: width $transition-speed ease
+
+            &:hover,
+            &.active
+              color: $color-primary
+
+            &:hover::after,
+            &.active::after
+              width: 100%
+
+  .footer-controls
+    select
+      padding: 0.3rem 0.6rem
+      border-radius: 6px
+      border: 1.5px solid $color-border
+      font-weight: 600
+      font-size: 1rem
+      color: $color-text
+      background: transparent       // خلفية شفافة بدل الأبيض
+      cursor: pointer
+      transition: border-color $transition-speed ease, box-shadow $transition-speed ease
+      min-width: 130px
+
+      &:focus
+        outline: none
+        border-color: $color-primary
+        box-shadow: 0 0 6px rgba(26, 115, 232, 0.5)
 
   .footer-bottom
-    text-align: center
-    color: #999
-    font-size: 0.8rem
-    user-select: none
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border-top: 1px solid $color-border
+    padding-top: 1.2rem
+    font-size: 0.9rem
+    color: $color-muted
+    flex-wrap: wrap
+    gap: 1rem
 
-// Right-to-left adjustment when Arabic selected
-:host-context([dir='rtl'])
-  .google-style-footer
-    direction: rtl
-    .footer-top
-      flex-direction: row-reverse
-    .footer-nav
-      justify-content: center
-      gap: 2.5rem
+    p
+      margin: 0
+
+    .social-links
+      display: flex
+      gap: 1rem
+
+      a
+        color: $color-muted
+        font-size: 1.4rem
+        transition: color $transition-speed ease
+
+        &:hover
+          color: $color-primary
+
+// Responsive breakpoints
+@media (max-width: 768px)
+  footer .footer-top
+    flex-direction: column
+    align-items: flex-start
+    gap: 1.5rem
+
+  footer .footer-bottom
+    flex-direction: column
+    align-items: flex-start

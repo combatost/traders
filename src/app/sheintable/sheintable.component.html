@@ -4,82 +4,59 @@
   <div class="card-container">
     <!-- FORM CARD -->
     <mat-card class="form-card mat-elevation-z4">
-      <mat-card-title>Client Order Form</mat-card-title>
+      <mat-card-title>{{ 'form.title' | translate }}</mat-card-title>
       <mat-card-content>
         <form [formGroup]="userForm" (ngSubmit)="onClick()">
           <div class="form-grid">
-            <!-- Existing Fields -->
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>person</mat-icon>
-              <mat-label>Client</mat-label>
+              <mat-label>{{ 'form.client' | translate }}</mat-label>
               <input matInput formControlName="client" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>attach_money</mat-icon>
-              <mat-label>Cost</mat-label>
+              <mat-label>{{ 'form.cost' | translate }}</mat-label>
               <input matInput type="number" formControlName="cost" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>local_shipping</mat-icon>
-              <mat-label>Delivery</mat-label>
-              <input
-                matInput
-                type="number"
-                formControlName="delivery"
-                required
-              />
+              <mat-label>{{ 'form.delivery' | translate }}</mat-label>
+              <input matInput type="number" formControlName="delivery" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>percent</mat-icon>
-              <mat-label>Discount (%)</mat-label>
-              <input
-                matInput
-                type="number"
-                formControlName="discount"
-                required
-              />
+              <mat-label>{{ 'form.discount' | translate }}</mat-label>
+              <input matInput type="number" formControlName="discount" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>flight</mat-icon>
-
-              <mat-label>Shipping Cost</mat-label>
-              <input
-                matInput
-                type="number"
-                formControlName="shippingCost"
-                required
-              />
+              <mat-label>{{ 'form.shippingCost' | translate }}</mat-label>
+              <input matInput type="number" formControlName="shippingCost" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>grid_on</mat-icon>
-              <mat-label>Quantity</mat-label>
-              <input
-                matInput
-                type="number"
-                formControlName="quantity"
-                required
-              />
+              <mat-label>{{ 'form.quantity' | translate }}</mat-label>
+              <input matInput type="number" formControlName="quantity" required />
             </mat-form-field>
 
-            <!-- ✅ Tax Field -->
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>receipt_long</mat-icon>
-              <mat-label>Tax</mat-label>
+              <mat-label>{{ 'form.tax' | translate }}</mat-label>
               <input matInput type="number" formControlName="tax" required />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>check_circle</mat-icon>
-              <mat-label>Choice</mat-label>
+              <mat-label>{{ 'form.choice' | translate }}</mat-label>
               <mat-select formControlName="choice" required>
-                <mat-option value="Pending">Pending</mat-option>
-                <mat-option value="Done">Done</mat-option>
-                <mat-option value="Cancelled">Cancelled</mat-option>
+                <mat-option value="Pending">{{ 'table.pending' | translate }}</mat-option>
+                <mat-option value="Done">{{ 'table.done' | translate }}</mat-option>
+                <mat-option  *ngIf="switch" value="Cancelled">{{ 'table.cancelled' | translate }}</mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -88,45 +65,36 @@
                 formControlName="includeQuantityInProfit"
                 (change)="onQuantityProfitChange()"
               >
-                Include Quantity in Profit
+                {{ 'form.includeProfit' | translate }}
               </mat-slide-toggle>
             </div>
           </div>
 
           <div class="form-actions">
             <button mat-raised-button color="primary" type="submit">
-              {{ switch ? "Update" : "Add" }}
+              {{ switch ? ('form.update' | translate) : ('form.add' | translate) }}
             </button>
 
-            <button
-              *ngIf="showCancelButton"
-              mat-stroked-button
-              type="button"
-              (click)="onCancel()"
-            >
-              Cancel
+            <button *ngIf="showCancelButton" mat-stroked-button type="button" (click)="onCancel()">
+              {{ 'form.cancel' | translate }}
             </button>
-            <button
-              *ngIf="!switch"
-              mat-stroked-button
-              type="button"
-              (click)="onClear()"
-            >
-              Clear
+            <button *ngIf="!switch" mat-stroked-button type="button" (click)="onClear()">
+              {{ 'form.clear' | translate }}
             </button>
           </div>
         </form>
       </mat-card-content>
     </mat-card>
+
     <mat-form-field appearance="outline" class="search-bar">
-      <mat-label>Search Client</mat-label>
+      <mat-label>{{ 'form.search' | translate }}</mat-label>
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
         type="text"
         [(ngModel)]="searchTerm"
         (input)="applyFilter()"
-        placeholder="Type client name"
+        [placeholder]="'form.searchPlaceholder' | translate"
       />
       <button
         *ngIf="searchTerm"
@@ -138,78 +106,69 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
+
     <!-- TABLE CARD -->
     <mat-card class="table-card mat-elevation-z4">
-      <mat-card-title>Order Summary</mat-card-title>
-
+      <mat-card-title>{{ 'table.title' | translate }}</mat-card-title>
       <mat-card-content>
-        <table
-          mat-table
-          [dataSource]="pagedData"
-          class="mat-elevation-z2 full-width-table"
-        >
+        <table mat-table [dataSource]="pagedData" class="mat-elevation-z2 full-width-table">
           <!-- Client -->
           <ng-container matColumnDef="client">
-            <th mat-header-cell *matHeaderCellDef>Client</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.client' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.client }}</td>
           </ng-container>
 
           <!-- Quantity -->
           <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef>Quantity</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.quantity' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
           </ng-container>
 
           <!-- Cost -->
           <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef>Cost</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.cost' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.cost }}</td>
           </ng-container>
 
           <!-- Discount -->
           <ng-container matColumnDef="discount">
-            <th mat-header-cell *matHeaderCellDef>Discount (%)</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.discount' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.discount }}</td>
           </ng-container>
 
           <!-- Delivery -->
           <ng-container matColumnDef="delivery">
-            <th mat-header-cell *matHeaderCellDef>Delivery</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.delivery' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.delivery }}</td>
           </ng-container>
 
-          <!-- Shipping Cost -->
+          <!-- Shipping -->
           <ng-container matColumnDef="shippingCost">
-            <th mat-header-cell *matHeaderCellDef>Shipping</th>
-            <td mat-cell *matCellDef="let element">
-              {{ element.shippingCost }}
-            </td>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.shippingCost' | translate }}</th>
+            <td mat-cell *matCellDef="let element">{{ element.shippingCost }}</td>
           </ng-container>
 
-          <!-- ✅ Tax Column -->
+          <!-- Tax -->
           <ng-container matColumnDef="tax">
-            <th mat-header-cell *matHeaderCellDef>Tax</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.tax' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.tax }}</td>
           </ng-container>
 
           <!-- Choice -->
           <ng-container matColumnDef="choice">
-            <th mat-header-cell *matHeaderCellDef>Choice</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'form.choice' | translate }}</th>
             <td mat-cell *matCellDef="let element">{{ element.choice }}</td>
           </ng-container>
 
           <!-- Profit -->
           <ng-container matColumnDef="profit">
-            <th mat-header-cell *matHeaderCellDef>Profit</th>
-            <td mat-cell *matCellDef="let element">
-              {{ calculateProfit(element) }}
-            </td>
+            <th mat-header-cell *matHeaderCellDef>{{ 'table.profit' | translate }}</th>
+            <td mat-cell *matCellDef="let element">{{ calculateProfit(element) }}</td>
           </ng-container>
 
           <!-- Actions -->
-
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'table.actions' | translate }}</th>
             <td mat-cell *matCellDef="let element; let i = index">
               <ng-container *ngIf="editingRowId !== element.id">
                 <button
@@ -241,12 +200,11 @@
             [class.editing-row]="row.id === editingRowId"
             [class.canceled-row]="row.choice === 'Cancelled'"
             [class.done-row]="row.choice === 'Done'"
-            
           ></tr>
         </table>
 
         <div class="summary-footer">
-          <p><strong>Total Revenue:</strong> {{ calculateOverallTotal() }}</p>
+          <p><strong>{{ 'table.revenue' | translate }}:</strong> {{ calculateOverallTotal() }}</p>
           <div class="pagination-buttons">
             <button
               mat-icon-button
@@ -265,10 +223,11 @@
               <mat-icon>chevron_right</mat-icon>
             </button>
           </div>
-          <p><strong>Total Profit:</strong> {{ calculateOverallProfit() }}</p>
+          <p><strong>{{ 'table.profit' | translate }}:</strong> {{ calculateOverallProfit() }}</p>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 </section>
+
 <app-footer></app-footer>
