@@ -64,61 +64,65 @@ export class AnalysicComponent implements OnInit {
   }
 
 
-  updateStats(): void {
-    const clients = new Set<string>();
-    this.totalSales = 0;
-    this.totalProfit = 0;
-    this.totalItems = 0;
-    this.totalDeliveryCost = 0;
-    this.totalTaxCost = 0;
-    this.pendingCount = 0;
-    this.doneCount = 0;
-    this.cancelledCount = 0;
+updateStats(): void {
+  const clients = new Set<string>();
+  this.totalSales = 0;
+  this.totalProfit = 0;
+  this.totalItems = 0;
+  this.totalDeliveryCost = 0;
+  this.totalTaxCost = 0;
+  this.pendingCount = 0;
+  this.doneCount = 0;
 
-    // Prepare monthly sales aggregation (index 0 = Jan, 1 = Feb, etc.)
-    const monthlyTotals = new Array(12).fill(0);
+  // Count cancelled orders from BOTH sources:
+  // 1. Cancelled in active salesData
+  const cancelledActiveCount = this.salesData.filter(order => order.choice === 'Cancelled').length;
 
-    this.salesData.forEach(order => {
-      this.totalSales += order.cost || 0;
-      this.totalProfit += this.calculateProfit(order);
-      this.totalItems += order.quantity || 0;
-      this.totalDeliveryCost += order.shippingCost || 0;
-      this.totalTaxCost += order.tax || 0;
-      this.cancelledCount = this.cancelledHistoryOrders.length;
+  // 2. All orders in history (assuming all history are cancelled or deleted)
+  const cancelledHistoryCount = this.cancelledHistoryOrders.length;
 
+  this.cancelledCount = cancelledActiveCount + cancelledHistoryCount;
 
-      if (order.choice === 'Pending') this.pendingCount++;
-      if (order.choice === 'Done') this.doneCount++;
+  const monthlyTotals = new Array(12).fill(0);
 
+  this.salesData.forEach(order => {
+    this.totalSales += order.cost || 0;
+    this.totalProfit += this.calculateProfit(order);
+    this.totalItems += order.quantity || 0;
+    this.totalDeliveryCost += order.shippingCost || 0;
+    this.totalTaxCost += order.tax || 0;
 
-      if (order.client) clients.add(order.client);
+    if (order.choice === 'Pending') this.pendingCount++;
+    if (order.choice === 'Done') this.doneCount++;
 
-      // Assuming order has a 'date' field in ISO or timestamp format
-      // Convert to Date and get month
-      if (order.date) {
-        const dateObj = order.date instanceof Date ? order.date : new Date(order.date);
-        const monthIndex = dateObj.getMonth();
-        monthlyTotals[monthIndex] += order.cost || 0;
-      }
-    });
+    if (order.client) clients.add(order.client);
 
-    this.uniqueClientsCount = clients.size;
+    if (order.date) {
+      const dateObj = order.date instanceof Date ? order.date : new Date(order.date);
+      const monthIndex = dateObj.getMonth();
+      monthlyTotals[monthIndex] += order.cost || 0;
+    }
+  });
 
-    this.profitRate = this.totalSales > 0 ? +((this.totalProfit / this.totalSales) * 100).toFixed(2) : 0;
+  // Also optionally count clients from history orders if you want full unique clients
+  this.cancelledHistoryOrders.forEach(order => {
+    if (order.client) clients.add(order.client);
+  });
 
+  this.uniqueClientsCount = clients.size;
 
+  this.profitRate = this.totalSales > 0 ? +((this.totalProfit / this.totalSales) * 100).toFixed(2) : 0;
 
-    // Update chart data dynamically
-    this.monthlySalesData.datasets[0].data = monthlyTotals;
-    this.monthlySalesData = { ...this.monthlySalesData }; // trigger change detection
+  this.monthlySalesData.datasets[0].data = monthlyTotals;
+  this.monthlySalesData = { ...this.monthlySalesData };
 
-    this.orderStatusData.datasets[0].data = [
-      this.pendingCount,
-      this.doneCount,
-      this.cancelledCount
-    ];
-    this.orderStatusData = { ...this.orderStatusData }; // trigger change detection
-  }
+  this.orderStatusData.datasets[0].data = [
+    this.pendingCount,
+    this.doneCount,
+    this.cancelledCount
+  ];
+  this.orderStatusData = { ...this.orderStatusData };
+}
 
   filterByStatus(status: string): void {
     this.statusFilter = status;

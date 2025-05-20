@@ -92,16 +92,5 @@ export class AboutmeComponent implements OnInit {
     });
   }
 
-  toggleVideoPlay(): void {
-    if (!this.bgVideo) return;
-    const videoEl = this.bgVideo.nativeElement;
 
-    if (videoEl.paused) {
-      videoEl.play();
-      this.isVideoPlaying = true;
-    } else {
-      videoEl.pause();
-      this.isVideoPlaying = false;
-    }
-  }
 }
