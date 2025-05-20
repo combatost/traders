@@ -1,48 +1,77 @@
 <app-navigation></app-navigation>
 
-<section class="client-detail-container" *ngIf="client$ | async as client; else loading">
+<section
+  class="client-detail-container"
+  *ngIf="client$ | async as client; else loading"
+>
   <mat-card class="client-card">
     <mat-card-header>
-      <mat-card-title>Client Details: {{ client.fullName }}</mat-card-title>
+      <mat-card-title>{{ 'clientDetails' | translate:{ name: client.fullName } }}</mat-card-title>
       <mat-card-subtitle>{{ client.location }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <mat-list>
-        <mat-list-item><strong>Phone:</strong> {{ client.phoneNumber }}</mat-list-item>
-        <mat-list-item><strong>Other Phone:</strong> {{ client.OtherPhoneNumber || 'N/A' }}</mat-list-item>
-        <mat-list-item><strong>Address:</strong> {{ client.address }}</mat-list-item>
-        <mat-list-item><strong>Address 2:</strong> {{ client.address2 || 'N/A' }}</mat-list-item>
+        <mat-list-item>
+          <strong>{{ 'phone' | translate }}:</strong> {{ client.phoneNumber }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>{{ 'otherPhone' | translate }}:</strong>
+          {{ client.OtherPhoneNumber || ('notAvailable' | translate) }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>{{ 'address' | translate }}:</strong> {{ client.address }}
+        </mat-list-item>
+        <mat-list-item>
+          <strong>{{ 'address2' | translate }}:</strong>
+          {{ client.address2 || ('notAvailable' | translate) }}
+        </mat-list-item>
       </mat-list>
     </mat-card-content>
   </mat-card>
 
-  <h3 class="section-title">Orders for {{ client.fullName }}</h3>
+  <h3 class="section-title">
+    {{ 'ordersFor' | translate:{ name: client.fullName } }}
+  </h3>
   <div *ngIf="orders$ | async as orders; else noOrders">
     <mat-accordion multi>
       <mat-expansion-panel *ngFor="let order of orders">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Order ID: {{ order.id }} &nbsp; - &nbsp; Cost: ${{ order.cost }}
+            {{ 'orderId' | translate:{ id: order.id } }} &nbsp; - &nbsp;
+            {{ 'cost' | translate:{ cost: order.cost } }}
           </mat-panel-title>
           <mat-panel-description>
-            Profit: ${{ calculateProfit(order) }}
+            {{ 'profit' | translate:{ profit: calculateProfit(order) } }}
           </mat-panel-description>
         </mat-expansion-panel-header>
 
         <mat-list>
-          <mat-list-item><strong>Quantity:</strong> {{ order.quantity }}</mat-list-item>
-          <mat-list-item><strong>Discount:</strong> {{ order.discount }}%</mat-list-item>
-          <mat-list-item><strong>Delivery:</strong> ${{ order.delivery }}</mat-list-item>
-          <mat-list-item><strong>Shipping Cost:</strong> ${{ order.shippingCost }}</mat-list-item>
-          <mat-list-item><strong>Tax:</strong> ${{ order.tax }}</mat-list-item>
-          <mat-list-item><strong>Choice:</strong> {{ order.choice }}</mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'quantity' | translate }}:</strong> {{ order.quantity }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'discount' | translate }}:</strong> {{ order.discount }}%
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'delivery' | translate }}:</strong> ${{ order.delivery }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'shippingCost' | translate }}:</strong> ${{ order.shippingCost }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'tax' | translate }}:</strong> ${{ order.tax }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ 'choice' | translate }}:</strong> {{ order.choice }}
+          </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
+
   <ng-template #noOrders>
-    <p>No orders available for this client.</p>
+    <p>{{ 'noOrders' | translate }}</p>
   </ng-template>
 
   <h3 class="section-title">Client Images</h3>
@@ -54,7 +83,12 @@
       id="image-upload"
       hidden
     />
-    <label mat-raised-button color="primary" for="image-upload" class="upload-label">
+    <label
+      mat-raised-button
+      color="primary"
+      for="image-upload"
+      class="upload-label"
+    >
       Upload Image
       <mat-icon>upload</mat-icon>
     </label>
@@ -66,7 +100,20 @@
         <mat-card class="image-card">
           <img mat-card-image [src]="image.url" alt="Client Image" />
           <mat-card-actions align="end">
-            <button mat-icon-button color="warn" (click)="deleteImage(i)" aria-label="Delete Image">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="downloadImage(image.url, clientId + '-' + i + '.jpg')"
+              aria-label="Download Image"
+            >
+              <mat-icon>download</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteImage(i)"
+              aria-label="Delete Image"
+            >
               <mat-icon>delete</mat-icon>
             </button>
           </mat-card-actions>

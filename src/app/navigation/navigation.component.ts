@@ -38,7 +38,7 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     private el: ElementRef,
     public firebaseServices: FirebaseService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Update currentSection on initial load & every route change
@@ -101,22 +101,22 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
- logout(): void {
-  this.isLoading = true;
+  logout(): void {
+    this.isLoading = true;
 
-  setTimeout(() => {
-    this.firebaseServices.logout();
-    this.isLogout.emit();
-    this.router.navigate(['/login']);
-    this.isLoading = false;
-  }, 1000); // Optional delay for visual feedback
-}
+    setTimeout(() => {
+      this.firebaseServices.logout();
+      this.isLogout.emit();
+      this.router.navigate(['/login']);
+      this.isLoading = false;
+    }, 1000); // Optional delay for visual feedback
+  }
 
-toggleClientsDropdown() {
-  this.isClientsDropdownOpen = !this.isClientsDropdownOpen
-  // close other dropdowns if needed
-  if (this.isClientsDropdownOpen) this.isDropdownOpen = false
-}
+  toggleClientsDropdown() {
+    this.isClientsDropdownOpen = !this.isClientsDropdownOpen
+    // close other dropdowns if needed
+    if (this.isClientsDropdownOpen) this.isDropdownOpen = false
+  }
 
   toggleMenu(): void {
     this.isNavbarOpen = !this.isNavbarOpen;
@@ -145,5 +145,5 @@ toggleClientsDropdown() {
     });
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 }

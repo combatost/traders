@@ -1,28 +1,56 @@
+<div class="page-container">
 <app-navigation></app-navigation>
-
 <section class="client-list-container">
-  <h2 class="section-title">Clients</h2>
+  <h2 class="section-title">{{ 'CLIENTS.TITLE' | translate }}</h2>
 
-<mat-list-item
-  *ngFor="let item of clientsWithOrderCount; let i = index"
-  (click)="goToClientDetail(item.id)"
-  class="client-list-item"
-  tabindex="0"
-  role="listitem"
->
-  <div
-    class="client-info"
-    [attr.aria-label]="'Client ' + item.client.fullName + ', number ' + (i + 1) + ', phone ' + item.client.phoneNumber + ', ' + item.orderCount + ' orders'"
-  >
-    <span class="client-number">{{ i + 1 }}</span>
-    <span class="client-name">Name: <strong>{{ item.client.fullName }}</strong></span>
-    <span class="client-phone">Phone: <strong>{{ item.client.phoneNumber }}</strong></span>
-    <span class="client-orders">Orders: <strong>{{ item.orderCount }}</strong></span>
+  <div class="actions-bar">
+    <mat-checkbox
+      [(ngModel)]="masterSelected"
+      (change)="selectAllClients($event)"
+      >{{ 'CLIENTS.SELECT_ALL' | translate }}</mat-checkbox
+    >
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="deleteSelectedClients()"
+      [disabled]="!anySelected()"
+    >
+      {{ 'CLIENTS.DELETE_SELECTED' | translate }}
+    </button>
   </div>
-  <mat-icon class="navigate-icon" aria-hidden="true">arrow_forward_ios</mat-icon>
-</mat-list-item>
+
+  <mat-list-item
+    *ngFor="let item of clientsWithOrderCount; let i = index"
+    class="client-list-item"
+    tabindex="0"
+    role="listitem"
+    (click)="goToClientDetail(item.id)"
+  >
+    <div
+      class="client-info"
+      [attr.aria-label]="'Client ' + item.client.fullName + ', number ' + (i + 1) + ', phone ' + item.client.phoneNumber + ', ' + item.orderCount + ' orders'"
+    >
+      <span class="client-number">{{ i + 1 }}</span>
+      <span class="client-name">{{ 'CLIENTS.NAME' | translate }}: <strong>{{ item.client.fullName }}</strong></span>
+      <span class="client-phone">{{ 'CLIENTS.PHONE' | translate }}: <strong>{{ item.client.phoneNumber }}</strong></span>
+      <span class="client-orders">
+        {{ 'CLIENTS.ORDERS' | translate }}: <strong>{{ item.orderCount }}</strong>
+
+        <mat-checkbox
+          [(ngModel)]="item.selected"
+          (change)="checkIfAllSelected()"
+          (click)="$event.stopPropagation()"
+          [attr.aria-label]="('CLIENTS.SELECT_CLIENT' | translate) + ' ' + item.client.fullName"
+          class="order-checkbox"
+        ></mat-checkbox>
+      </span>
+    </div>
+
+    <mat-icon class="navigate-icon" aria-hidden="true">arrow_forward_ios</mat-icon>
+  </mat-list-item>
 
   <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
-    No clients found.
+    {{ 'CLIENTS.NO_CLIENTS' | translate }}
   </div>
 </section>
+<app-footer></app-footer>

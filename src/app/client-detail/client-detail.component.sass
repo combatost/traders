@@ -1,111 +1,120 @@
+// Theme Colors
+$primary-blue: #1a73e8
+$blue-dark: #174ea6
+$accent-blue: #4285f4
+$light-bg: #f0f4f8
+$white: #ffffff
+$text-dark: #1f1f1f
+
+$card-radius: 14px
+$shadow-light: 0 8px 16px rgba(26, 115, 232, 0.1)
+$shadow-hover: 0 12px 24px rgba(26, 115, 232, 0.2)
+$transition: all 0.3s ease
+$gap: 1.5rem
+
 .client-detail-container
   max-width: 1100px
-  margin: 32px auto
-  padding: 0 16px
+  margin: 2rem auto
+  padding: 2rem 1rem
   display: flex
   flex-direction: column
-  gap: 32px
+  gap: 2rem
+  transition: $transition
 
-.client-card,
-.image-upload-card
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12)
-  border-radius: 12px
+  &:hover
+    transform: translateY(-4px)
 
-mat-card-header
-  background-color: #3f51b5
-  color: white
-  border-top-left-radius: 12px
-  border-top-right-radius: 12px
-  padding: 16px 24px
+  .client-card,
+  .image-upload-card
+    background-color: $white
+    box-shadow: $shadow-light
+    border-radius: $card-radius
+    padding: 1.5rem
+    transition: $transition
 
-mat-card-title
-  font-weight: 700
-  font-size: 1.4rem
+    &:hover
+      box-shadow: $shadow-hover
+      transform: translateY(-3px)
 
-mat-card-subtitle
-  font-size: 1rem
-  opacity: 0.85
+  .section-title
+    font-weight: 700
+    font-size: 1.5rem
+    margin-bottom: 1rem
+    color: $primary-blue
+    border-bottom: 2px solid lighten($primary-blue, 40%)
+    padding-bottom: 0.5rem
 
-mat-list
-  padding: 0 24px 16px
-  mat-list-item
-    font-size: 1rem
-    padding: 6px 0
+  .image-upload-card
+    display: flex
+    justify-content: center
+    margin-bottom: 1rem
 
-.section-title
-  font-weight: 700
-  font-size: 1.5rem
-  margin-bottom: 16px
-  color: #3f51b5
-  border-bottom: 2px solid #3f51b5
-  padding-bottom: 6px
+    .upload-label
+      display: inline-flex
+      align-items: center
+      gap: 8px
+      cursor: pointer
+      font-weight: 600
+      font-size: 1rem
+      padding: 10px 24px
+      border-radius: 8px
+      background-color: $accent-blue
+      color: $white
+      user-select: none
+      transition: background-color 0.3s ease
 
-.upload-label
-  display: inline-flex
-  align-items: center
-  gap: 8px
-  cursor: pointer
-  font-weight: 600
-  font-size: 1rem
-  padding: 10px 24px
-  border-radius: 8px
-  user-select: none
+      &:hover
+        background-color: darken($accent-blue, 10%)
 
-.upload-label mat-icon
-  font-size: 20px
+      mat-icon
+        font-size: 20px
+
+  .uploaded-images
+    mat-grid-list
+      margin-top: 1rem
+      width: 100%
+
+      mat-grid-tile
+        padding: 8px
+
+        .image-card
+          position: relative
+          border-radius: $card-radius
+          box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1)
+          transition: box-shadow 0.3s ease
+
+          &:hover
+            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2)
+
+          img[mat-card-image]
+            width: 100%
+            height: 150px
+            object-fit: cover
+            border-radius: $card-radius
+
+          mat-card-actions
+            position: absolute
+            top: 8px
+            right: 8px
+            padding: 4px
+            z-index: 10
+
+            button
+              color:#1a73e8
+              width: 32px
+              height: 32px
+
+              mat-icon
+                font-size: 20px
 
 .loading-container
   display: flex
   flex-direction: column
-  justify-content: center
   align-items: center
-  height: 250px
-  gap: 16px
+  justify-content: center
+  padding: 40px
+  color: #666
 
-.uploaded-images
-  mat-grid-list
-    margin-top: 16px
-
-  mat-grid-tile
-    padding: 8px
-
-    .image-card
-      position: relative
-      border-radius: 12px
-      overflow: hidden
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12)
-      transition: box-shadow 0.3s ease
-
-      &:hover
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24)
-
-      img[mat-card-image]
-        display: block
-        width: 100%
-        height: 150px
-        object-fit: cover
-        border-radius: 12px
-
-      mat-card-actions
-        position: absolute
-        top: 8px
-        right: 8px
-        background-color: rgba(255, 255, 255, 0.85)
-        border-radius: 50%
-        padding: 4px
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15)
-        z-index: 10
-
-        button
-          color: #d32f2f
-          width: 32px
-          height: 32px
-
-          mat-icon
-            font-size: 20px
-
-button[mat-icon-button]
-  transition: background-color 0.3s ease
-
-  &:hover
-    background-color: rgba(244, 67, 54, 0.15)
+  p
+    margin-top: 12px
+    font-size: 1.1rem

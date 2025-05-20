@@ -23,7 +23,10 @@ export class ListComponent implements OnInit {
     id: string
     client: Client
     orderCount: number
+    selected?: boolean
   }> = []
+
+  masterSelected = false
 
   constructor(
     private firestore: AngularFirestore,
@@ -43,7 +46,6 @@ export class ListComponent implements OnInit {
             .snapshotChanges()
         }),
         switchMap(clientSnapshots => {
-          // Map clients and fetch order counts for each
           const clientsData = clientSnapshots.map(snap => {
             const id = snap.payload.doc.id
             const client = snap.payload.doc.data() as Client
@@ -52,7 +54,6 @@ export class ListComponent implements OnInit {
 
           if (clientsData.length === 0) return of([])
 
-          // For each client, get order count from sheinTables collection
           const observables = clientsData.map(({ id, client }) =>
             this.firestore
               .collection(`sheinTables/${this.userId}/records`, ref =>
@@ -73,11 +74,61 @@ export class ListComponent implements OnInit {
         })
       )
       .subscribe(results => {
-        this.clientsWithOrderCount = results
+        this.clientsWithOrderCount = results.map(client => ({
+          ...client,
+          selected: false,
+        }))
+        this.masterSelected = false
       })
   }
 
   goToClientDetail(clientId: string) {
     this.router.navigate(['/client-details', clientId])
+  }
+
+  selectAllClients(event: any) {
+    const checked = event.checked
+    this.clientsWithOrderCount.forEach(client => (client.selected = checked))
+  }
+
+  checkIfAllSelected() {
+    this.masterSelected =
+      this.clientsWithOrderCount.every(client => client.selected === true) &&
+      this.clientsWithOrderCount.length > 0
+  }
+
+  anySelected(): boolean {
+    return this.clientsWithOrderCount.some(client => client.selected)
+  }
+
+  deleteSelectedClients() {
+    const toDelete = this.clientsWithOrderCount.filter(c => c.selected)
+    if (toDelete.length === 0) return
+
+    if (!confirm(`Are you sure you want to delete ${toDelete.length} client(s)?`))
+      return
+
+    const batch = this.firestore.firestore.batch()
+
+    toDelete.forEach(client => {
+      const docRef = this.firestore
+        .collection(`clients/${this.userId}/records`)
+        .doc(client.id).ref
+      batch.delete(docRef)
+    })
+
+    batch
+      .commit()
+      .then(() => {
+        // Update local list after deletion
+        this.clientsWithOrderCount = this.clientsWithOrderCount.filter(
+          c => !c.selected
+        )
+        this.masterSelected = false
+      })
+      .catch(err => {
+        console.error('Error deleting clients:', err)
+        alert('Failed to delete clients. Please try again.')
+      })
   }
 }

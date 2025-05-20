@@ -145,6 +145,7 @@
       "EDIT_PAYMENT": "Edit Payment Info"
     },
     "PASSWORD": {
+      "OLD": "Old Password",
       "TITLE": "Password",
       "CHANGE": "Change",
       "NEW": "New Password",
@@ -158,11 +159,43 @@
     },
     "LOGOUT": "Logout"
   },
-   "HISTORY": {
+  "HISTORY": {
     "DELETE_SELECTED": "Delete Selected"
   },
   "form2": {
     "includeProfit": "Include Quantity in Profit",
     "includeProfitExplanation": "When enabled, the profit calculation will take the quantity into account, providing a more accurate total profit."
-  }
+  },
+  "CLIENTS.TITLE": "Clients",
+  "CLIENTS.SELECT_ALL": "Select All",
+  "CLIENTS.DELETE_SELECTED": "Delete Selected",
+  "CLIENTS.NO_CLIENTS": "No clients found.",
+  "CLIENTS.NAME": "Name",
+  "CLIENTS.PHONE": "Phone",
+  "CLIENTS.ORDERS": "Orders",
+  "CLIENTS.SELECT_CLIENT": "Select client",
+  "clientDetails": "Client Details: {{name}}",
+  "location": "{{location}}",
+  "phone": "Phone",
+  "otherPhone": "Other Phone",
+  "address": "Address",
+  "address2": "Address 2",
+  "notAvailable": "N/A",
+  "ordersFor": "Orders for {{name}}",
+  "orderId": "Order ID: {{id}}",
+  "cost": "Cost: ${{cost}}",
+  "profit": "Profit: ${{profit}}",
+  "quantity": "Quantity",
+  "discount": "Discount",
+  "delivery": "Delivery",
+  "shippingCost": "Shipping Cost",
+  "tax": "Tax",
+  "choice": "Choice",
+  "noOrders": "No orders available for this client.",
+  "clientImages": "Client Images",
+  "uploadImage": "Upload Image",
+  "downloadImage": "Download Image",
+  "deleteImage": "Delete Image",
+  "loadingClientDetails": "Loading client details...",
+  "clientsList": "Clients List"
 }

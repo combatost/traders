@@ -2,87 +2,136 @@
 
 <section class="settings-page">
   <div class="settings-header">
-    <h2>{{ 'SETTINGS.TITLE' | translate }}</h2>
-    <p>{{ 'SETTINGS.DESCRIPTION' | translate }}</p>
+    <h2>{{ "SETTINGS.TITLE" | translate }}</h2>
+    <p>{{ "SETTINGS.DESCRIPTION" | translate }}</p>
   </div>
 
   <div class="settings-section">
     <!-- Profile Info -->
     <div class="card">
       <div class="card-header">
-        <h3>{{ 'SETTINGS.PROFILE.TITLE' | translate }}</h3>
-        <button mat-stroked-button color="primary" (click)="enableEdit()" *ngIf="!isEditMode">
-          {{ 'SETTINGS.PROFILE.EDIT' | translate }}
+        <h3>{{ "SETTINGS.PROFILE.TITLE" | translate }}</h3>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="enableEdit()"
+          *ngIf="!isEditMode"
+        >
+          {{ "SETTINGS.PROFILE.EDIT" | translate }}
         </button>
         <div *ngIf="isEditMode">
           <button mat-flat-button color="primary" (click)="saveUserData()">
-            {{ 'SETTINGS.PROFILE.SAVE' | translate }}
+            {{ "SETTINGS.PROFILE.SAVE" | translate }}
           </button>
-          <button mat-button (click)="cancelEdit()">
-            {{ 'SETTINGS.PROFILE.CANCEL' | translate }}
+          <button
+            mat-stroked-button
+            color="primary"
+            mat-button
+            (click)="cancelEdit()"
+          >
+            {{ "SETTINGS.PROFILE.CANCEL" | translate }}
           </button>
         </div>
       </div>
 
       <div class="card-content">
         <mat-form-field *ngIf="isEditMode" class="full-width">
-          <mat-label>{{ 'SETTINGS.PROFILE.FULL_NAME' | translate }}</mat-label>
-          <input matInput [(ngModel)]="userData.fullName" name="fullName">
+          <mat-label>{{ "SETTINGS.PROFILE.FULL_NAME" | translate }}</mat-label>
+          <input matInput [(ngModel)]="userData.fullName" name="fullName" />
         </mat-form-field>
-        <p *ngIf="!isEditMode"><strong>{{ 'SETTINGS.PROFILE.FULL_NAME' | translate }}:</strong> {{ userData.fullName || '-' }}</p>
+        <p *ngIf="!isEditMode">
+          <strong>{{ "SETTINGS.PROFILE.FULL_NAME" | translate }}:</strong>
+          {{ userData.fullName || "-" }}
+        </p>
 
         <mat-form-field *ngIf="isEditMode" class="full-width">
-          <mat-label>{{ 'SETTINGS.PROFILE.BIRTH_DATE' | translate }}</mat-label>
-          <input matInput [matDatepicker]="picker" [(ngModel)]="userData.birthDate" name="birthDate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-label>{{ "SETTINGS.PROFILE.BIRTH_DATE" | translate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [(ngModel)]="userData.birthDate"
+            name="birthDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <p *ngIf="!isEditMode"><strong>{{ 'SETTINGS.PROFILE.BIRTH_DATE' | translate }}:</strong> {{ userData.birthDate | date:'mediumDate' }}</p>
+        <p *ngIf="!isEditMode">
+          <strong>{{ "SETTINGS.PROFILE.BIRTH_DATE" | translate }}:</strong>
+          {{ userData.birthDate | date : "mediumDate" }}
+        </p>
 
         <mat-form-field *ngIf="isEditMode" class="full-width">
-          <mat-label>{{ 'SETTINGS.PROFILE.BIO' | translate }}</mat-label>
-          <textarea matInput rows="3" [(ngModel)]="userData.bio" name="bio"></textarea>
+          <mat-label>{{ "SETTINGS.PROFILE.BIO" | translate }}</mat-label>
+          <textarea
+            matInput
+            rows="3"
+            [(ngModel)]="userData.bio"
+            name="bio"
+          ></textarea>
         </mat-form-field>
-        <p *ngIf="!isEditMode"><strong>{{ 'SETTINGS.PROFILE.BIO' | translate }}:</strong> {{ userData.bio || '-' }}</p>
-      </div>
-    </div>
-
-    <!-- Store & Payment -->
-    <div class="card">
-      <div class="card-header">
-        <h3>{{ 'SETTINGS.BUSINESS.TITLE' | translate }}</h3>
-      </div>
-      <div class="card-content">
-        <p><strong>{{ 'SETTINGS.BUSINESS.STORE_NAME' | translate }}:</strong> SheinTrading Dropship Store</p>
-        <p><strong>{{ 'SETTINGS.BUSINESS.SUBSCRIPTION' | translate }}:</strong> Premium Plan</p>
-        <p><strong>{{ 'SETTINGS.BUSINESS.PAYMENT_METHOD' | translate }}:</strong> **** **** **** 1234</p>
-        <button mat-button>{{ 'SETTINGS.BUSINESS.EDIT_PAYMENT' | translate }}</button>
+        <p *ngIf="!isEditMode">
+          <strong>{{ "SETTINGS.PROFILE.BIO" | translate }}:</strong>
+          {{ userData.bio || "-" }}
+        </p>
       </div>
     </div>
 
     <!-- Password Change -->
     <div class="card">
       <div class="card-header">
-        <h3>{{ 'SETTINGS.PASSWORD.TITLE' | translate }}</h3>
-        <button mat-button (click)="openPasswordChangeForm()" *ngIf="!showPasswordForm">
-          {{ 'SETTINGS.PASSWORD.CHANGE' | translate }}
+        <h3>{{ "SETTINGS.PASSWORD.TITLE" | translate }}</h3>
+        <button
+          mat-stroked-button
+          color="primary"
+          mat-button
+          (click)="openPasswordChangeForm()"
+          *ngIf="!showPasswordForm"
+        >
+          {{ "SETTINGS.PASSWORD.CHANGE" | translate }}
         </button>
       </div>
       <div class="card-content" *ngIf="showPasswordForm">
         <form (ngSubmit)="changePassword()">
           <mat-form-field class="full-width">
-            <mat-label>{{ 'SETTINGS.PASSWORD.NEW' | translate }}</mat-label>
-            <input matInput type="password" [(ngModel)]="newPassword" name="newPassword">
+            <mat-label>{{ "SETTINGS.PASSWORD.OLD" | translate }}</mat-label>
+            <input
+              matInput
+              type="password"
+              [(ngModel)]="oldPassword"
+              name="oldPassword"
+            />
           </mat-form-field>
           <mat-form-field class="full-width">
-            <mat-label>{{ 'SETTINGS.PASSWORD.CONFIRM' | translate }}</mat-label>
-            <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword">
+            <mat-label>{{ "SETTINGS.PASSWORD.NEW" | translate }}</mat-label>
+            <input
+              matInput
+              type="password"
+              [(ngModel)]="newPassword"
+              name="newPassword"
+            />
           </mat-form-field>
-          <button mat-flat-button color="primary" type="submit">{{ 'SETTINGS.PASSWORD.SAVE' | translate }}</button>
-          <button mat-button type="button" (click)="cancelPasswordChange()">
-            {{ 'SETTINGS.PASSWORD.CANCEL' | translate }}
+          <mat-form-field class="full-width">
+            <mat-label>{{ "SETTINGS.PASSWORD.CONFIRM" | translate }}</mat-label>
+            <input
+              matInput
+              type="password"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+            />
+          </mat-form-field>
+
+          <button mat-flat-button color="primary" type="submit">
+            {{ "SETTINGS.PASSWORD.SAVE" | translate }}
           </button>
-          <p class="success-message" *ngIf="passwordChangeMessage">{{ passwordChangeMessage }}</p>
+          <button mat-button type="button" (click)="cancelPasswordChange()">
+            {{ "SETTINGS.PASSWORD.CANCEL" | translate }}
+          </button>
+          <p class="success-message" *ngIf="passwordChangeMessage">
+            {{ passwordChangeMessage }}
+          </p>
         </form>
       </div>
     </div>
@@ -90,18 +139,18 @@
     <!-- Danger Zone -->
     <div class="card danger">
       <div class="card-header">
-        <h3>{{ 'SETTINGS.DANGER_ZONE.TITLE' | translate }}</h3>
+        <h3>{{ "SETTINGS.DANGER_ZONE.TITLE" | translate }}</h3>
       </div>
       <div class="card-content">
         <button mat-flat-button color="warn" (click)="deleteAccount()">
-          {{ 'SETTINGS.DANGER_ZONE.DELETE_ACCOUNT' | translate }}
+          {{ "SETTINGS.DANGER_ZONE.DELETE_ACCOUNT" | translate }}
         </button>
       </div>
     </div>
 
     <div class="logout-button">
       <button mat-stroked-button color="primary" (click)="logout()">
-        {{ 'SETTINGS.LOGOUT' | translate }}
+        {{ "SETTINGS.LOGOUT" | translate }}
       </button>
     </div>
   </div>

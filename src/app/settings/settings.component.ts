@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core'
 import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { AngularFirestore } from '@angular/fire/compat/firestore'
 import { Router } from '@angular/router'
+import { MatDialog } from '@angular/material/dialog'
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'
+import firebase from 'firebase/compat/app'
 
 @Component({
   selector: 'app-settings',
@@ -19,19 +22,20 @@ export class SettingsComponent implements OnInit {
   }
 
   isEditMode = false
+  originalUserData: any = {}
 
-  // Password change form controls
+  // Password change fields
   showPasswordForm = false
+  oldPassword = ''
   newPassword = ''
   confirmPassword = ''
   passwordChangeMessage = ''
 
-  originalUserData: any = {}
-
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,8 +56,7 @@ export class SettingsComponent implements OnInit {
         if (data) {
           this.userData = { ...data }
           this.originalUserData = { ...data }
-          // Convert Firestore timestamp to JS Date if needed
-          if (data.birthDate && data.birthDate.toDate) {
+          if (data.birthDate?.toDate) {
             this.userData.birthDate = data.birthDate.toDate()
             this.originalUserData.birthDate = this.userData.birthDate
           }
@@ -67,29 +70,34 @@ export class SettingsComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    // Reset to original user data when canceling the edit
     this.userData = { ...this.originalUserData }
     this.isEditMode = false
   }
 
-  saveUserData(): void {
+  async confirmDialog(message: string): Promise<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '320px',
+      data: { message },
+    })
+    return await dialogRef.afterClosed().toPromise()
+  }
+
+  async saveUserData(): Promise<void> {
     if (!this.user?.uid) return
 
-    this.afs
-      .collection('users')
-      .doc(this.user.uid)
-      .update({
+    try {
+      await this.afs.collection('users').doc(this.user.uid).update({
         fullName: this.userData.fullName || '',
         birthDate: this.userData.birthDate || '',
         bio: this.userData.bio || '',
         photoURL: this.userData.photoURL || '',
       })
-      .then(() => {
-        alert('Profile updated!')
-        this.originalUserData = { ...this.userData }
-        this.isEditMode = false
-      })
-      .catch((err) => alert('Error saving profile: ' + err.message))
+      await this.confirmDialog('Profile updated successfully.')
+      this.originalUserData = { ...this.userData }
+      this.isEditMode = false
+    } catch (err: any) {
+      await this.confirmDialog('Error saving profile: ' + err.message)
+    }
   }
 
   openPasswordChangeForm(): void {
@@ -98,65 +106,62 @@ export class SettingsComponent implements OnInit {
 
   cancelPasswordChange(): void {
     this.showPasswordForm = false
+    this.oldPassword = ''
     this.newPassword = ''
     this.confirmPassword = ''
     this.passwordChangeMessage = ''
   }
 
-  changePassword(): void {
+  async changePassword(): Promise<void> {
     if (this.newPassword !== this.confirmPassword) {
-      alert('Passwords do not match!')
+      this.passwordChangeMessage = 'Passwords do not match!'
       return
     }
 
     if (this.newPassword.length < 8) {
-      alert('Password must be at least 8 characters.')
+      this.passwordChangeMessage = 'Password must be at least 8 characters.'
       return
     }
 
-    this.afAuth.currentUser
-      .then((user) => {
-        if (user) {
-          return user.updatePassword(this.newPassword)
-        } else {
-          throw new Error('User not found')
-        }
-      })
-      .then(() => {
-        this.passwordChangeMessage = 'Password changed successfully!'
-        setTimeout(() => {
-          this.cancelPasswordChange()
-        }, 2000)
-      })
-      .catch((err) => {
-        alert(`Error: ${err.message}`)
-      })
+    const user = await this.afAuth.currentUser
+    if (!user || !user.email) {
+      this.passwordChangeMessage = 'User not authenticated'
+      return
+    }
+
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      this.oldPassword
+    )
+
+    try {
+      await user.reauthenticateWithCredential(credential)
+      await user.updatePassword(this.newPassword)
+      this.passwordChangeMessage = 'Password changed successfully!'
+      setTimeout(() => this.cancelPasswordChange(), 2000)
+    } catch (err: any) {
+      this.passwordChangeMessage = `Error: ${err.message}`
+    }
   }
 
-  deleteAccount(): void {
-    if (
-      !confirm(
-        'Are you sure you want to delete your account? This action is irreversible.'
-      )
+  async deleteAccount(): Promise<void> {
+    const confirmed = await this.confirmDialog(
+      'Are you sure you want to delete your account? This action is irreversible.'
     )
-      return
+    if (!confirmed) return
 
     const uid = this.user?.uid
     if (!uid) return
 
-    this.afAuth.currentUser
-      .then((user) => {
-        return this.afs
-          .collection('users')
-          .doc(uid)
-          .delete()
-          .then(() => user?.delete())
-      })
-      .then(() => {
-        alert('Account deleted successfully.')
-        this.router.navigate(['/login'])
-      })
-      .catch((err) => alert(`Error: ${err.message}`))
+    const user = await this.afAuth.currentUser
+    try {
+      await this.afs.collection('users').doc(uid).delete()
+      await user?.delete()
+      await this.confirmDialog('Account deleted successfully.')
+      this.router.navigate(['/login'])
+    } catch (err: any) {
+      await this.confirmDialog(`Error: ${err.message}`)
+    }
   }
 
   logout(): void {

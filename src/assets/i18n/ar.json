@@ -145,6 +145,7 @@
       "EDIT_PAYMENT": "تعديل معلومات الدفع"
     },
     "PASSWORD": {
+      "OLD": "كلمة المرور القديمة",
       "TITLE": "كلمة المرور",
       "CHANGE": "تغيير",
       "NEW": "كلمة المرور الجديدة",
@@ -158,11 +159,43 @@
     },
     "LOGOUT": "تسجيل الخروج"
   },
-    "HISTORY": {
+  "HISTORY": {
     "DELETE_SELECTED": "حذف المحدد"
   },
   "form2": {
     "includeProfit": "تضمين الكمية في الربح",
     "includeProfitExplanation": "عند التفعيل، سيتم حساب الربح بناءً على الكمية، مما يوفر إجمالي ربح أكثر دقة."
-  }
+  },
+  "CLIENTS.TITLE": "العملاء",
+  "CLIENTS.SELECT_ALL": "تحديد الكل",
+  "CLIENTS.DELETE_SELECTED": "حذف المحددين",
+  "CLIENTS.NO_CLIENTS": "لم يتم العثور على عملاء.",
+  "CLIENTS.NAME": "الاسم",
+  "CLIENTS.PHONE": "رقم الهاتف",
+  "CLIENTS.ORDERS": "الطلبات",
+  "CLIENTS.SELECT_CLIENT": "تحديد العميل",
+  "clientDetails": "تفاصيل العميل: {{name}}",
+  "location": "{{location}}",
+  "phone": "الهاتف",
+  "otherPhone": "هاتف آخر",
+  "address": "العنوان",
+  "address2": "العنوان 2",
+  "notAvailable": "غير متوفر",
+  "ordersFor": "الطلبات الخاصة بـ {{name}}",
+  "orderId": "رقم الطلب: {{id}}",
+  "cost": "التكلفة: ${{cost}}",
+  "profit": "الربح: ${{profit}}",
+  "quantity": "الكمية",
+  "discount": "الخصم",
+  "delivery": "التوصيل",
+  "shippingCost": "تكلفة الشحن",
+  "tax": "الضريبة",
+  "choice": "الاختيار",
+  "noOrders": "لا توجد طلبات لهذا العميل.",
+  "clientImages": "صور العميل",
+  "uploadImage": "رفع صورة",
+  "downloadImage": "تحميل الصورة",
+  "deleteImage": "حذف الصورة",
+  "loadingClientDetails": "جارٍ تحميل تفاصيل العميل...",
+  "clientsList": "قائمة العملاء"
 }

@@ -125,4 +125,13 @@ async deleteImage(index: number): Promise<void> {
   async loadImages(): Promise<void> {
     this.clientImages = await this.imageStorage.getImagesForClient(this.clientId);
   }
+  downloadImage(url: string, filename: string): void {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 }
