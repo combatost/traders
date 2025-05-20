@@ -1,0 +1,40 @@
+.version-alert
+  position: fixed
+  top: 1rem
+  right: 1rem
+  background-color: #4285f4   // Google Blue
+  color: white
+  padding: 1rem 1.5rem
+  border-radius: 8px
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.5)
+  font-weight: 700
+  display: flex
+  align-items: center
+  gap: 1rem
+  user-select: none
+  z-index: 10000
+  animation: slideIn 0.4s ease forwards
+
+  span
+    font-size: 1rem
+
+  .close-btn
+    background: transparent
+    border: none
+    color: white
+    font-size: 1.3rem
+    cursor: pointer
+    padding: 0
+    line-height: 1
+    font-weight: 900
+
+    &:hover
+      color: #c1d9ff
+
+@keyframes slideIn
+  from
+    opacity: 0
+    transform: translateX(100%)
+  to
+    opacity: 1
+    transform: translateX(0)

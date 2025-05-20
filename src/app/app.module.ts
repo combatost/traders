@@ -37,6 +37,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { ListComponent } from './list/list.component';
+import { VersionAlertComponent } from './version-alert/version-alert.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -62,7 +63,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ErrorAlertComponent,
     WindowComponent,
     ClientDetailComponent,
-    ListComponent
+    ListComponent,
+    VersionAlertComponent
   ],
   imports: [
     AngularFireModule.initializeApp({

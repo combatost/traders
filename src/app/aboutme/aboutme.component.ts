@@ -69,28 +69,31 @@ export class AboutmeComponent implements OnInit {
     return this._videoUrl;
   }
 
-  private loadFuturisticVideo(): void {
-    this.videoService.getFuturisticVideo().subscribe({
-      next: (response) => {
-        const video = response.videos?.[0];
-        if (!video) {
-          console.warn('No videos found in response');
-          this._videoUrl = null;
-          return;
-        }
-
-        const mp4Video = video.video_files.find((file: any) =>
-          file.file_type === 'video/mp4' && file.quality === 'sd'
-        );
-
-        this._videoUrl = mp4Video?.link || video.video_files?.[0]?.link || null;
-      },
-      error: (err) => {
-        console.error('Failed to load video from API', err);
+private loadFuturisticVideo(): void {
+  this.videoService.getFuturisticVideo().subscribe({
+    next: (response) => {
+      const videos = response.videos || [];
+      if (videos.length === 0) {
+        console.warn('No videos found');
         this._videoUrl = null;
+        return;
       }
-    });
-  }
+
+      // Shuffle logic: pick a random video
+      const randomIndex = Math.floor(Math.random() * videos.length);
+      const video = videos[randomIndex];
+
+      const mp4 = video.video_files.find(
+        (file: any) => file.file_type === 'video/mp4' && file.quality === 'sd'
+      );
+      this._videoUrl = mp4?.link || video.video_files[0]?.link || null;
+    },
+    error: (err) => {
+      console.error('Error loading video', err);
+      this._videoUrl = null;
+    }
+  });
+}
 
 
 }

@@ -59,7 +59,7 @@
         box-shadow: none
         cursor: not-allowed
 
-  mat-list-item.client-list-item
+  .client-list-item
     background: #f7f9fc
     border-radius: 12px
     margin-bottom: 1.1rem
@@ -70,6 +70,7 @@
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04)
     transition: background-color 0.25s ease, box-shadow 0.25s ease
     user-select: none
+    cursor: pointer
 
     &:hover,
     &:focus-visible
@@ -83,7 +84,6 @@
       gap: 1.6rem
       flex: 1
       align-items: center
-      cursor: pointer
 
       span
         display: flex
@@ -109,7 +109,6 @@
         align-items: center
         gap: 0.8rem
 
-    // Separate checkbox container to avoid triggering parent click
     .order-checkbox
       cursor: pointer
       margin-left: 1.2rem
@@ -127,7 +126,6 @@
       &:hover .mat-checkbox-frame
         border-color: #2c387e
 
-    // Navigation arrow icon styling
     .navigate-icon
       color: #9aa7bf
       font-size: 1.8rem
@@ -135,7 +133,7 @@
       transition: color 0.3s ease
       user-select: none
 
-      mat-list-item.client-list-item:hover &
+      .client-list-item:hover &
         color: #3f51b5
 
   .no-clients

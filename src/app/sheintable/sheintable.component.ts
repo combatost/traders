@@ -25,6 +25,8 @@ export class SheintableComponent implements OnInit {
   pageSize = 5
   displayedColumns = ['client', 'quantity', 'cost', 'discount', 'delivery', 'shippingCost', 'tax', 'choice', 'profit', 'actions']
   editingRowId: string | null = null
+  isLoading = true;        // show loader initially
+
 
   constructor(
     private fb: FormBuilder,
@@ -51,19 +53,29 @@ export class SheintableComponent implements OnInit {
       if (user) {
         this.userId = user.uid
         this.loadData()
+      } else {
+        this.isLoading = false  // stop loading even if no user
       }
     })
   }
 
+  // In loadData() remove any assignments to showStartScreen:
   loadData(): void {
-    this.firestore.collection(`sheinTables/${this.userId}/records`).snapshotChanges().subscribe(snapshot => {
-      this.onselect = snapshot.map(doc => {
-        const data = doc.payload.doc.data() as any
-        return { id: doc.payload.doc.id, ...data }
-      })
-      this.applyFilter() // Apply filter initially (empty filter = all)
+  this.firestore.collection(`sheinTables/${this.userId}/records`).snapshotChanges().subscribe(snapshot => {
+    this.onselect = snapshot.map(doc => {
+      const data = doc.payload.doc.data() as any
+      return { id: doc.payload.doc.id, ...data }
     })
-  }
+
+    this.isLoading = false
+
+    this.applyFilter()
+  }, error => {
+    console.error('Error loading data:', error)
+    this.isLoading = false
+  })
+}
+
 
   applyFilter(): void {
     const filterValue = this.searchTerm.trim().toLowerCase()

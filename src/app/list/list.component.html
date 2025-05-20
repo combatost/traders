@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  <mat-list-item
+  <div
     *ngFor="let item of clientsWithOrderCount; let i = index"
     class="client-list-item"
     tabindex="0"
@@ -47,7 +47,7 @@
     </div>
 
     <mat-icon class="navigate-icon" aria-hidden="true">arrow_forward_ios</mat-icon>
-  </mat-list-item>
+  </div>
 
   <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
     {{ 'CLIENTS.NO_CLIENTS' | translate }}
