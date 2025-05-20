@@ -1,5 +1,5 @@
-// Variables
-$color-bg: transparent      // خلفية شفافة
+// Theme Variables
+$color-bg: transparent
 $color-text: #202124
 $color-primary: #1a73e8
 $color-primary-hover: darken($color-primary, 15%)
@@ -13,11 +13,14 @@ footer
   font-family: $font-family
   box-shadow: 0 -2px 12px rgba(32, 33, 36, 0.1)
   padding: 2.5rem 1rem
-  user-select: none
   width: 90%
   margin: 0 auto
   border-radius: 30px
-  background: white   
+  background: white
+  user-select: none
+
+  &.scrolled
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1)
 
   .container
     max-width: 1140px
@@ -31,13 +34,13 @@ footer
     justify-content: space-between
     align-items: center
     flex-wrap: wrap
+    gap: 2rem
 
     .logo
       display: flex
       align-items: center
       cursor: pointer
       transition: transform $transition-speed ease
-      user-select: none
 
       img
         height: 48px
@@ -57,10 +60,11 @@ footer
     .footer-nav
       ul
         display: flex
+        flex-wrap: wrap
         gap: 2rem
         list-style: none
-        margin: 0
         padding: 0
+        margin: 0
 
         li
           a
@@ -99,10 +103,10 @@ footer
       font-weight: 600
       font-size: 1rem
       color: $color-text
-      background: transparent       // خلفية شفافة بدل الأبيض
+      background: transparent
       cursor: pointer
-      transition: border-color $transition-speed ease, box-shadow $transition-speed ease
       min-width: 130px
+      transition: border-color $transition-speed ease, box-shadow $transition-speed ease
 
       &:focus
         outline: none
@@ -135,13 +139,42 @@ footer
         &:hover
           color: $color-primary
 
-// Responsive breakpoints
+// Responsive Breakpoints
 @media (max-width: 768px)
-  footer .footer-top
-    flex-direction: column
-    align-items: flex-start
-    gap: 1.5rem
+  footer
+    padding: 2rem 1rem
 
-  footer .footer-bottom
-    flex-direction: column
-    align-items: flex-start
+    .footer-top
+      flex-direction: column
+      align-items: flex-start
+      gap: 1.5rem
+
+    .footer-nav ul
+      gap: 1rem
+
+    .footer-controls
+      width: 100%
+      select
+        width: 100%
+
+    .footer-bottom
+      flex-direction: column
+      align-items: flex-start
+
+@media (max-width: 480px)
+  footer
+    padding: 1.5rem 0.75rem
+
+    .logo span
+      font-size: 1.2rem
+
+    .footer-nav ul
+      flex-direction: column
+      gap: 1rem
+
+    .footer-controls select
+      font-size: 0.95rem
+
+    .social-links
+      a
+        font-size: 1.2rem

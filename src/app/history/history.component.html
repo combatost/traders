@@ -16,7 +16,7 @@
     >
       {{ "HISTORY.DELETE_SELECTED" | translate }}
     </button>
-
+<div class="table-wrapper">
     <table>
       <thead>
         <tr>
@@ -63,7 +63,7 @@
       </tbody>
     </table>
   </div>
-
+</div>
   <div class="pagination-buttons">
     <button (click)="previousPage()" [disabled]="pageIndex === 0">
       {{ "form.cancel" | translate }}

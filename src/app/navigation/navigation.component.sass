@@ -20,6 +20,7 @@ $radius: 12px
   transition: transform 0.3s ease
   width: 90%
   margin: 0 auto
+  flex-wrap: wrap
 
   &.hidden
     transform: translateY(-100%)
@@ -28,10 +29,11 @@ $radius: 12px
     font-family: 'Montserrat', sans-serif
     font-weight: 700
     font-size: 2rem
-    color: #FF660
+    color: #FF6600
     text-transform: uppercase
     letter-spacing: .1em
     transition: color $transition
+    cursor: pointer
 
     &:hover
       color: $accent-color
@@ -44,6 +46,7 @@ $radius: 12px
     font-size: 1.8rem
     cursor: pointer
     transition: color $transition
+    margin-left: auto
 
     &:hover
       color: $accent-color
@@ -65,16 +68,13 @@ $radius: 12px
       border-radius: $radius
       transition: background $transition, color $transition
 
-      // Hover and active styling - NO underline border line
       &:hover,
       &.active
         background-color: rgba(26, 115, 232, 0.1)
         color: $accent-color
         cursor: pointer
 
-      // Remove underline border pseudo elements completely
-      &.active::after,
-      &:hover::after
+      &::after
         content: none !important
 
     &.open
@@ -161,7 +161,6 @@ $radius: 12px
     color: $primary-color
     transition: background $transition, color $transition
 
-    // Hover and active states without underline border
     &:hover,
     &.active
       background-color: rgba(26, 115, 232, 0.1)
@@ -169,12 +168,30 @@ $radius: 12px
 
 @media (max-width: 768px)
   .navbar
-    flex-wrap: wrap
+    flex-direction: column
+    align-items: flex-start
 
     &__toggle
       display: block
 
     &__menu
       display: none
-      flex-direction: column
       width: 100%
+
+      &.open
+        display: flex
+
+    .dropdown-container
+      width: 100%
+
+    .dropdown-btn
+      width: 100%
+      justify-content: space-between
+
+    .dropdown-menu
+      position: relative
+      width: 100%
+      top: 0
+      right: 0
+      box-shadow: none
+      margin: 0.25rem 0

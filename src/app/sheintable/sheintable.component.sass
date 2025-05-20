@@ -1,6 +1,5 @@
 // Theme Colors
 $primary-blue: #1a73e8
-
 $blue-dark: #174ea6
 $accent-blue: #4285f4
 $light-bg: #f0f4f8
@@ -11,9 +10,10 @@ $shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
 $transition: all 0.3s ease
 $gap: 1.5rem
 
-// Root container (centered, same width as navbar)
+// Container
 .card-container
   width: 90%
+  max-width: 1200px
   margin: 0 auto
   padding: 2rem 1rem
   min-height: 100vh
@@ -21,7 +21,7 @@ $gap: 1.5rem
   flex-direction: column
   gap: 2rem
 
-// Card design
+// Cards
 mat-card
   background-color: $white
   border-radius: $card-radius
@@ -33,7 +33,6 @@ mat-card
     transform: translateY(-4px)
     box-shadow: 0 12px 24px rgba(26, 115, 232, 0.2)
 
-// Title (if used)
 mat-card-title
   font-size: 1.4rem
   font-weight: 600
@@ -42,13 +41,12 @@ mat-card-title
   border-bottom: 2px solid lighten($primary-blue, 40%)
   padding-bottom: 0.5rem
 
-// Grid layout
+// Grid Form
 .form-grid
   display: grid
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
   gap: $gap
 
-// Form fields
 mat-form-field
   width: 100%
   background: $light-bg
@@ -61,17 +59,35 @@ mat-form-field
   mat-icon
     color: $primary-blue
 
-// Toggle
-mat-slide-toggle
-  margin-top: 1rem
-  color: $blue-dark !important
+// Slide Toggle Section
+.slide-toggle-wrapper
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  gap: 0.5rem
+  padding: 1rem
+  border: 1px solid lighten($primary-blue, 40%)
+  border-radius: 10px
+  background-color: lighten($light-bg, 2%)
+  box-shadow: 0 2px 6px rgba($primary-blue, 0.05)
 
-// Button Row
+  mat-slide-toggle
+    color: $blue-dark !important
+
+  .explanation-text
+    text-align: center
+    max-width: 500px
+    font-size: 0.95rem
+    color: lighten($text-dark, 20%)
+    font-weight: 400
+
+// Buttons Row
 .form-actions
   display: flex
   justify-content: flex-end
   gap: 1rem
   margin-top: 2rem
+  flex-wrap: wrap
 
   button
     text-transform: capitalize
@@ -84,7 +100,6 @@ mat-slide-toggle
     &:hover
       filter: brightness(0.9)
 
-// Specific button styles
 mat-raised-button
   background-color: $primary-blue
   color: $white
@@ -111,7 +126,126 @@ mat-icon-button[color='accent']
   &:hover
     color: darken($accent-blue, 10%)
 
-// Pagination and Previous/Next buttons styling
+// Search Bar
+.search-bar
+  width: 100%
+  margin: 0 auto 1.5rem
+
+  mat-form-field
+    width: 100%
+    background: $light-bg
+    border-radius: 10px
+    box-shadow: 0 2px 6px rgba($primary-blue, 0.15)
+
+    &.mat-form-field-appearance-outline
+      .mat-form-field-outline
+        color: $primary-blue
+        border-radius: 10px
+        border-width: 2px
+
+      &:hover .mat-form-field-outline
+        border-color: $accent-blue
+
+      &.mat-focused .mat-form-field-outline
+        border-color: $primary-blue
+        border-width: 2.5px
+
+    .mat-form-field-label
+      color: $blue-dark
+      font-weight: 600
+      font-size: 1rem
+      padding-left: 0.25rem
+
+    input.mat-input-element
+      padding: 0.6rem 2.5rem 0.6rem 0.75rem
+      font-size: 1rem
+      color: $text-dark
+
+      &::placeholder
+        color: lighten($text-dark, 40%)
+        opacity: 1
+        font-style: italic
+
+    button.mat-icon-button
+      color: $primary-blue
+      opacity: 0.7
+
+      &:hover
+        opacity: 1
+        color: $accent-blue
+
+      mat-icon
+        font-size: 20px
+
+// Table
+.full-width-table
+  width: 100%
+  border-spacing: 0
+  border-collapse: collapse
+  background: $white
+  border-radius: $card-radius
+  overflow-x: auto
+  display: block
+
+  th, td
+    padding: 1rem
+    text-align: left
+    border-bottom: 1px solid #e0e0e0
+    min-width: 120px
+
+  th
+    background: #e8f0fe
+    color: $blue-dark
+    font-weight: 600
+
+  td
+    color: $text-dark
+
+  tr:hover
+    background-color: #f4faff
+
+// Row States
+tr.matched, td.matched
+  background-color: #d4edda !important
+  color: #155724 !important
+
+tr.matched:hover, td.matched:hover
+  background-color: #c3e6cb !important
+
+.editing-row
+  background-color: #fff59d !important
+
+.canceled-row
+  background-color: #ffebee
+  color: #b71c1c
+  font-weight: 500
+
+.done-row
+  background-color: #e8f5e9
+  color: #2e7d32
+
+// Summary
+.summary-footer
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-top: 2rem
+  flex-wrap: wrap
+  gap: 1rem
+
+  p
+    font-weight: 500
+    color: $blue-dark
+    margin: 0
+
+  button
+    background-color: darken($accent-blue, 10%)
+    color: white
+
+    &:hover
+      background-color: darken($accent-blue, 20%)
+
+// Pagination
 .pagination-buttons
   display: flex
   gap: 1rem
@@ -136,53 +270,7 @@ mat-icon-button[color='accent']
     &:hover:not(:disabled)
       background-color: darken($accent-blue, 10%)
 
-// Table style
-.full-width-table
-  width: 100%
-  border-spacing: 0
-  border-collapse: collapse
-  background: $white
-  border-radius: $card-radius
-  overflow: hidden
-
-  th, td
-    padding: 1rem
-    text-align: left
-    border-bottom: 1px solid #e0e0e0
-
-  th
-    background: #e8f0fe
-    color: $blue-dark
-    font-weight: 600
-
-  td
-    color: $text-dark
-
-  tr:hover
-    background-color: #f4faff
-
-// Summary Section
-.summary-footer
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-top: 2rem
-  flex-wrap: wrap
-  gap: 1rem
-
-  p
-    font-weight: 500
-    color: $blue-dark
-    margin: 0
-
-  button
-    background-color: darken($accent-blue, 10%)
-    color: white
-
-    &:hover
-      background-color: darken($accent-blue, 20%)
-
-// Responsive layout
+// Responsive Adjustments
 @media (max-width: 768px)
   .form-actions
     flex-direction: column
@@ -195,99 +283,21 @@ mat-icon-button[color='accent']
   .pagination-buttons
     justify-content: space-between
 
-.search-bar
-  width: 96%
-  margin: 0 auto
+  .full-width-table
+    display: block
+    overflow-x: auto
 
-  margin-bottom: 1.5rem
+@media (max-width: 480px)
+  mat-card
+    padding: 1rem
 
-  mat-form-field
-    width: 100%
-    background: $light-bg
-    border-radius: 10px
-    box-shadow: 0 2px 6px rgba($primary-blue, 0.15)
-    transition: $transition
+  mat-card-title
+    font-size: 1.2rem
 
-    // Outline appearance tweaks
-    &.mat-form-field-appearance-outline
-      .mat-form-field-outline
-        color: $primary-blue
-        border-radius: 10px
-        border-width: 2px
-        transition: border-color 0.3s ease
+  .form-grid
+    grid-template-columns: 1fr !important
 
-      &:hover .mat-form-field-outline
-        border-color: $accent-blue
-
-      &.mat-focused .mat-form-field-outline
-        border-color: $primary-blue
-        border-width: 2.5px
-
-    .mat-form-field-label
-      color: $blue-dark
-      font-weight: 600
-      font-size: 1rem
-      padding-left: 0.25rem
-      transition: color 0.3s ease
-
-    input.mat-input-element
-      padding: 0.6rem 2.5rem 0.6rem 0.75rem
-      font-size: 1rem
-      color: $text-dark
-
-      &::placeholder
-        color: lighten($text-dark, 40%)
-        opacity: 1
-        font-style: italic
-
-    // Suffix clear button styles
-    button.mat-icon-button
-      color: $primary-blue
-      opacity: 0.7
-      transition: opacity 0.3s ease, color 0.3s ease
-
-      &:hover
-        opacity: 1
-        color: $accent-blue
-
-      mat-icon
-        font-size: 20px
-tr.matched, td.matched
-  background-color: #d4edda !important
-  color: #155724 !important
-  transition: background-color 0.3s ease
-
-tr.matched:hover, td.matched:hover
-  background-color: #c3e6cb !important
-
-.editing-row
-  background-color: #fff59d !important // Light yellow
-.canceled-row
-  background-color: #ffebee       // Light red background
-  color: #b71c1c                  // Dark red text
-  font-weight: 500                // Optional: make canceled rows stand out
-
-.done-row
-  background-color: #e8f5e9 // light green
-  color: #2e7d32      
-  
-.slide-toggle-wrapper
-  display: flex
-  flex-direction: column
-  align-items: flex-start
-  gap: 0.5rem
-  padding: 1rem
-  border: 1px solid lighten($primary-blue, 40%)
-  border-radius: 10px
-  background-color: lighten($light-bg, 2%)
-  box-shadow: 0 2px 6px rgba($primary-blue, 0.05)
-
-  mat-slide-toggle
-    color: $blue-dark !important
-
-  .explanation-text
-    text-align: center
-    max-width: 500px
-    font-size: 0.95rem
-    color: lighten($text-dark, 20%)
-    font-weight: 400
+  .form-actions
+    flex-direction: column
+    button
+      width: 100%

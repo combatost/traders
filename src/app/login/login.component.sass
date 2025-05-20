@@ -4,6 +4,8 @@ $light-bg: #f4f6fb
 $text-color: #333
 $wave-size: 60%
 $transition: 0.3s ease
+$border-radius: 1rem
+$max-form-width: 400px
 
 // Container
 .login-container
@@ -11,6 +13,7 @@ $transition: 0.3s ease
   height: 100vh
   background: $light-bg
   overflow: hidden
+  flex-direction: row
 
 // Left: Illustration
 .login-illustration
@@ -24,9 +27,7 @@ $transition: 0.3s ease
   background-size: cover
   background-position: 5% center
   background-color: white
-  color: white
   padding: 2rem
-
 
   .wave-bg
     position: absolute
@@ -62,10 +63,11 @@ $transition: 0.3s ease
 
 .form-box
   width: 100%
-  max-width: 400px
+  max-width: $max-form-width
   padding: 2rem
-  border-radius: 1rem
+  border-radius: $border-radius
   background: #fff
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
   transition: $transition
 
   .logo-icon
@@ -143,3 +145,50 @@ $transition: 0.3s ease
   transform: translateX(-50%)
   z-index: 999
   width: auto
+
+// Responsive Design
+@media (max-width: 1024px)
+  .login-container
+    flex-direction: column
+
+  .login-illustration
+    display: none
+
+  .login-form
+    flex: none
+    width: 100%
+    height: 100vh
+    justify-content: flex-start
+    padding: 2rem 1rem
+
+  .form-box
+    max-width: 90%
+    margin: 0 auto
+    padding: 1.5rem
+
+    h3
+      font-size: 1.5rem
+
+    .sub-text,
+    .divider,
+    .switch-auth
+      font-size: 0.9rem
+
+    .form-grid
+      grid-template-columns: 1fr
+      gap: 1rem
+
+@media (max-width: 480px)
+  .form-box
+    padding: 1rem
+
+    h3
+      font-size: 1.3rem
+
+    .sub-text,
+    .divider,
+    .switch-auth
+      font-size: 0.85rem
+
+    .login-btn
+      font-size: 1rem

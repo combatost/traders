@@ -179,3 +179,48 @@ section
 
     button
       width: 100%
+// Add a wrapper around your table for horizontal scroll on small devices
+.table-wrapper
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch // smooth scrolling on iOS
+  border-radius: $card-radius
+  box-shadow: $shadow
+  margin-bottom: 1.5rem
+
+  // Optional: customize scrollbar (webkit browsers)
+  &::-webkit-scrollbar
+    height: 6px
+
+  &::-webkit-scrollbar-track
+    background: lighten($light-bg, 10%)
+    border-radius: $card-radius
+
+  &::-webkit-scrollbar-thumb
+    background: $accent-blue
+    border-radius: $card-radius
+
+// Responsive adjustments for small devices
+@media (max-width: 768px)
+  .history-container
+    width: 95%
+    padding: 1.2rem 1.5rem
+
+  .table-wrapper
+    margin-bottom: 1rem
+
+  table
+    min-width: 600px // force table to be wider than viewport on mobile for scrolling
+    font-size: 0.85rem
+
+    thead th
+      padding: 1rem 0.75rem
+
+    tbody td
+      padding: 0.7rem 0.75rem
+
+  .pagination-buttons
+    flex-direction: column
+    gap: 1rem
+
+    button
+      width: 100%

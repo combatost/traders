@@ -10,9 +10,10 @@ $shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
 $transition: all 0.3s ease
 $gap: 1.5rem
 
-// Root container
+// Container
 .card-container
   width: 90%
+  max-width: 1200px
   margin: 0 auto
   padding: 2rem 1rem
   min-height: 100vh
@@ -20,7 +21,7 @@ $gap: 1.5rem
   flex-direction: column
   gap: 2rem
 
-// Card design
+// Cards
 mat-card
   background-color: $white
   border-radius: $card-radius
@@ -32,7 +33,6 @@ mat-card
     transform: translateY(-4px)
     box-shadow: 0 12px 24px rgba(26, 115, 232, 0.2)
 
-// Title style
 mat-card-title
   font-size: 1.4rem
   font-weight: 600
@@ -41,155 +41,131 @@ mat-card-title
   border-bottom: 2px solid lighten($primary-blue, 40%)
   padding-bottom: 0.5rem
 
-// Grid layout
+// Grid Form
 .form-grid
   display: grid
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
   gap: $gap
 
-// Form fields
+// Form Fields
 mat-form-field
   width: 100%
-  background: $light-bg
-  border-radius: 8px
-  padding: 0.25rem 0.5rem
 
-  .mat-form-field-wrapper
-    padding: 0 0.5rem
-
-  mat-icon
-    color: $primary-blue
-
-// Button Row
-.form-actions
-  display: flex
-  justify-content: flex-end
-  gap: 1rem
-  margin-top: 2rem
-
-  button
-    text-transform: capitalize
+  mat-label
     font-weight: 600
-    padding: 0.5rem 1.5rem
+    color: $blue-dark
+
+  input
+    padding: 0.5rem 0.75rem
+
+// Form Actions Buttons
+.form-actions
+  margin-top: 1.5rem
+  display: flex
+  gap: 1rem
+
+  button[type='submit']
+    background-color: $primary-blue
+    color: $white
+    font-weight: 700
+    border-radius: 8px
+    padding: 0.75rem 2rem
+    cursor: pointer
+    border: none
+    transition: $transition
+
+    &:hover
+      background-color: $blue-dark
+
+  button[type='button']
+    background: none
+    border: none
+    color: $accent-blue
+    font-weight: 600
+    cursor: pointer
+    padding: 0.75rem 1.5rem
     border-radius: 8px
 
-mat-raised-button
-  background-color: $primary-blue
-  color: $white
+    &:hover
+      background-color: lighten($accent-blue, 45%)
 
-mat-stroked-button
-  color: $primary-blue
-  border-color: $primary-blue
+// Search Bar
+.search-bar
+  margin-bottom: 1rem
+  mat-form-field
+    width: 100%
 
-mat-icon-button[color='warn']
-  color: #d93025
-
-mat-icon-button[color='accent']
-  color: $accent-blue
-
-// Table style
-table
+// Table Scroll Wrapper for horizontal sliding
+.table-scroll-wrapper
   width: 100%
-  border-spacing: 0
-  border-collapse: collapse
-  background: $white
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1)
   border-radius: $card-radius
-  overflow: hidden
+  background-color: $white
+  padding: 1rem 0
+
+// Table Styling
+.full-width-table
+  min-width: 900px
+  border-collapse: separate
+  border-spacing: 0
+  width: 100%
+  border-radius: $card-radius
+  overflow: visible
 
   th, td
-    padding: 1rem
+    padding: 1rem 1.25rem
+    min-width: 120px
     text-align: left
     border-bottom: 1px solid #e0e0e0
+    color: $text-dark
 
   th
-    background: #e8f0fe
+    background-color: #e8f0fe
     color: $blue-dark
     font-weight: 600
-
-  td
-    color: $text-dark
 
   tr:hover
     background-color: #f4faff
 
-// Summary footer (optional)
-.summary-footer
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-top: 2rem
-  flex-wrap: wrap
-  gap: 1rem
-
-  p
-    font-weight: 500
-    color: $blue-dark
-    margin: 0
-
-  button
-    background-color: darken($accent-blue, 10%)
-    color: white
-
-// Responsive layout
-@media (max-width: 768px)
-  .form-actions
-    flex-direction: column
-    align-items: stretch
-
-  .summary-footer
-    flex-direction: column
-    align-items: flex-start
-.search-bar
-  width: 100%
-  margin: 1.5rem auto 1rem
-
-  mat-form-field
-    width: 100%
-    border-radius: 10px
-    transition: $transition
-
-    &.mat-form-field-appearance-outline
-      .mat-form-field-outline
-        border-color: lighten($primary-blue, 20%)
-        border-radius: 10px
-        border-width: 2px
-
-      &:hover .mat-form-field-outline
-        border-color: $accent-blue
-
-      &.mat-focused .mat-form-field-outline
-        border-color: $primary-blue
-        border-width: 2.5px
-
-    input.mat-input-element
-      padding: 0.6rem 2.5rem 0.6rem 0.75rem
-      font-size: 1rem
-      color: $text-dark
-
-      &::placeholder
-        color: lighten($text-dark, 40%)
-        font-style: italic
-
-    button.mat-icon-button
-      color: $primary-blue
-      opacity: 0.7
-      transition: opacity 0.3s ease, color 0.3s ease
-
-      &:hover
-        opacity: 1
-        color: $accent-blue
-
-      mat-icon
-        font-size: 20px
+// Highlight clickable client name
 .highlight-name
-  background-color: #fff8b3   // soft yellow
-  padding: 4px 8px
-  border-radius: 6px
+  color: $primary-blue
+  font-weight: 600
+  cursor: pointer
   text-decoration: none
-  font-weight: 500
-  color: #333
-  transition: background-color 0.2s, color 0.2s
+  transition: $transition
 
   &:hover
-    background-color: #ffe066
-    color: #000
+    text-decoration: underline
+
+// Pagination Buttons
+.pagination-buttons
+  margin-top: 1rem
+  display: flex
+  justify-content: flex-end
+  gap: 0.5rem
+
+  button
+    cursor: pointer
+    border-radius: 50%
+    padding: 0.5rem
+    transition: $transition
+
+    &:disabled
+      cursor: default
+      opacity: 0.5
+
+// Responsive adjustments
+@media (max-width: 768px)
+  .table-scroll-wrapper
+    padding: 0.5rem 0
+
+  .pagination-buttons
+    justify-content: space-between
+    padding: 0 1rem
+
+@media (max-width: 480px)
+  .table-scroll-wrapper
+    padding: 0.25rem 0

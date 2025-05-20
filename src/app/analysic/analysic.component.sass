@@ -346,3 +346,85 @@ canvas
   width: 0%
   transition: width 0.5s ease
   border-radius: 5px 0 0 5px
+.table-wrapper
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+  border-radius: $card-radius
+  box-shadow: $shadow
+  margin-bottom: 1.5rem
+
+  &::-webkit-scrollbar
+    height: 6px
+
+  &::-webkit-scrollbar-track
+    background: lighten($light-bg, 10%)
+    border-radius: $card-radius
+
+  &::-webkit-scrollbar-thumb
+    background: $accent-blue
+    border-radius: $card-radius
+
+@media (max-width: 768px)
+  .table-wrapper
+    margin-bottom: 1rem
+
+  table.full-width-table
+    min-width: 700px
+    font-size: 0.85rem
+
+  th.mat-header-cell,
+  td.mat-cell
+    padding: 0.6rem 0.75rem
+@media (max-width: 768px)
+  .analytics-cards
+    grid-template-columns: 1fr 1fr
+    gap: 1rem
+    padding: 0.5rem
+
+  .filter-options
+    flex-direction: column
+    align-items: stretch
+    gap: 0.5rem
+
+  .full-width-table
+    width: 100%
+    min-width: 600px
+    font-size: 0.85rem
+
+    th.mat-header-cell,
+    td.mat-cell
+      padding: 0.5rem 0.75rem
+
+  .table-wrapper
+    overflow-x: auto
+    -webkit-overflow-scrolling: touch
+    margin-bottom: 1rem
+
+  mat-card.mat-elevation-z4.p-4
+    padding: 1rem !important
+
+  .card
+    max-width: 100%
+    padding: 1rem
+    border-radius: 12px
+
+  .page-title
+    font-size: 2rem
+    margin-bottom: 1rem
+
+  // Wrap search bar full width
+  .search-bar
+    width: 100%
+    margin: 1rem 0
+
+  .wrap
+    flex-direction: column
+    align-items: flex-start
+    gap: 1rem
+
+  // Buttons smaller on phone
+  mat-raised-button,
+  mat-stroked-button
+    font-size: 0.9rem
+    padding: 0.5rem 1rem
+    border-radius: 16px
