@@ -29,7 +29,7 @@ $radius: 12px
     font-family: 'Montserrat', sans-serif
     font-weight: 700
     font-size: 2rem
-    color: #FF6600
+    color: #1f1f1f
     text-transform: uppercase
     letter-spacing: .1em
     transition: color $transition
@@ -144,12 +144,15 @@ $radius: 12px
   right: 0
   z-index: 1000
   min-width: 160px
+  max-height: 0
+  overflow: hidden
   opacity: 0
   transform: translateY(-10px)
-  transition: opacity 0.3s ease, transform 0.3s ease
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease
   pointer-events: none
 
   &.open
+    max-height: 500px
     opacity: 1
     transform: translateY(0)
     pointer-events: auto
@@ -181,12 +184,17 @@ $radius: 12px
       &.open
         display: flex
 
+      a
+        font-size: 1.05rem
+        padding: 0.75rem 1rem
+
     .dropdown-container
       width: 100%
 
     .dropdown-btn
       width: 100%
       justify-content: space-between
+      font-size: 1.05rem
 
     .dropdown-menu
       position: relative
@@ -195,3 +203,14 @@ $radius: 12px
       right: 0
       box-shadow: none
       margin: 0.25rem 0
+      padding: 0.25rem 0
+      max-height: 0
+      overflow: hidden
+      transition: max-height 0.3s ease
+
+      &.open
+        max-height: 500px
+
+      a
+        font-size: 1.05rem
+        padding: 0.65rem 1rem

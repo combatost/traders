@@ -10,10 +10,6 @@
         {{ isSignup ? "Sign up to get started" : "Login to continue" }}
       </p>
 
-      <div class="divider">
-        {{ isSignup ? "or sign up with email" : "or login with email" }}
-      </div>
-
       <form #authForm="ngForm" autocomplete="off">
         <div class="form-grid" *ngIf="isSignup">
           <mat-form-field appearance="outline">
