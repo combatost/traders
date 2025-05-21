@@ -43,6 +43,12 @@
 
     <div class="footer-bottom">
       <p>{{ "FOOTER.COPYRIGHT" | translate : { year: currentYear } }}</p>
+      <p class="user-count">
+        {{ "FOOTER.USERS" | translate }}: {{ userCount }}
+      </p>
+      <p class="version">
+        {{ "FOOTER.VERSION" | translate }}: {{ version }}
+      </p>
 
       <div class="social-links" aria-label="Social media links">
         <a

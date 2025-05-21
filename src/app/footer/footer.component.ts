@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { FirebaseService } from '../services/firebase.service';
+import { VersionAlertComponent } from '../version-alert/version-alert.component';
 
 @Component({
   selector: 'app-footer',
@@ -12,8 +14,10 @@ export class FooterComponent implements OnInit {
   currentSection: string = 'home';
   currentYear: number = new Date().getFullYear();
   isScrolled: boolean = false;
+  userCount: number = 0
+  version = VersionAlertComponent.appVersion 
 
-  constructor(private router: Router, private translate: TranslateService) {
+  constructor(private router: Router, private translate: TranslateService, private firebaseService: FirebaseService) {
     const savedLang = (localStorage.getItem('selectedLanguage') as 'en' | 'ar') || 'en';
     this.translate.setDefaultLang(savedLang);
     this.translate.use(savedLang);
@@ -35,7 +39,12 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.firebaseService.getTotalUserCount().then(count => {
+      this.userCount = count
+    })
+  }
+
 
   onLanguageChange(event: Event) {
     const lang = (event.target as HTMLSelectElement).value as 'en' | 'ar';

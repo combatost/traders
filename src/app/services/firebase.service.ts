@@ -33,7 +33,7 @@ export class FirebaseService {
       this.isLoggedIn = true;
       this.userUID = res.user?.uid || null;
       localStorage.setItem('user', JSON.stringify(res.user));
-      
+
       // Navigate to home page after successful login
       this.router.navigate(['/sheintable']);  // Adjust route as needed
     } catch (error) {
@@ -148,4 +148,18 @@ export class FirebaseService {
       .doc(recordId)
       .delete();
   }
+
+  getTotalUserCount(): Promise<number> {
+    return this.firestore
+      .collection('users')
+      .get()
+      .toPromise()
+      .then(snapshot => snapshot?.size || 0)
+      .catch(err => {
+        console.error('Failed to fetch user count:', err)
+        return 0
+      })
+  }
+
+
 }

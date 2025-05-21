@@ -86,7 +86,9 @@
     "CONTACT": "اتصل بنا",
     "LANGUAGE": "اللغة",
     "COPYRIGHT": "© {{year}} م. جميع الحقوق محفوظة لشركة SheinTraders.",
-    "TERMS": "شروط الاستخدام"
+    "TERMS": "شروط الاستخدام",
+    "USERS": "إجمالي المستخدمين",
+    "VERSION": "الإصدار"
   },
   "aboutUs": {
     "hero": {

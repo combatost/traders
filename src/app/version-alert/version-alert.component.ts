@@ -7,15 +7,15 @@ import { Component, OnInit } from '@angular/core'
 })
 export class VersionAlertComponent implements OnInit {
   show = false
-  appVersion = '2.2.6' // Replace with your actual app version
+  public static appVersion = '2.3.5' // Replace with your actual app version
 
   ngOnInit() {
     if (typeof window !== 'undefined' && window.localStorage) {
       const savedVersion = localStorage.getItem('appVersion')
 
-      if (savedVersion !== this.appVersion) {
+      if (savedVersion !== VersionAlertComponent.appVersion) {
         this.show = true
-        localStorage.setItem('appVersion', this.appVersion)
+        localStorage.setItem('appVersion', VersionAlertComponent.appVersion)
 
         setTimeout(() => {
           this.show = false

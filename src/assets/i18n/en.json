@@ -86,7 +86,9 @@
     "CONTACT": "Contact",
     "LANGUAGE": "Language",
     "COPYRIGHT": "© {{year}} SheinTraders. All rights reserved.",
-    "TERMS": "Terms of Use"
+    "TERMS": "Terms of Use",
+    "USERS": "Total Users",
+    "VERSION": "Version"
   },
   "aboutUs": {
     "hero": {
