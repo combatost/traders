@@ -203,25 +203,27 @@
 
       <!-- Custom Pagination Buttons -->
       <div class="pagination-buttons">
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="onPrevPage()"
-          [disabled]="pageIndex === 0"
-          aria-label="Previous page"
-        >
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="onNextPage()"
-          [disabled]="pageIndex >= clients.length / pageSize - 1"
-          aria-label="Next page"
-        >
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="onPrevPage()"
+    [disabled]="pageIndex === 0"
+    aria-label="Previous page"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="onNextPage()"
+    [disabled]="pageIndex >= totalPages - 1"
+    aria-label="Next page"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
+
     </mat-card>
   </div>
 </section>

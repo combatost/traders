@@ -62,19 +62,36 @@
         </tr>
       </tbody>
     </table>
+    
   </div>
+  <div class="pagination-controls">
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="previousPage()"
+    [disabled]="pageIndex === 0"
+    aria-label="Previous page"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span class="page-info">
+    {{ pageIndex + 1 }} / {{ totalPages }}
+  </span>
+
+  <button
+    mat-icon-button
+    color="primary"
+    (click)="nextPage()"
+    [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
+    aria-label="Next page"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
 </div>
-  <div class="pagination-buttons">
-    <button (click)="previousPage()" [disabled]="pageIndex === 0">
-      {{ "form.cancel" | translate }}
-    </button>
-    <button
-      (click)="nextPage()"
-      [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
-    >
-      {{ "form.update" | translate }}
-    </button>
-  </div>
+
+</div>
+  
 
   <ng-template #noHistory>
     <section class="empty-state">

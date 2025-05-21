@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core'
 })
 export class VersionAlertComponent implements OnInit {
   show = false
-  appVersion = '1.0.0' 
+  appVersion = '2.2.6' // Replace with your actual app version
 
   ngOnInit() {
     if (typeof window !== 'undefined' && window.localStorage) {

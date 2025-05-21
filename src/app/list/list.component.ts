@@ -4,6 +4,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { Observable, forkJoin, of } from 'rxjs'
 import { switchMap, map, catchError } from 'rxjs/operators'
 import { Router } from '@angular/router'
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'
+import { MatDialog } from '@angular/material/dialog'
 
 interface Client {
   fullName: string
@@ -31,7 +33,8 @@ export class ListComponent implements OnInit {
   constructor(
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog // ✅ Add this
   ) {}
 
   ngOnInit(): void {
@@ -101,34 +104,42 @@ export class ListComponent implements OnInit {
     return this.clientsWithOrderCount.some(client => client.selected)
   }
 
-  deleteSelectedClients() {
-    const toDelete = this.clientsWithOrderCount.filter(c => c.selected)
-    if (toDelete.length === 0) return
+ deleteSelectedClients(): void {
+  const toDelete = this.clientsWithOrderCount.filter(c => c.selected);
+  if (toDelete.length === 0) return;
 
-    if (!confirm(`Are you sure you want to delete ${toDelete.length} client(s)?`))
-      return
+  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    width: '320px',
+    data: {
+      title: 'Delete Clients',
+      message: `Are you sure you want to delete ${toDelete.length} client(s)?`
+    }
+  });
 
-    const batch = this.firestore.firestore.batch()
+  dialogRef.afterClosed().subscribe(result => {
+    if (result === true) {
+      const batch = this.firestore.firestore.batch();
 
-    toDelete.forEach(client => {
-      const docRef = this.firestore
-        .collection(`clients/${this.userId}/records`)
-        .doc(client.id).ref
-      batch.delete(docRef)
-    })
+      toDelete.forEach(client => {
+        const docRef = this.firestore
+          .collection(`clients/${this.userId}/records`)
+          .doc(client.id).ref;
+        batch.delete(docRef);
+      });
 
-    batch
-      .commit()
-      .then(() => {
-        // Update local list after deletion
-        this.clientsWithOrderCount = this.clientsWithOrderCount.filter(
-          c => !c.selected
-        )
-        this.masterSelected = false
-      })
-      .catch(err => {
-        console.error('Error deleting clients:', err)
-        alert('Failed to delete clients. Please try again.')
-      })
-  }
+      batch
+        .commit()
+        .then(() => {
+          this.clientsWithOrderCount = this.clientsWithOrderCount.filter(
+            c => !c.selected
+          );
+          this.masterSelected = false;
+        })
+        .catch(err => {
+          console.error('Error deleting clients:', err);
+          // Optionally open an error dialog here
+        });
+    }
+  });
+}
 }

@@ -127,4 +127,9 @@ export class HistoryComponent implements OnInit {
       }
     });
   }
+
+  get totalPages(): number {
+  return Math.ceil(this.historyRecords.length / this.pageSize);
+}
+
 }

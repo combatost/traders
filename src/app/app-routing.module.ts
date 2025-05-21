@@ -10,6 +10,7 @@ import { HistoryComponent } from './history/history.component';
 import { AuthGuard } from './login/auth.guard';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { ListComponent } from './list/list.component';
+import { TermsComponent } from './terms/terms.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'analysic', component: AnalysicComponent, canActivate: [AuthGuard] },
   { path: 'aboutme', component: AboutmeComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'terms', component: TermsComponent, canActivate: [AuthGuard] },
   { path: 'history', component: HistoryComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
