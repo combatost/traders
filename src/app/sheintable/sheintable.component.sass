@@ -33,9 +33,13 @@ mat-card
   &:hover
     transform: translateY(-4px)
     box-shadow: 0 12px 24px rgba(26, 115, 232, 0.2)
+mat-form-field
+  input.mat-input-element
+    font-size: 0.9rem    // slightly smaller input font size
+    padding: 0.5rem 3rem 0.5rem 1rem  // reduce vertical padding
 
 mat-card-title
-  font-size: 1.4rem
+  font-size: 1.8rem
   font-weight: 600
   margin-bottom: 1rem
   color: $primary-blue
@@ -53,10 +57,12 @@ mat-form-field
   background: $light-bg
   border-radius: 8px
   padding: 0.25rem 0.5rem
+  font-size: 1.2rem
+  
 
   .mat-form-field-wrapper
     padding: 0 0.5rem
-
+    
   mat-icon
     color: $primary-blue
 
@@ -179,7 +185,15 @@ mat-icon-button[color='accent']
         color: #1a73e8
 
       mat-icon
-        font-size: 22px
+        font-size: 23px
+mat-form-field
+  font-size: 1.5rem !important
+
+  .mat-label,
+  .mat-select-value-text,
+  .mat-option-text
+    font-size: 1rem !important
+
 
 // Table
 .full-width-table

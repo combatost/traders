@@ -49,7 +49,7 @@ export class AboutmeComponent implements OnInit {
 
   readonly team: TeamMember[] = [
     { name: 'Ali Amhaz', role: 'Main Owner', photo: 'assets/image/ali.jpeg' },
-    { name: 'Sara', role: 'UI/UX Designer', photo: 'assets/image/user-icon.png' },
+    { name: 'Mhamad Wannos', role: 'UI/UX Designer', photo: 'assets/image/user-icon.png' },
     { name: 'Ziad', role: 'Full Stack Developer', photo: 'assets/image/user-icon.png' },
     { name: 'Layla', role: 'Marketing Head', photo: 'assets/image/user-icon.png' }
   ];

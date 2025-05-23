@@ -8,12 +8,12 @@ import { Component, OnInit } from '@angular/core'
 export class VersionAlertComponent implements OnInit {
   showPopup = false
   dismissed = false
-  public static appVersion = '2.5.2' // update on new release 
+  public static appVersion = '2.5.5' // update on new release 
 
   version = VersionAlertComponent.appVersion
 
   versionMessage: string[] = [
-    '🌟 Redesigned the dashboard with a fresh modern UI',
+    '🌟 Updated Nav',
     '🔒 Improved authentication security',
     '🌐 Enhanced support for Arabic translations',
     '⚙️ Performance optimizations and bug fixes',
