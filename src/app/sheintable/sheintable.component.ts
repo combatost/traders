@@ -167,21 +167,50 @@ export class SheintableComponent implements OnInit {
     const sheinRef = this.firestore.collection(`sheinTables/${this.userId}/records`)
 
     if (this.switch && this.editId) {
-      // EDIT existing record
+      // EDIT mode
       if (formValue.choice === 'Cancelled') {
-        // Your existing cancel logic here (if any)
+        // Step 1: Fetch the current record before deleting
+        this.firestore.doc(`sheinTables/${this.userId}/records/${this.editId}`).get().subscribe(docSnapshot => {
+          if (docSnapshot.exists) {
+            const data = docSnapshot.data() || {}
+            const record = { ...data, id: this.editId }
+
+            // Step 2: Save to history with correct fields
+            this.historyService.saveToHistory(this.userId, {
+              ...record,
+              profit: this.calculateProfit(record),
+              cancelled: true,
+              choice: 'Cancelled',    // explicitly mark choice as Cancelled
+              deletedAt: new Date()   // set deletion time for sorting/display
+            }, 'sheinTable').then(() => {
+              // Step 3: Delete the original record
+              sheinRef.doc(this.editId!).delete().then(() => {
+                this.checkAndDeleteClient(this.oldClientName)
+                this.resetForm()
+              }).catch(console.error)
+            }).catch(err => {
+              console.error('Failed to save to history before deleting:', err)
+            })
+          }
+        }, error => {
+          console.error('Error fetching document before cancel:', error)
+        })
       } else {
-        // Check if client changed
+        // Normal update
         const newClientName = formValue.client.trim()
+
         if (newClientName !== this.oldClientName) {
           this.saveClientNameIfNotExists(newClientName)
-          this.firestore.collection(`sheinTables/${this.userId}/records`, ref => ref.where('client', '==', this.oldClientName))
-            .get().subscribe(snapshot => {
-              if (snapshot.empty) {
-                this.deleteClientByName(this.oldClientName)
-              }
-            })
+
+          this.firestore.collection(`sheinTables/${this.userId}/records`, ref =>
+            ref.where('client', '==', this.oldClientName)
+          ).get().subscribe(snapshot => {
+            if (snapshot.empty) {
+              this.deleteClientByName(this.oldClientName)
+            }
+          })
         }
+
         sheinRef.doc(this.editId).update(formValue).then(() => {
           this.resetForm()
         }).catch(console.error)
@@ -196,6 +225,8 @@ export class SheintableComponent implements OnInit {
       }).catch(console.error)
     }
   }
+
+
 
   private deleteClientByName(clientName: string): void {
     this.firestore.collection(`clients/${this.userId}/records`, ref => ref.where('fullName', '==', clientName))
