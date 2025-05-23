@@ -1,0 +1,13 @@
+{
+  "routes": [
+    "/aboutme",
+    "/analysic",
+    "/client",
+    "/clients",
+    "/history",
+    "/login",
+    "/settings",
+    "/sheintable",
+    "/terms"
+  ]
+}
