@@ -1,4 +1,21 @@
-<div class="version-alert" *ngIf="show" role="alert" aria-live="assertive">
-  <span>🚀 New version available! Please refresh your browser.</span>
-  <button class="close-btn" (click)="close()">×</button>
+<div class="version-alert-container">
+  <!-- Bell Button -->
+  <button class="ring-button" (click)="togglePopup()" [class.dismissed]="dismissed">
+    <span class="icon">notifications</span>
+    <span class="ring" *ngIf="!dismissed"></span>
+  </button>
+
+  <!-- Popup Card -->
+  <div class="version-popup" *ngIf="showPopup">
+    <div class="card">
+      <h3>Update Available</h3>
+      <div class="version-label">Version {{ version }}</div>
+
+      <ul class="message-list">
+        <li *ngFor="let msg of versionMessage">{{ msg }}</li>
+      </ul>
+
+      <button (click)="close()">Close</button>
+    </div>
+  </div>
 </div>

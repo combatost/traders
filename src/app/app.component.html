@@ -1,5 +1,3 @@
 <app-loader *ngIf="authService.loading$ | async"></app-loader>
 
-<app-version-alert></app-version-alert>
-
 <router-outlet *ngIf="!(authService.loading$ | async)"></router-outlet>

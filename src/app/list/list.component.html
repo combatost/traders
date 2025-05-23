@@ -1,56 +1,77 @@
 <div class="page-container">
-<app-navigation></app-navigation>
-<section class="client-list-container">
-  <h2 class="section-title">{{ 'CLIENTS.TITLE' | translate }}</h2>
+  <app-navigation></app-navigation>
+  <section class="client-list-container">
+    <h2 class="section-title">{{ "CLIENTS.TITLE" | translate }}</h2>
 
-  <div class="actions-bar">
-    <mat-checkbox
-      [(ngModel)]="masterSelected"
-      (change)="selectAllClients($event)"
-      >{{ 'CLIENTS.SELECT_ALL' | translate }}</mat-checkbox
-    >
-    <button
-      mat-raised-button
-      color="warn"
-      (click)="deleteSelectedClients()"
-      [disabled]="!anySelected()"
-    >
-      {{ 'CLIENTS.DELETE_SELECTED' | translate }}
-    </button>
-  </div>
+    <div class="actions-bar">
+      <mat-checkbox
+        [(ngModel)]="masterSelected"
+        (change)="selectAllClients($event)"
+        >{{ "CLIENTS.SELECT_ALL" | translate }}</mat-checkbox
+      >
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteSelectedClients()"
+        [disabled]="!anySelected()"
+      >
+        {{ "CLIENTS.DELETE_SELECTED" | translate }}
+      </button>
+    </div>
 
-  <div
-    *ngFor="let item of clientsWithOrderCount; let i = index"
-    class="client-list-item"
-    tabindex="0"
-    role="listitem"
-    (click)="goToClientDetail(item.id)"
-  >
     <div
-      class="client-info"
-      [attr.aria-label]="'Client ' + item.client.fullName + ', number ' + (i + 1) + ', phone ' + item.client.phoneNumber + ', ' + item.orderCount + ' orders'"
+      *ngFor="let item of clientsWithOrderCount; let i = index"
+      class="client-list-item"
+      tabindex="0"
+      role="listitem"
+      (click)="goToClientDetail(item.id)"
     >
-      <span class="client-number">{{ i + 1 }}</span>
-      <span class="client-name">{{ 'CLIENTS.NAME' | translate }}: <strong>{{ item.client.fullName }}</strong></span>
-      <span class="client-phone">{{ 'CLIENTS.PHONE' | translate }}: <strong>{{ item.client.phoneNumber }}</strong></span>
-      <span class="client-orders">
-        {{ 'CLIENTS.ORDERS' | translate }}: <strong>{{ item.orderCount }}</strong>
-
+      <div
+        class="client-info"
+        [attr.aria-label]="
+          'Client ' +
+          item.client.fullName +
+          ', number ' +
+          (i + 1) +
+          ', phone ' +
+          item.client.phoneNumber +
+          ', ' +
+          item.orderCount +
+          ' orders'
+        "
+      >
         <mat-checkbox
           [(ngModel)]="item.selected"
           (change)="checkIfAllSelected()"
           (click)="$event.stopPropagation()"
-          [attr.aria-label]="('CLIENTS.SELECT_CLIENT' | translate) + ' ' + item.client.fullName"
+          [attr.aria-label]="
+            ('CLIENTS.SELECT_CLIENT' | translate) + ' ' + item.client.fullName
+          "
           class="order-checkbox"
         ></mat-checkbox>
-      </span>
+        <span class="client-number">{{ i + 1 }}</span>
+        <span class="client-name"
+          >{{ "CLIENTS.NAME" | translate }}:
+          <strong>{{ item.client.fullName }}</strong></span
+        >
+        <span class="client-phone"
+          >{{ "CLIENTS.PHONE" | translate }}:
+          <strong>{{ item.client.phoneNumber }}</strong></span
+        >
+        <span class="client-orders">
+          {{ "CLIENTS.ORDERS" | translate }}:
+          <strong>{{ item.orderCount }}</strong>
+        </span>
+      </div>
+
+      <mat-icon class="navigate-icon" aria-hidden="true"
+        >arrow_forward_ios</mat-icon
+      >
     </div>
 
-    <mat-icon class="navigate-icon" aria-hidden="true">arrow_forward_ios</mat-icon>
-  </div>
-
-  <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
-    {{ 'CLIENTS.NO_CLIENTS' | translate }}
-  </div>
-</section>
-<app-footer></app-footer>
+    <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
+      {{ "CLIENTS.NO_CLIENTS" | translate }}
+    </div>
+  </section>
+  <app-footer></app-footer>
+</div>

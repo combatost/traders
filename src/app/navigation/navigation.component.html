@@ -69,10 +69,12 @@
         >
       </div>
     </div>
-
-    <button class="navbar__logout" (click)="logout()" aria-label="Log out">
-      <i class="material-icons">logout</i>
-    </button>
+    <div class="navbar__status-logout">
+      <app-version-alert></app-version-alert>
+      <button class="navbar__logout" (click)="logout()" aria-label="Log out">
+        <i class="material-icons">logout</i>
+      </button>
+    </div>
   </nav>
 </header>
 <app-loader *ngIf="isLoading" [message]="'Logging out...'"></app-loader>

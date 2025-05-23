@@ -4,7 +4,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router'; // Import Router
-
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import firebase from 'firebase/compat/app';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +16,13 @@ export class FirebaseService {
   constructor(
     public firebaseAuth: AngularFireAuth,
     private firestore: AngularFirestore,
-    private router: Router // Inject Router
+    private realtimeDb: AngularFireDatabase,
+    private router: Router
   ) {
-    // Initialize userUID when the service is created
     this.firebaseAuth.authState.subscribe(user => {
       if (user) {
         this.userUID = user.uid;
+        this.setupPresence(user.uid)
       } else {
         this.userUID = null;
       }
@@ -33,6 +35,7 @@ export class FirebaseService {
       this.isLoggedIn = true;
       this.userUID = res.user?.uid || null;
       localStorage.setItem('user', JSON.stringify(res.user));
+      await this.setUserOnlineStatus(true);
 
       // Navigate to home page after successful login
       this.router.navigate(['/sheintable']);  // Adjust route as needed
@@ -40,6 +43,33 @@ export class FirebaseService {
       console.error('Signin error:', error);
       throw new Error('Signin failed. Please check your credentials.');
     }
+  }
+  setupPresence(userId: string) {
+    const statusRef = this.realtimeDb.object(`status/${userId}`)
+
+    const isOfflineForDatabase = {
+      online: false,
+      lastChanged: firebase.database.ServerValue.TIMESTAMP
+    };
+    const isOnlineForDatabase = {
+      online: true,
+      lastChanged: firebase.database.ServerValue.TIMESTAMP
+    };
+
+
+    // Get Realtime Database special '.info/connected' ref that indicates connection state
+    const connectedRef = this.realtimeDb.object('.info/connected').valueChanges();
+
+    connectedRef.subscribe(connected => {
+      if (!connected) {
+        // We're offline, do nothing
+        return;
+      }
+      // On disconnect set offline status
+      statusRef.query.ref.onDisconnect().set(isOfflineForDatabase).then(() => {
+        statusRef.update(isOnlineForDatabase);
+      });
+    });
   }
 
   async signup(email: string, password: string, fullName: string, birthDate: string): Promise<void> {
@@ -71,6 +101,8 @@ export class FirebaseService {
     });
     localStorage.removeItem('user');
     this.userUID = null;  // Clear cached user UID
+    this.setUserOnlineStatus(false);
+
   }
 
   getUserUID(): string | null {
@@ -161,5 +193,24 @@ export class FirebaseService {
       })
   }
 
+  setUserOnlineStatus(online: boolean): void {
+    const userUID = this.getUserUID();
+    if (!userUID) return;
+
+    this.firestore.collection('users').doc(userUID).update({
+      online: online,
+      lastSeen: new Date()
+    }).catch(err => console.error('Error updating online status:', err));
+  }
+  getOnlineUserCount(): Promise<number> {
+    return this.firestore.collection('users', ref => ref.where('online', '==', true))
+      .get()
+      .toPromise()
+      .then(snapshot => snapshot?.size || 0)
+      .catch(err => {
+        console.error('Failed to fetch online user count:', err);
+        return 0;
+      });
+  }
 
 }
