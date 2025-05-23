@@ -1,58 +1,35 @@
-// Variables
-$primary-color: #3f51b5
-$light-bg: #f4f6fb
-$text-color: #333
-$wave-size: 60%
-$transition: 0.3s ease
-$border-radius: 1rem
-$max-form-width: 400px
+$primary-color: #3f51b5 
+$light-bg: #f9fafc
 
-// Container
+$text-color: #444
+$border-radius: 1rem
+$max-form-width: 360px
+$transition: 0.3s ease
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2)
+
+$input-border: #ddd
+$input-focus-border: $primary-color
+
 .login-container
   display: flex
   height: 100vh
   background: $light-bg
   overflow: hidden
   flex-direction: row
+  font-family: 'Roboto', sans-serif
 
-// Left: Illustration
 .login-illustration
   flex: 1
-  position: relative
-  display: flex
-  align-items: center
-  justify-content: center
   background-image: url('../../assets/img/sheinbg.png')
   background-repeat: no-repeat
-  background-size: cover
-  background-position: 5% center
+  background-size: cover      
+  background-position: center 
   background-color: white
-  padding: 2rem
+  padding: 0                  
+  height: 100vh             
+  background-position: 1% center  // moves the image 60% from left, so shifted right
 
-  .wave-bg
-    position: absolute
-    bottom: 0
-    left: 0
-    width: 100%
-    max-height: $wave-size
-    object-fit: cover
-    opacity: 0.3
-    pointer-events: none
 
-  .quote
-    z-index: 1
-    text-align: center
-    max-width: 400px
-
-    h2
-      font-size: 2rem
-      margin-bottom: 1rem
-
-    p
-      font-size: 1rem
-      opacity: 0.85
-
-// Right: Form
 .login-form
   flex: 1
   display: flex
@@ -67,128 +44,285 @@ $max-form-width: 400px
   padding: 2rem
   border-radius: $border-radius
   background: #fff
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
+  box-shadow: $box-shadow
   transition: $transition
 
   .logo-icon
-    width: 60px
-    margin: 0 auto 1rem
+    width: 50px
     display: block
+    margin: 0 auto 1rem
 
   h3
-    text-align: center
-    font-size: 1.8rem
+    font-weight: 600
+    font-size: 1.5rem
     color: $text-color
+    text-align: center
     margin-bottom: 0.5rem
 
   .sub-text
     text-align: center
-    font-size: 0.95rem
+    font-size: 0.9rem
     color: gray
-    margin-bottom: 1rem
+    margin-bottom: 1.25rem
+    font-weight: 400
 
-  .divider
-    text-align: center
-    margin: 1rem 0
-    color: gray
-    font-size: 0.85rem
+  form
+    width: 100%
 
   .form-grid
     display: grid
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: repeat(2, 1fr)
     gap: 1rem
+    margin-bottom: 1rem
+
+  .input-group
+    display: flex
+    flex-direction: column
+    margin-bottom: 1rem
+
+    label
+      font-size: 0.9rem
+      font-weight: 500
+      margin-bottom: 0.3rem
+      color: $text-color
+
+    input
+      padding: 0.5rem 0.75rem
+      font-size: 1rem
+      border: 1.5px solid $input-border
+      border-radius: $border-radius
+      transition: border-color $transition
+      outline: none
+
+      &:focus
+        border-color: $input-focus-border
+        box-shadow: 0 0 5px rgba($primary-color, 0.3)
 
   .full-width
-    width: 100%
+    grid-column: 1 / -1
 
-  mat-form-field
-    width: 100%
+  .password-group
+    position: relative
+
+    .input-wrapper
+      position: relative
+      display: flex
+      align-items: center
+
+      input
+        width: 100%
+        padding-right: 2.5rem
+        padding: 0.5rem 0.75rem
+        font-size: 1rem
+        border: 1.5px solid $input-border
+        border-radius: $border-radius
+        transition: border-color $transition
+        outline: none
+
+        &:focus
+          border-color: $input-focus-border
+          box-shadow: 0 0 5px rgba($primary-color, 0.3)
+
+    .toggle-password
+      position: absolute
+      top: 50%
+      right: 0.75rem
+      transform: translateY(-50%)
+      background: none
+      border: none
+      cursor: pointer
+      display: flex
+      align-items: center
+      justify-content: center
+      color: $input-border
+      font-size: 1.5rem
+      transition: color $transition
+
+      &:hover
+        color: $primary-color
+
+      mat-icon
+        font-size: 2.5rem
+
 
   .options-row
     display: flex
     justify-content: space-between
     align-items: center
-    margin-top: 0.5rem
-    font-size: 0.9rem
+    font-size: 0.85rem
+    margin-bottom: 1rem
+
+    .checkbox-container
+      display: flex
+      align-items: center
+      cursor: pointer
+      position: relative
+      user-select: none
+      font-weight: 500
+      color: $text-color
+
+      input[type="checkbox"]
+        position: absolute
+        opacity: 0
+        cursor: pointer
+        height: 0
+        width: 0
+
+      .checkmark
+        height: 18px
+        width: 18px
+        background-color: #eee
+        border-radius: 4px
+        border: 1.5px solid $input-border
+        margin-right: 0.5rem
+        transition: background-color $transition, border-color $transition
+
+      input[type="checkbox"]:checked + .checkmark
+        background-color: $primary-color
+        border-color: $primary-color
+
+      .checkmark:after
+        content: ""
+        position: absolute
+        display: none
+
+      input[type="checkbox"]:checked + .checkmark:after
+        display: block
+        left: 6px
+        top: 2px
+        width: 4px
+        height: 9px
+        border: solid white
+        border-width: 0 2px 2px 0
+        transform: rotate(45deg)
 
     .forgot
       color: $primary-color
       cursor: pointer
       text-decoration: underline
-      font-weight: 500
+      font-weight: 600
 
   .login-btn
     width: 100%
-    margin-top: 1rem
-    font-weight: bold
+    background-color: $primary-color
+    border: none
+    padding: 0.75rem 0
+    color: white
+    font-weight: 600
+    font-size: 1.1rem
+    border-radius: $border-radius
+    cursor: pointer
+    transition: background-color $transition
+
+    &:disabled
+      background-color: lighten($primary-color, 30%)
+      cursor: not-allowed
+
+    &:hover:not(:disabled)
+      background-color: darken($primary-color, 10%)
 
   .switch-auth
-    text-align: center
     margin-top: 1rem
     font-size: 0.9rem
+    text-align: center
+    color: $text-color
 
     a
       color: $primary-color
-      font-weight: bold
       cursor: pointer
-      margin-left: 0.25rem
+      font-weight: 600
+      margin-left: 0.3rem
 
-  .loading-spinner
-    display: block
-    margin: 1rem auto
+.loader
+  margin: 1rem auto
+  border: 4px solid lighten($primary-color, 40%)
+  border-top: 4px solid $primary-color
+  border-radius: 50%
+  width: 36px
+  height: 36px
+  animation: spin 1s linear infinite
 
-// Alerts
-.alert-container
-  position: fixed
-  bottom: 2rem
-  left: 50%
-  transform: translateX(-50%)
-  z-index: 999
-  width: auto
+@keyframes spin
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
 
-// Responsive Design
-@media (max-width: 1024px)
+@media (max-width: 720px)
   .login-container
     flex-direction: column
+    height: 100vh
+    width: 100vw
+    background-image: url('../../assets/img/sheinbg.png')
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+    justify-content: center   // vertical center
+    align-items: center       // horizontal center
 
-  .login-illustration
-    display: none
+    .login-illustration
+      display: none
 
   .login-form
     flex: none
-    width: 100%
-    height: 100vh
-    justify-content: flex-start
-    padding: 2rem 1rem
-
-  .form-box
-    max-width: 90%
-    margin: 0 auto
-    padding: 1.5rem
-
-    h3
-      font-size: 1.5rem
-
-    .sub-text,
-    .divider,
-    .switch-auth
-      font-size: 0.9rem
-
-    .form-grid
-      grid-template-columns: 1fr
-      gap: 1rem
-
-@media (max-width: 480px)
-  .form-box
     padding: 1rem
+    width: 80%                     // full width of container
+    max-width: 400px               // optional max width for nice sizing
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 10px
 
-    h3
-      font-size: 1.3rem
 
-    .sub-text,
-    .divider,
-    .switch-auth
-      font-size: 0.85rem
+  .form-grid
+    grid-template-columns: 1fr
+// Overlay that blurs the background and dims it
+.alert-overlay
+  position: fixed
+  top: 0
+  left: 0
+  width: 100vw
+  height: 100vh
+  // Removed backdrop-filter: blur(8px)
+  background-color: rgba(0, 0, 0, 0.2)
+  z-index: 1000
 
-    .login-btn
-      font-size: 1rem
+.alert-container
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  z-index: 1001
+  min-width: 300px
+  max-width: 90%
+  padding: 1rem 2rem
+  border-radius: 1rem
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  
+@keyframes zoomInFade
+  0%
+    opacity: 0
+    transform: translate(-50%, -50%) scale(0.8)
+  100%
+    opacity: 1
+    transform: translate(-50%, -50%) scale(1)
+
+.alert-container
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%) scale(1)
+  z-index: 1001
+  min-width: 300px
+  max-width: 90%
+  padding: 1rem 2rem
+  border-radius: 1rem
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  animation: zoomInFade 0.3s ease forwards
+  will-change: transform, opacity

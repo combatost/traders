@@ -2,7 +2,7 @@
   <div class="login-illustration"></div>
 
   <div class="login-form">
-    <div class="form-box mat-elevation-z8">
+    <div class="form-box">
       <img class="logo-icon" src="assets/img/logo.png" alt="Logo" />
 
       <h3>{{ isSignup ? "Create an Account" : "Welcome Back" }}</h3>
@@ -10,103 +10,105 @@
         {{ isSignup ? "Sign up to get started" : "Login to continue" }}
       </p>
 
-      <form #authForm="ngForm" autocomplete="off">
+      <form
+        #authForm="ngForm"
+        autocomplete="off"
+        (ngSubmit)="
+          isSignup
+            ? onSignup(email, password, confirmPassword)
+            : onSignin(email, password)
+        "
+      >
         <div class="form-grid" *ngIf="isSignup">
-          <mat-form-field appearance="outline">
-            <mat-label>Full Name</mat-label>
+          <div class="input-group">
+            <label for="fullName">Full Name</label>
             <input
-              matInput
-              [(ngModel)]="fullName"
+              type="text"
+              id="fullName"
               name="fullName"
+              [(ngModel)]="fullName"
               placeholder="John Doe"
+              required
             />
-          </mat-form-field>
+          </div>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Date of Birth</mat-label>
+          <div class="input-group">
+            <label for="birthDate">Date of Birth</label>
             <input
-              matInput
-              [matDatepicker]="picker"
-              [(ngModel)]="birthDate"
+              type="date"
+              id="birthDate"
               name="birthDate"
+              [(ngModel)]="birthDate"
+              required
             />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+          </div>
         </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
+        <div class="input-group full-width">
+          <label for="email">Email</label>
           <input
-            matInput
             type="email"
-            [(ngModel)]="email"
+            id="email"
             name="email"
+            [(ngModel)]="email"
             required
+            autocomplete="email"
+            placeholder="example@mail.com"
           />
-        </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            [type]="passwordVisible ? 'text' : 'password'"
-            [(ngModel)]="password"
-            name="password"
-            required
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            (click)="togglePasswordVisibility()"
-            type="button"
-          >
-            <mat-icon>{{
-              passwordVisible ? "visibility" : "visibility_off"
-            }}</mat-icon>
-          </button>
-        </mat-form-field>
+        <div class="input-group full-width password-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              autocomplete="current-password"
+              placeholder="Enter your password"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+              aria-label="Toggle Password Visibility"
+            >
+              <mat-icon>{{
+                passwordVisible ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+          </div>
+        </div>
 
-        <mat-form-field
-          appearance="outline"
-          class="full-width"
-          *ngIf="isSignup"
-        >
-          <mat-label>Confirm Password</mat-label>
+        <div class="input-group full-width" *ngIf="isSignup">
+          <label for="confirmPassword">Confirm Password</label>
           <input
-            matInput
             [type]="passwordVisible ? 'text' : 'password'"
-            [(ngModel)]="confirmPassword"
+            id="confirmPassword"
             name="confirmPassword"
+            [(ngModel)]="confirmPassword"
             required
+            placeholder="Confirm your password"
           />
-        </mat-form-field>
+        </div>
 
         <div class="options-row" *ngIf="!isSignup">
-          <mat-checkbox>Remember Me</mat-checkbox>
+          <label class="checkbox-container">
+            <input type="checkbox" name="rememberMe" />
+            <span class="checkmark"></span>
+            Remember Me
+          </label>
           <a
             class="forgot"
             *ngIf="showForgotPasswordLink"
             (click)="onForgotPassword(email)"
+            >Forgot Password?</a
           >
-            Forgot Password?
-          </a>
         </div>
 
-        <button
-          mat-flat-button
-          color="primary"
-          class="login-btn"
-          [disabled]="isLoading"
-          (click)="
-            isSignup
-              ? onSignup(email, password, confirmPassword)
-              : onSignin(email, password)
-          "
-        >
+        <button class="login-btn" [disabled]="isLoading" type="submit">
           {{ isSignup ? "Sign up" : "Login" }}
         </button>
 
@@ -122,13 +124,14 @@
     </div>
   </div>
 </div>
+
 <app-loader *ngIf="isLoading" [message]="'WELCOME'"></app-loader>
+<div *ngIf="showSuccess || showError" class="alert-overlay"></div>
 <div class="alert-container" *ngIf="showSuccess || showError">
   <app-successful-alert
     *ngIf="showSuccess"
     [message]="successMessage"
   ></app-successful-alert>
-
   <app-error-alert *ngIf="showError" [message]="errorMessage"></app-error-alert>
 </div>
 

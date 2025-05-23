@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core'
 export class VersionAlertComponent implements OnInit {
   showPopup = false
   dismissed = false
-  public static appVersion = '2.5.0' // update on new release 
+  public static appVersion = '2.5.2' // update on new release 
 
   version = VersionAlertComponent.appVersion
 
