@@ -23,7 +23,7 @@
     "HISTORY": "History"
   },
   "form": {
-    "title": "Client Information",
+    "title": "Client Order",
     "client": "Client",
     "fullName": "Full Name",
     "phoneNumber": "Phone Number",
