@@ -20,7 +20,9 @@
     "ANALYTICS": "التحليلات",
     "ABOUT": "معلومات عنا",
     "SETTINGS": "الإعدادات",
-    "HISTORY": "السجل"
+    "HISTORY": "السجل",
+    "CLIENTS_LIST": "قائمة العملاء"
+
   },
   "form": {
     "title": "طلب الزبون",
@@ -33,7 +35,7 @@
     "address2": "العنوان ٢",
     "cost": "التكلفة",
     "delivery": "التوصيل",
-    "discount": "الخصم (%)",
+    "discount": "كوبونات(%)",
     "shippingCost": "تكلفة الشحن",
     "quantity": "الكمية",
     "tax": "الضريبة",
@@ -49,8 +51,8 @@
   "table": {
     "title": "قائمة العملاء",
     "actions": "الإجراءات",
-    "pending": "قيد الانتظار",
-    "done": "تم",
+    "pending": "غير مدفوع",
+    "done": "مدفوع",
     "cancelled": "ألغيت",
     "revenue": "إجمالي الإيرادات",
     "profit": "إجمالي الربح"
@@ -76,7 +78,7 @@
     "CLIENT": "العميل",
     "QUANTITY": "الكمية",
     "COST": "التكلفة",
-    "DISCOUNT": "الخصم",
+    "DISCOUNT": "كوبونات",
     "ACTIONS": "الإجراءات"
   },
   "FOOTER": {
@@ -189,7 +191,7 @@
   "cost": "التكلفة: ${{cost}}",
   "profit": "الربح: ${{profit}}",
   "quantity": "الكمية",
-  "discount": "الخصم",
+  "discount": "كوبونات",
   "delivery": "التوصيل",
   "shippingCost": "تكلفة الشحن",
   "tax": "الضريبة",
