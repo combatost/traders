@@ -50,8 +50,8 @@
   "table": {
     "title": "Client List",
     "actions": "Actions",
-    "pending": "UnPaid",
-    "done": "Paid",
+    "pending": "Pending",
+    "done": "Done",
     "cancelled": "Cancelled",
     "revenue": "Total Revenue",
     "profit": "Total Profit"
