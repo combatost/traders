@@ -15,7 +15,7 @@
     "TITLE": "Meet the Team"
   },
   "NAV": {
-    "HOME": "Home",
+    "HOME": "Orders",
     "CLIENTS": "Clients",
     "ANALYTICS": "Analytics",
     "ABOUT": "About",
@@ -63,7 +63,7 @@
     "SALES": "Sales",
     "TOTAL_PROFIT": "Total Profit",
     "ITEMS_SOLD": "Items Sold",
-    "UNIQUE_CLIENTS": "Unique Clients",
+    "UNIQUE_CLIENTS": "Clients",
     "TOTAL_SHIPPING": "Total Shipping",
     "TOTAL_TAX_COST": "Total Tax Cost",
     "PENDING_ORDERS": "Pending Orders",
@@ -81,7 +81,7 @@
     "ACTIONS": "Actions"
   },
   "FOOTER": {
-    "HOME": "Home",
+    "HOME": "Orders",
     "ABOUT": "About Us",
     "SETTINGS": "Settings",
     "CONTACT": "Contact",
