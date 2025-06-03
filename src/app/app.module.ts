@@ -31,7 +31,6 @@ import { SuccessfulAlertComponent } from './alreat/successful-alert/successful-a
 import { ErrorAlertComponent } from './alreat/error-alert/error-alert.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { WindowComponent } from './window/window.component';
 import { NgParticlesModule } from "ng-particles";
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -39,6 +38,11 @@ import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { ListComponent } from './list/list.component';
 import { VersionAlertComponent } from './version-alert/version-alert.component';
 import { TermsComponent } from './terms/terms.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BlockedUserCardComponent } from './blocked-user-card/blocked-user-card.component';
+
+
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -62,11 +66,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     SuccessfulAlertComponent,
     ErrorAlertComponent,
-    WindowComponent,
     ClientDetailComponent,
     ListComponent,
     VersionAlertComponent,
-    TermsComponent
+    TermsComponent,
+    AdminPanelComponent,
+    BlockedUserCardComponent,
+
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -100,7 +106,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonToggleModule,
     NgChartsModule,
     MatDatepickerModule,
-    NgParticlesModule
+    NgParticlesModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     provideClientHydration(),

@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';  // <-- Added
 import { Router } from '@angular/router';
+
+interface UserData {
+  isLocked?: boolean;
+  // add more user properties if needed
+}
 
 @Component({
   selector: 'app-login',
@@ -33,17 +39,28 @@ export class LoginComponent {
   constructor(
     public firebaseServices: FirebaseService,
     private auth: AngularFireAuth,
+    private firestore: AngularFirestore,  // <-- Added
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.auth.authState.subscribe(user => {
-      this.isSignedIn = !!user;
-      if (this.isSignedIn) {
-        this.router.navigate(['/sheintable']);
+    this.auth.authState.subscribe(async (user) => {
+      if (user) {
+        this.isSignedIn = true;
+        const email = user.email?.toLowerCase();
+
+        // Check if user is admin or not
+        if (email === 'alikamlion@gmail.com') {
+          this.router.navigate(['/admin-panel'], { replaceUrl: true });
+        } else {
+          this.router.navigate(['/sheintable'], { replaceUrl: true });
+        }
+      } else {
+        this.isSignedIn = false;
       }
     });
   }
+
 
   async onSignup(email: string, password: string, confirmPassword: string) {
     this.resetAlerts();
@@ -91,19 +108,40 @@ export class LoginComponent {
 
     try {
       this.isLoading = true;
-      await this.firebaseServices.signin(email, password);
 
-      // Remove arbitrary 3 sec delay, react immediately when auth state changes
-      this.isSignedIn = this.firebaseServices.isLoggedIn;
-      this.isLoading = false;
+      // Sign in via FirebaseService (or you can directly use AngularFireAuth)
+      const cred = await this.auth.signInWithEmailAndPassword(email, password);
 
-      if (this.isSignedIn) {
-        this.router.navigate(['/sheintable']);
-      } else {
-        this.showErrorAlert('Login failed. Please try again.');
+      if (!cred.user) {
+        this.isLoading = false;
+        return this.showErrorAlert('Login failed. Please try again.');
       }
-    } catch {
+
+      // Check if user is locked in Firestore
+      const docSnap = await this.firestore.collection('users').doc<UserData>(cred.user.uid).get().toPromise();
+
+      let userData: UserData | null = null;
+      if (docSnap && docSnap.exists) {
+        userData = docSnap.data() ?? null;
+      }
+
+      if (userData?.isLocked) {
+        await this.auth.signOut();
+        this.isLoading = false;
+        return this.showErrorAlert('Your account has been locked. Please contact support.');
+      }
+
+      this.isSignedIn = true;
       this.isLoading = false;
+
+      if (email.trim().toLowerCase() === 'alikamlion@gmail.com') {
+        this.router.navigate(['/admin-panel']);
+      } else {
+        this.router.navigate(['/sheintable']);
+      }
+    } catch (err: any) {
+      this.isLoading = false;
+      console.error('Login error:', err);
       this.showErrorAlert('Please check your email or password.');
     }
   }

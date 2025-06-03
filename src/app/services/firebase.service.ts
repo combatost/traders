@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router'; // Import Router
-import { AngularFireDatabase } from '@angular/fire/compat/database';
-import firebase from 'firebase/compat/app';
+import { Injectable } from '@angular/core'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
+import { AngularFirestore } from '@angular/fire/compat/firestore'
+import { BehaviorSubject, Observable, of } from 'rxjs'
+import { switchMap } from 'rxjs/operators'
+import { Router } from '@angular/router'
+import { AngularFireDatabase } from '@angular/fire/compat/database'
+import firebase from 'firebase/compat/app'
+
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
-  isLoggedIn = false;
-  private userUID: string | null = null;
+  isLoggedIn = false
+  private userUID: string | null = null
+
+  private unreadNotificationsSubject = new BehaviorSubject<any[]>([])
+  unreadNotifications$ = this.unreadNotificationsSubject.asObservable()
 
   constructor(
     public firebaseAuth: AngularFireAuth,
@@ -21,57 +25,93 @@ export class FirebaseService {
   ) {
     this.firebaseAuth.authState.subscribe(user => {
       if (user) {
-        this.userUID = user.uid;
+        this.userUID = user.uid
         this.setupPresence(user.uid)
+        this.subscribeToUnreadNotifications()
       } else {
-        this.userUID = null;
+        this.userUID = null
+        this.unreadNotificationsSubject.next([])
       }
-    });
+    })
   }
 
   async signin(email: string, password: string): Promise<void> {
     try {
-      const res = await this.firebaseAuth.signInWithEmailAndPassword(email, password);
-      this.isLoggedIn = true;
-      this.userUID = res.user?.uid || null;
-      localStorage.setItem('user', JSON.stringify(res.user));
-      await this.setUserOnlineStatus(true);
+      const res = await this.firebaseAuth.signInWithEmailAndPassword(email, password)
+      const uid = res.user?.uid
+      if (!uid) throw new Error('Invalid user ID')
 
-      // Navigate to home page after successful login
-      this.router.navigate(['/sheintable']);  // Adjust route as needed
+      const doc = await this.firestore.collection('users').doc(uid).get().toPromise()
+      const userData = doc?.data() as { isActive?: boolean; role?: string } | undefined
+
+      if (!userData?.isActive) {
+        await this.firebaseAuth.signOut()
+        throw new Error('Your account has been disabled by an administrator.')
+      }
+
+      this.isLoggedIn = true
+      this.userUID = uid
+      localStorage.setItem('user', JSON.stringify(res.user))
+      await this.setUserOnlineStatus(true)
+
+      const role = userData.role || 'user'
+
+      if (role === 'admin') {
+        await this.router.navigate(['/admin-panel'])
+      } else {
+        await this.router.navigate(['/sheintable'])
+      }
     } catch (error) {
-      console.error('Signin error:', error);
-      throw new Error('Signin failed. Please check your credentials.');
+      console.error('Signin error:', error)
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Signin failed.')
+      } else {
+        throw new Error('Signin failed.')
+      }
     }
   }
-  setupPresence(userId: string) {
-    const statusRef = this.realtimeDb.object(`status/${userId}`)
 
-    const isOfflineForDatabase = {
+  setupPresence(userId: string) {
+    const statusDbRef = this.realtimeDb.object(`status/${userId}`)
+    const userFsRef = this.firestore.collection('users').doc(userId)
+
+    const isOffline = {
       online: false,
       lastChanged: firebase.database.ServerValue.TIMESTAMP
-    };
-    const isOnlineForDatabase = {
+    }
+
+    const isOnline = {
       online: true,
       lastChanged: firebase.database.ServerValue.TIMESTAMP
-    };
+    }
 
+    this.realtimeDb.object('.info/connected').valueChanges().subscribe(connected => {
+      if (connected === false || connected === null) return
 
-    // Get Realtime Database special '.info/connected' ref that indicates connection state
-    const connectedRef = this.realtimeDb.object('.info/connected').valueChanges();
+      // Cancel any previous onDisconnects (optional safety)
+      firebase.database().ref().onDisconnect().cancel()
 
-    connectedRef.subscribe(connected => {
-      if (!connected) {
-        // We're offline, do nothing
-        return;
+      // Setup onDisconnect to mark offline in RealtimeDB
+      statusDbRef.query.ref.onDisconnect().set(isOffline).then(() => {
+        // Mark online in RealtimeDB
+        statusDbRef.set(isOnline)
+
+        // Mark online in Firestore
+        userFsRef.update({ online: true }).catch(err =>
+          console.error('Error setting user online in Firestore:', err)
+        )
+      })
+    })
+
+    window.addEventListener('beforeunload', async () => {
+      try {
+        await userFsRef.update({ online: false })
+        await this.realtimeDb.object(`status/${userId}`).set(isOffline)
+      } catch (e) {
+        console.warn('Could not set offline before unload')
       }
-      // On disconnect set offline status
-      statusRef.query.ref.onDisconnect().set(isOfflineForDatabase).then(() => {
-        statusRef.update(isOnlineForDatabase);
-      });
-    });
+    })
   }
-
   async signup(email: string, password: string, fullName: string, birthDate: string): Promise<void> {
     try {
       const res = await this.firebaseAuth.createUserWithEmailAndPassword(email, password);
@@ -79,50 +119,61 @@ export class FirebaseService {
       this.userUID = res.user?.uid || null;
       localStorage.setItem('user', JSON.stringify(res.user));
 
-      // Add additional user data like fullName and birthDate
       const userData = {
-        fullName: fullName,
-        birthDate: birthDate,
-        data: []  // Initialize an empty array for `data`
+        uid: res.user?.uid,
+        fullName,
+        birthDate,
+        email,
+        role: 'user',
+        isActive: true,
+        isLocked: false,   // optional
+        online: true,
+        createdAt: new Date()
       };
-      await this.saveUserData(userData);
 
-      // Navigate to the home page
-      this.router.navigate(['/sheintable']);
+      await this.firestore.collection('users').doc(res.user!.uid).set(userData); // ✅ Save here
+
+      await this.router.navigate(['/sheintable']);
     } catch (error) {
       console.error('Signup error:', error);
       throw new Error('Signup failed. Please try again later.');
     }
   }
 
-  logout(): void {
-    this.firebaseAuth.signOut().catch(error => {
-      console.error('Logout error:', error);
-    });
-    localStorage.removeItem('user');
-    this.userUID = null;  // Clear cached user UID
-    this.setUserOnlineStatus(false);
-
+  async logout(): Promise<void> {
+    try {
+      if (this.userUID) {
+        await this.realtimeDb.object(`status/${this.userUID}`).set({
+          online: false,
+          lastChanged: firebase.database.ServerValue.TIMESTAMP
+        })
+        await this.setUserOnlineStatus(false)
+      }
+      await this.firebaseAuth.signOut()
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
+    localStorage.removeItem('user')
+    this.userUID = null
   }
 
   getUserUID(): string | null {
-    return this.userUID || (JSON.parse(localStorage.getItem('user') || '{}')?.uid || null);
+    return this.userUID || (JSON.parse(localStorage.getItem('user') || '{}')?.uid || null)
   }
 
   async saveUserData(data: any): Promise<void> {
-    const userUID = this.getUserUID();
-    if (userUID) {
-      try {
-        console.log('Saving data for user:', userUID, data); // Log data being saved
-        await this.firestore.collection('users').doc(userUID).set(data);
-        console.log('User data saved successfully!');
-      } catch (error) {
-        console.error('Error saving user data:', error);
-        throw new Error('Failed to save user data.');
-      }
-    } else {
-      console.error('User not authenticated');
-      throw new Error('User not authenticated');
+    const userUID = this.getUserUID()
+    if (!userUID) {
+      console.error('User not authenticated')
+      throw new Error('User not authenticated')
+    }
+    try {
+      console.log('Saving data for user:', userUID, data)
+      await this.firestore.collection('users').doc(userUID).set(data)
+      console.log('User data saved successfully!')
+    } catch (error) {
+      console.error('Error saving user data:', error)
+      throw new Error('Failed to save user data.')
     }
   }
 
@@ -130,87 +181,123 @@ export class FirebaseService {
     return this.firebaseAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.firestore.collection('users').doc(user.uid).valueChanges();
-        } else {
-          return of(null);
+          return this.firestore.collection('users').doc(user.uid).valueChanges()
         }
+        return of(null)
       })
-    );
+    )
   }
 
   addSheinRecord(record: any): Promise<void> {
-    const userId = this.getUserUID();
-    if (!userId) throw new Error('User not logged in.');
+    const userId = this.getUserUID()
+    if (!userId) return Promise.reject('User not logged in.')
 
     return this.firestore
       .collection(`sheinTables/${userId}/records`)
       .add(record)
       .then(() => console.log('Shein record added'))
       .catch(err => {
-        console.error('Error adding record:', err);
-        throw err;
-      });
-  }
-
-  getSheinRecords(): Observable<any[]> {
-    const userId = this.getUserUID();
-    if (!userId) throw new Error('User not logged in.');
-
-    return this.firestore
-      .collection(`sheinTables/${userId}/records`)
-      .valueChanges({ idField: 'id' });
-  }
-
-  updateSheinRecord(recordId: string, data: any): Promise<void> {
-    const userId = this.getUserUID();
-    if (!userId) throw new Error('User not logged in.');
-
-    return this.firestore
-      .collection(`sheinTables/${userId}/records`)
-      .doc(recordId)
-      .update(data);
-  }
-
-  deleteSheinRecord(recordId: string): Promise<void> {
-    const userId = this.getUserUID();
-    if (!userId) throw new Error('User not logged in.');
-
-    return this.firestore
-      .collection(`sheinTables/${userId}/records`)
-      .doc(recordId)
-      .delete();
-  }
-
-  getTotalUserCount(): Promise<number> {
-    return this.firestore
-      .collection('users')
-      .get()
-      .toPromise()
-      .then(snapshot => snapshot?.size || 0)
-      .catch(err => {
-        console.error('Failed to fetch user count:', err)
-        return 0
+        console.error('Error adding record:', err)
+        throw err
       })
   }
 
-  setUserOnlineStatus(online: boolean): void {
-    const userUID = this.getUserUID();
-    if (!userUID) return;
+  getSheinRecords(): Observable<any[]> {
+    const userId = this.getUserUID()
+    if (!userId) throw new Error('User not logged in.')
 
-    this.firestore.collection('users').doc(userUID).update({
-      online: online,
+    return this.firestore
+      .collection(`sheinTables/${userId}/records`)
+      .valueChanges({ idField: 'id' })
+  }
+
+  updateSheinRecord(recordId: string, data: any): Promise<void> {
+    const userId = this.getUserUID()
+    if (!userId) return Promise.reject('User not logged in.')
+
+    return this.firestore
+      .collection(`sheinTables/${userId}/records`)
+      .doc(recordId)
+      .update(data)
+  }
+
+  deleteSheinRecord(recordId: string): Promise<void> {
+    const userId = this.getUserUID()
+    if (!userId) return Promise.reject('User not logged in.')
+
+    return this.firestore
+      .collection(`sheinTables/${userId}/records`)
+      .doc(recordId)
+      .delete()
+  }
+
+  async getTotalUserCount(): Promise<number> {
+    try {
+      const snapshot = await this.firestore.collection('users').get().toPromise()
+      return snapshot?.size || 0
+    } catch (err) {
+      console.error('Failed to fetch user count:', err)
+      return 0
+    }
+  }
+
+  setUserOnlineStatus(online: boolean): Promise<void> {
+    const userUID = this.getUserUID()
+    if (!userUID) return Promise.resolve()
+
+    return this.firestore.collection('users').doc(userUID).update({
+      online,
       lastSeen: new Date()
-    }).catch(err => console.error('Error updating online status:', err));
-  }
-  getOnlineUserCount(): Promise<number> {
-    return this.firestore.collection('users', ref => ref.where('online', '==', true))
-      .get()
-      .toPromise()
-      .then(snapshot => snapshot?.size || 0)
-      .catch(err => {
-        console.error('Failed to fetch online user count:', err);
-        return 0;
-      });
+    }).catch(err => {
+      console.error('Error updating online status:', err)
+    })
   }
 
+  async getOnlineUserCount(): Promise<number> {
+    try {
+      const snapshot = await this.firestore.collection('users', ref => ref.where('online', '==', true)).get().toPromise()
+      return snapshot?.size || 0
+    } catch (err) {
+      console.error('Failed to fetch online user count:', err)
+      return 0
+    }
+  }
+
+  subscribeToUnreadNotifications(): void {
+    const userId = this.getUserUID()
+    if (!userId) {
+      console.warn('User not logged in, cannot fetch notifications')
+      this.unreadNotificationsSubject.next([])
+      return
+    }
+
+    this.firestore.collection(`notifications/${userId}/messages`, ref =>
+      ref.where('read', '==', false).orderBy('timestamp', 'desc')
+    )
+      .valueChanges({ idField: 'id' })
+      .subscribe(
+        notifications => {
+          console.log(`Unread notifications for user ${userId}:`, notifications)
+          this.unreadNotificationsSubject.next(notifications)
+        },
+        error => {
+          console.error('Error fetching notifications:', error)
+          this.unreadNotificationsSubject.next([])
+        }
+      )
+  }
+
+  markNotificationAsRead(notificationId: string): Promise<void> {
+    const userId = this.getUserUID()
+    if (!userId) return Promise.reject('User not logged in')
+
+    return this.firestore
+      .collection(`notifications/${userId}/messages`)
+      .doc(notificationId)
+      .update({ read: true })
+      .catch(err => {
+        console.error('Failed to mark notification as read:', err)
+        throw err
+      })
+  }
 }

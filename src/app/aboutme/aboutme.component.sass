@@ -1,3 +1,4 @@
+// Variables (unchanged)
 $primary-color: #1f1f1f
 $secondary-color: #1a73e8
 $bg-color: #f5f5f5
@@ -17,6 +18,7 @@ $transition-speed: 0.3s
   max-width: 1300px
   margin: 0 auto
 
+  // Hero card improvements
   .hero-card
     background: $secondary-color
     color: white
@@ -27,10 +29,11 @@ $transition-speed: 0.3s
     width: 100%
     max-width: 1100px
     margin-bottom: 40px
-    transition: box-shadow $transition-speed ease
+    transition: box-shadow $transition-speed ease, transform $transition-speed ease
 
     &:hover
       box-shadow: 0 12px 28px rgba(26, 115, 232, 0.5)
+      transform: translateY(-5px)  // subtle lift on hover
 
     .hero-content
       h1
@@ -44,6 +47,7 @@ $transition-speed: 0.3s
         font-weight: 400
         line-height: 1.5
 
+  // Stats grid with soft hover and backdrop blur
   .stats-grid
     display: grid
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
@@ -60,14 +64,16 @@ $transition-speed: 0.3s
       flex-direction: column
       align-items: center
       text-align: center
-      transition: transform $transition-speed ease, box-shadow $transition-speed ease
+      transition: transform $transition-speed ease, box-shadow $transition-speed ease, background-color $transition-speed ease
       cursor: pointer
       position: relative
       backdrop-filter: saturate(180%) blur(10px)
+      will-change: transform
 
       &:hover
         transform: translateY(-8px)
         box-shadow: 0 12px 25px rgba(26, 115, 232, 0.35)
+        background-color: lighten($secondary-color, 45%)  // soft tint on hover
 
       .stat-icon
         margin-bottom: 15px
@@ -84,20 +90,23 @@ $transition-speed: 0.3s
         font-size: 1.1rem
         color: #666
         line-height: 1.4
+
+  // Video header improvements
   .video-header
     position: relative
-    width: 90%         // smaller width
+    width: 90%
     height: 0
-    padding-bottom: 20%  // less height than 56.25%
+    padding-bottom: 20%  // less tall for better ratio on wide screens
     overflow: hidden
     border-radius: $card-border-radius
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25)
     cursor: pointer
     user-select: none
-    transition: box-shadow $transition-speed ease
+    transition: box-shadow $transition-speed ease, transform $transition-speed ease
 
     &:hover
       box-shadow: 0 14px 38px rgba(26, 115, 232, 0.4)
+      transform: scale(1.02)
 
     .bg-video
       position: absolute
@@ -110,10 +119,7 @@ $transition-speed: 0.3s
 
     .overlay
       position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
+      inset: 0
       background: rgba(0, 0, 0, 0.35)
       display: flex
       flex-direction: column
@@ -163,17 +169,20 @@ $transition-speed: 0.3s
         width: 24px
         height: 24px
 
-  .vision-card
+  // Vision card & Team card keep existing softness with hover scale
+  .vision-card,
+  .team-card
     background-color: $card-bg-color
     padding: 30px 25px
     border-radius: $card-border-radius
     box-shadow: $card-shadow
     width: 90%
     margin-bottom: 40px
-    transition: box-shadow $transition-speed ease
+    transition: box-shadow $transition-speed ease, transform $transition-speed ease
 
     &:hover
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15)
+      transform: translateY(-6px)
 
     h2
       font-size: clamp(1.6rem, 3vw, 2rem)
@@ -186,24 +195,7 @@ $transition-speed: 0.3s
       color: #333
       line-height: 1.5
 
-  .team-card
-    background-color: $card-bg-color
-    padding: 30px 25px
-    border-radius: $card-border-radius
-    box-shadow: $card-shadow
-    width: 100%
-    max-width: 1100px
-    transition: box-shadow $transition-speed ease
-
-    &:hover
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15)
-
-    h2
-      font-size: clamp(1.6rem, 3vw, 2rem)
-      font-weight: 600
-      color: $primary-color
-      margin-bottom: 30px
-
+  // Team grid and members keep clean layout & softness
   .team-grid
     display: grid
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
@@ -219,6 +211,7 @@ $transition-speed: 0.3s
       border-radius: 10px
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
       transition: transform $transition-speed ease, box-shadow $transition-speed ease
+      cursor: default
 
       &:hover
         transform: translateY(-6px)
@@ -268,7 +261,6 @@ $transition-speed: 0.3s
   .vision-card, .team-card
     padding: 20px 15px
 
-
   .hero-content h1
     font-size: 1.8rem
 
@@ -282,5 +274,4 @@ $transition-speed: 0.3s
     grid-template-columns: 1fr
 
   .video-header
-    padding-bottom: 56.25%
-  
+    padding-bottom: 56.25%  // 16:9 ratio for small screens

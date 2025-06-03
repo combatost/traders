@@ -119,3 +119,37 @@ $gap: 1.5rem
   p
     margin-top: 12px
     font-size: 1.1rem
+
+.upload-loader-card
+  display: flex
+  align-items: center
+  justify-content: center
+  background-color: rgba($accent-blue, 0.05)
+  border: 2px dashed $accent-blue
+  border-radius: $card-radius
+  height: 120px
+  margin: 0.5rem 0
+  box-shadow: $shadow-light
+
+  .loader-icon-container
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 0.5rem
+    animation: fadeInOut 1.2s infinite
+
+    .fade-icon
+      font-size: 48px
+      color: $accent-blue
+      opacity: 0.6
+
+    .uploading-text
+      font-size: 1rem
+      color: $text-dark
+      font-weight: 500
+
+@keyframes fadeInOut
+  0%, 100%
+    opacity: 0.3
+  50%
+    opacity: 1

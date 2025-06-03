@@ -1,7 +1,7 @@
-$primary-color: #1f1f1f
-$accent-color: #1a73e8
+$primary-color: #f8f9fa
+$accent-color: #1a73e8 
 $bg-light: #f8f9fa
-$bg-surface: #ffffff
+$bg-surface:  #1f1f1f
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
 $transition: 0.3s ease
 $radius: 12px
@@ -22,7 +22,6 @@ $radius: 12px
   margin: 0 auto
   flex-wrap: wrap
 
-
   &.hidden
     transform: translateY(-100%)
 
@@ -30,7 +29,7 @@ $radius: 12px
     font-family: 'Montserrat', sans-serif
     font-weight: 700
     font-size: 2.4rem
-    color: #1f1f1f
+    color: $primary-color
     text-transform: uppercase
     letter-spacing: .1em
     transition: color $transition
@@ -58,9 +57,11 @@ $radius: 12px
     gap: 1.5rem
     transition: max-height $transition
     position: relative
-  
+
     a
-      position: relative
+      display: flex
+      align-items: center
+      gap: 0.5rem
       text-decoration: none
       color: $primary-color
       font-size: 1.2rem
@@ -74,9 +75,6 @@ $radius: 12px
         background-color: rgba(26, 115, 232, 0.1)
         color: $accent-color
         cursor: pointer
-
-      &::after
-        content: none !important
 
     &.open
       display: flex
@@ -92,24 +90,82 @@ $radius: 12px
       box-shadow: $shadow
       z-index: 999
 
-  &__logout
-    background: none
-    border: none
-    color: $primary-color
-    font-size: 1.2rem
-    cursor: pointer
-    transition: color $transition
-
-    &:hover
-      color: $accent-color
   &__status-logout
     display: flex
     align-items: center
     gap: 1.5rem
-    justify-content: space-between
+    justify-content: flex-end
+    margin-left: auto
+
+  &__logout
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 0.5rem
+    background-color: rgba(0, 0, 0, 0.03)
+    border: none
+    color: $primary-color
+    font-size: 1.4rem
+    font-weight: 500
+    padding: 0.6rem 1.2rem
+    border-radius: $radius
+    cursor: pointer
+    transition: all $transition
+
+    svg
+      width: 2rem
+      height: 2rem
+      stroke: $primary-color
+      transition: stroke $transition
+
+    &:hover
+      color: $accent-color
+      background-color: rgba(26, 115, 232, 0.1)
+
+      svg
+        stroke: $accent-color
+        
+
+
+.icon
+  width: 1.25rem
+  height: 1.25rem
+  stroke: $primary-color
+  stroke-width: 2
+  fill: none
+  vertical-align: middle
+  transition: stroke $transition
+  margin-right: 0.5rem
+
+  .navbar__menu a:hover &,
+  .navbar__menu a.active &
+    stroke: $accent-color
+
+  &.dropdown-icon
+    transform: rotate(0deg)
+    transition: transform $transition
+
+    &.rotated
+      transform: rotate(180deg)
+
 .dropdown-container
   position: relative
   display: inline-block
+  z-index: 1001 // Ensure it's above other nav items
+
+.dropdown-menu
+  left: 0  // replace right: 0
+  right: auto
+  background-color: $bg-surface
+  pointer-events: none
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease
+
+  &.open
+    pointer-events: auto
+    opacity: 1
+    transform: translateY(0)
+    max-height: 500px
+
 
 .dropdown-btn
   background: none
@@ -128,13 +184,6 @@ $radius: 12px
   &:hover
     background-color: rgba(26, 115, 232, 0.05)
     color: $accent-color
-
-  .dropdown-icon
-    font-size: 1.2rem
-    transition: transform 0.3s ease
-
-    &.rotated
-      transform: rotate(180deg)
 
 .dropdown-menu
   display: flex
@@ -167,6 +216,9 @@ $radius: 12px
     font-size: 1.1rem
     text-decoration: none
     color: $primary-color
+    display: flex
+    align-items: center
+    gap: 0.5rem
     transition: background $transition, color $transition
 
     &:hover,
@@ -176,11 +228,8 @@ $radius: 12px
 
 @media (max-width: 768px)
   .navbar
-    display: flex
-    justify-content: space-between !important
     flex-direction: row
     padding: 15px
-   
 
     &__toggle
       display: block
@@ -191,6 +240,8 @@ $radius: 12px
 
       &.open
         display: flex
+        flex-direction: column
+        align-items: flex-start
 
       a
         font-size: 1.05rem
@@ -201,7 +252,7 @@ $radius: 12px
 
     .dropdown-btn
       width: 100%
-      justify-content: space-between
+      justify-content: start
       font-size: 1.05rem
 
     .dropdown-menu

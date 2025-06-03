@@ -49,9 +49,9 @@ export class AboutmeComponent implements OnInit {
 
   readonly team: TeamMember[] = [
     { name: 'Ali Amhaz', role: 'Main Owner', photo: 'assets/image/ali.jpeg' },
-    { name: 'Mhamad Wannos', role: 'UI/UX Designer', photo: 'assets/image/user-icon.png' },
+    { name: 'Mhamad Wannos', role: 'Marketing Head', photo: 'assets/img/jakwar.jpeg' },
     { name: 'Ziad', role: 'Full Stack Developer', photo: 'assets/image/user-icon.png' },
-    { name: 'Layla', role: 'Marketing Head', photo: 'assets/image/user-icon.png' }
+    { name: 'Layla', role: 'UI/UX', photo: 'assets/image/user-icon.png' }
   ];
 
   isVideoPlaying = true;

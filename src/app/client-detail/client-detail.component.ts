@@ -39,6 +39,7 @@ export class ClientDetailComponent implements OnInit {
   client$: Observable<Client | null> = of(null);
   orders$: Observable<Order[]> = of([]);
   clientImages: { url: string }[] = [];
+  isUploading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -103,19 +104,23 @@ export class ClientDetailComponent implements OnInit {
     return +(afterTax + quantityBonus).toFixed(2);
   }
 
-  onImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-    if (!file) return;
+onImageSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = async () => {
-      const base64Image = reader.result as string;
-      await this.imageStorage.saveImage(this.clientId, base64Image);
-      this.loadImages(); // reload
-    };
-    reader.readAsDataURL(file);
-  }
+  this.isUploading = true;
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    const base64Image = reader.result as string;
+    await this.imageStorage.saveImage(this.clientId, base64Image);
+    this.loadImages();
+    this.isUploading = false;
+  };
+  reader.readAsDataURL(file);
+}
+
 async deleteImage(index: number): Promise<void> {
   // Assuming your ImageStorageService has a deleteImage method accepting clientId and index
   await this.imageStorage.deleteImage(this.clientId, index);

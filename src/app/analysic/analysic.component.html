@@ -14,8 +14,8 @@
         <h3>{{ "SALES_ANALYTICS.MONTHLY_SALES" | translate }}</h3>
         <canvas
           baseChart
-          [data]="monthlySalesData"
-          [labels]="monthlySalesLabels"
+          [data]="weeklySalesData"
+          [labels]="weeklySalesLabels"
           [options]="barChartOptions"
           [type]="'bar'"
         >
@@ -111,7 +111,7 @@
             {{ (totalProfit / totalSales) * 100 | number : "1.2-2" }}%
           </p>
         </div>
-        <div class="data">
+        <div class="data-2">
           <p>{{ totalProfit | currency }}</p>
           <div class="range">
             <div

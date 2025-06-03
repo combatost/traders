@@ -4,14 +4,15 @@ import {
   EventEmitter,
   HostListener,
   Output,
-  Renderer2,
   AfterViewInit,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-navigation',
@@ -26,123 +27,181 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
   isNavbarHidden = false;
   lastScrollTop = 0;
   isDropdownOpen = false;
+  isClientsDropdownOpen = false;
   isLoading = false;
-  isClientsDropdownOpen = false
 
+  selectedClientLabel = 'NAV.CLIENTS';
+  selectedSettingsLabel = 'NAV.SETTINGS';
 
-
-  private routerSubscription!: Subscription;
-
+  private routerSubscription?: Subscription;
   constructor(
-    private renderer: Renderer2,
     private el: ElementRef,
     public firebaseServices: FirebaseService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    public afAuth: AngularFireAuth
   ) { }
 
-  ngOnInit(): void {
-    // Update currentSection on initial load & every route change
-    this.updateCurrentSectionFromUrl(this.router.url);
 
+  ngOnInit(): void {
+    this.updateCurrentSectionFromUrl(this.router.url);
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.updateCurrentSectionFromUrl(event.urlAfterRedirects);
-        // Close menus on navigation
-        this.isNavbarOpen = false;
-        this.isDropdownOpen = false;
+        // Removed: this.closeAllMenus();
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.routerSubscription.unsubscribe();
+    this.routerSubscription?.unsubscribe();
   }
 
-  updateCurrentSectionFromUrl(url: string): void {
-    // Define simple mapping url path to section name (adjust as per your routes)
-    if (url.startsWith('/sheintable')) this.currentSection = 'home';
-    else if (url.startsWith('/client')) this.currentSection = 'client';
-    else if (url.startsWith('/analysic')) this.currentSection = 'analytics';
-    else if (url.startsWith('/aboutme')) this.currentSection = 'about';
-    else if (url.startsWith('/settings')) this.currentSection = 'settings';
-    else if (url.startsWith('/history')) this.currentSection = 'history';
-    else this.currentSection = ''; // default fallback
+  private updateCurrentSectionFromUrl(url: string): void {
+    if (url.startsWith('/sheintable')) {
+      this.currentSection = 'home';
+    } else if (url.startsWith('/client')) {
+      this.currentSection = 'client';
+      this.selectedClientLabel = 'NAV.CLIENTS';
+    } else if (url.startsWith('/clients')) {
+      this.currentSection = 'clientsList';
+      this.selectedClientLabel = 'NAV.CLIENTS_LIST'; // add this key in your translations
+    } else if (url.startsWith('/analysic')) {
+      this.currentSection = 'analytics';
+    } else if (url.startsWith('/aboutme')) {
+      this.currentSection = 'about';
+    } else if (url.startsWith('/settings')) {
+      this.currentSection = 'settings';
+      this.selectedSettingsLabel = 'NAV.SETTINGS';
+    } else if (url.startsWith('/history')) {
+      this.currentSection = 'history';
+      this.selectedSettingsLabel = 'NAV.HISTORY';
+    } else {
+      this.currentSection = '';
+    }
+    this.cdr.detectChanges();
   }
 
   // Navigation methods
   navigateToHome(): void {
     this.router.navigate(['/sheintable']);
+    this.closeAllMenus();
   }
-
   navigateToClient(): void {
+    this.currentSection = 'client';
+    this.selectedClientLabel = 'NAV.CLIENTS';
+    this.isClientsDropdownOpen = false;
+    this.cdr.detectChanges(); // force immediate UI update
     this.router.navigate(['/client']);
   }
 
+  navigateToList(): void {
+    this.currentSection = 'clientsList';
+    this.selectedClientLabel = 'NAV.CLIENTS_LIST'; // make sure this key exists in translations
+    this.isClientsDropdownOpen = false;
+    this.cdr.detectChanges(); // force immediate UI update
+    this.router.navigate(['/clients']);
+  }
+
+
+
   navigateToAnalytics(): void {
     this.router.navigate(['/analysic']);
+    this.closeAllMenus();
   }
 
   navigateToAbout(): void {
     this.router.navigate(['/aboutme']);
+    this.closeAllMenus();
   }
 
   navigateToSettings(): void {
+    this.currentSection = 'settings';
+    this.selectedSettingsLabel = 'NAV.SETTINGS';
+    this.isDropdownOpen = false;
+    this.cdr.detectChanges(); // Force immediate UI update
     this.router.navigate(['/settings']);
   }
 
   navigateToHistory(): void {
+    this.currentSection = 'history';
+    this.selectedSettingsLabel = 'NAV.HISTORY';
+    this.isDropdownOpen = false;
+    this.cdr.detectChanges(); // Force immediate UI update
     this.router.navigate(['/history']);
   }
-  navigateToList(): void {
-    this.router.navigate(['/clients']);
+
+
+  private setClientSection(section: string, label: string): void {
+    this.currentSection = section;
+    this.selectedClientLabel = label;
+    this.isClientsDropdownOpen = false;
+    this.cdr.markForCheck();
+  }
+
+  private setSettingsSection(section: string, label: string): void {
+    this.currentSection = section;
+    this.selectedSettingsLabel = label;
+    this.isDropdownOpen = false;
+    this.cdr.markForCheck();
   }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+    if (this.isDropdownOpen) {
+      this.isClientsDropdownOpen = false;
+    }
   }
-
-  logout(): void {
-    this.isLoading = true;
-
-    setTimeout(() => {
-      this.firebaseServices.logout();
-      this.isLogout.emit();
-      this.router.navigate(['/login']);
-      this.isLoading = false;
-    }, 1000); // Optional delay for visual feedback
-  }
-
-  toggleClientsDropdown() {
-    this.isClientsDropdownOpen = !this.isClientsDropdownOpen
-    // close other dropdowns if needed
-    if (this.isClientsDropdownOpen) this.isDropdownOpen = false
+  toggleClientsDropdown(): void {
+    this.isClientsDropdownOpen = !this.isClientsDropdownOpen;
+    if (this.isClientsDropdownOpen) {
+      this.isDropdownOpen = false;
+    }
   }
 
   toggleMenu(): void {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
 
-  @HostListener('window:scroll', [])
+logout(): void {
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/login'])
+    })
+  }
+  private closeAllMenus(): void {
+    this.isNavbarOpen = false;
+    this.isDropdownOpen = false;
+    this.isClientsDropdownOpen = false;
+  }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const clickedInside = this.el.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.closeDropdowns();
+    }
+  }
+  // Add method to close dropdown manually if needed (optional)
+  closeDropdowns(): void {
+    this.isDropdownOpen = false;
+    this.isClientsDropdownOpen = false;
+  }
+  @HostListener('window:scroll')
   onWindowScroll(): void {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (currentScroll > this.lastScrollTop && currentScroll > 100) {
-      this.isNavbarHidden = true;
-    } else {
-      this.isNavbarHidden = false;
-    }
-
+    this.isNavbarHidden = currentScroll > this.lastScrollTop && currentScroll > 100;
     this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 
-    // Optional: Update section based on scroll (if your page has matching <section id="..."> elements)
-    const sections = document.querySelectorAll('section[id]');
-    sections.forEach(section => {
+    // Update currentSection based on visible section in viewport
+    const sections = this.el.nativeElement.ownerDocument.querySelectorAll('section[id]');
+    for (const section of sections) {
       const sectionTop = section.getBoundingClientRect().top;
       const sectionId = section.getAttribute('id');
-      if (sectionTop <= 150 && sectionTop >= -150 && sectionId) {
+      if (sectionId && sectionTop <= 150 && sectionTop >= -150) {
         this.currentSection = sectionId;
+        break;
       }
-    });
+    }
   }
 
   ngAfterViewInit(): void { }

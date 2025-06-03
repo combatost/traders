@@ -1,3 +1,7 @@
 <app-loader *ngIf="authService.loading$ | async"></app-loader>
 
-<router-outlet *ngIf="!(authService.loading$ | async)"></router-outlet>
+<!-- Locked User Card -->
+<app-blocked-user-card *ngIf="isLocked"></app-blocked-user-card>
+
+<!-- Main app content only if NOT locked and not loading -->
+<router-outlet *ngIf="!(authService.loading$ | async) && !isLocked"></router-outlet>

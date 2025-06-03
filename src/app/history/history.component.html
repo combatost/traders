@@ -16,86 +16,95 @@
     >
       {{ "HISTORY.DELETE_SELECTED" | translate }}
     </button>
-<div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>
-            <mat-checkbox
-              [checked]="isAllSelected()"
-              (change)="toggleSelectAll($event.checked)"
-              aria-label="Select all records"
-            >
-            </mat-checkbox>
-          </th>
-          <th>{{ "form.client" | translate }}</th>
-          <th>{{ "form.quantity" | translate }}</th>
-          <th>{{ "form.cost" | translate }}</th>
-          <th>{{ "form.discount" | translate }}</th>
-          <th>{{ "form.delivery" | translate }}</th>
-          <th>{{ "form.shippingCost" | translate }}</th>
-          <th>{{ "form.tax" | translate }}</th>
-          <th>{{ "form.choice" | translate }}</th>
-          <th>{{ "table.profit" | translate }}</th>
-          <th>Deleted At</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let record of pagedRecords">
-          <td>
-            <mat-checkbox
-              [(ngModel)]="selection[record.id]"
-              (click)="$event.stopPropagation()"
-              aria-label="Select record"
-            ></mat-checkbox>
-          </td>
-          <td>{{ record.client }}</td>
-          <td>{{ record.quantity }}</td>
-          <td>{{ record.cost }}</td>
-          <td>{{ record.discount }}</td>
-          <td>{{ record.delivery }}</td>
-          <td>{{ record.shippingCost }}</td>
-          <td>{{ record.tax }}</td>
-          <td>{{ record.choice }}</td>
-          <td>{{ record.profit }}</td>
-          <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
-        </tr>
-      </tbody>
-    </table>
-    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <mat-checkbox
+                [checked]="isAllSelected()"
+                (change)="toggleSelectAll($event.checked)"
+                aria-label="Select all records"
+              >
+              </mat-checkbox>
+            </th>
+            <th>{{ "form.client" | translate }}</th>
+            <th>{{ "form.quantity" | translate }}</th>
+            <th>{{ "form.cost" | translate }}</th>
+            <th>{{ "form.discount" | translate }}</th>
+            <th>{{ "form.delivery" | translate }}</th>
+            <th>{{ "form.shippingCost" | translate }}</th>
+            <th>{{ "form.tax" | translate }}</th>
+            <th>{{ "form.choice" | translate }}</th>
+            <th>{{ "table.profit" | translate }}</th>
+            <th>Deleted At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of pagedRecords">
+            <td>
+              <mat-checkbox
+                [(ngModel)]="selection[record.id]"
+                (click)="$event.stopPropagation()"
+                aria-label="Select record"
+              ></mat-checkbox>
+            </td>
+            <td>{{ record.client }}</td>
+            <td>{{ record.quantity }}</td>
+            <td>{{ record.cost }}</td>
+            <td>{{ record.discount }}</td>
+            <td>{{ record.delivery }}</td>
+            <td>{{ record.shippingCost }}</td>
+            <td>{{ record.tax }}</td>
+            <td>{{ record.choice }}</td>
+            <td>{{ record.profit }}</td>
+            <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination-controls">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="previousPage()"
+        [disabled]="pageIndex === 0"
+        aria-label="Previous page"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <span class="page-info"> {{ pageIndex + 1 }} / {{ totalPages }} </span>
+
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="nextPage()"
+        [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
+        aria-label="Next page"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
   </div>
-  <div class="pagination-controls">
-  <button
-    mat-icon-button
-    color="primary"
-    (click)="previousPage()"
-    [disabled]="pageIndex === 0"
-    aria-label="Previous page"
-  >
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-
-  <span class="page-info">
-    {{ pageIndex + 1 }} / {{ totalPages }}
-  </span>
-
-  <button
-    mat-icon-button
-    color="primary"
-    (click)="nextPage()"
-    [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
-    aria-label="Next page"
-  >
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-</div>
-
-</div>
-  
 
   <ng-template #noHistory>
     <section class="empty-state">
-      <div class="empty-state__icon">📭</div>
+      <div class="empty-state__icon" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="64"
+          viewBox="0 0 24 24"
+          width="64"
+          fill="currentColor"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.1 0 2-.89 2-2V6c0-1.11-.9-2-2-2zm0 14H4V8h16v10zm-2-5h-5v1h5v-1z"
+          />
+        </svg>
+      </div>
+
       <p class="empty-state__text">No deleted orders history found.</p>
     </section>
   </ng-template>

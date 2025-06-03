@@ -1,6 +1,10 @@
 <div class="version-alert-container">
   <!-- Bell Button -->
-  <button class="ring-button" (click)="togglePopup()" [class.dismissed]="dismissed">
+  <button
+    class="ring-button"
+    (click)="togglePopup()"
+    [class.dismissed]="dismissed"
+  >
     <span class="icon">notifications</span>
     <span class="ring" *ngIf="!dismissed"></span>
   </button>
@@ -8,14 +12,40 @@
   <!-- Popup Card -->
   <div class="version-popup" *ngIf="showPopup">
     <div class="card">
-      <h3>Update Available</h3>
-      <div class="version-label">Version {{ version }}</div>
+      <!-- Locked user alert -->
+      <div *ngIf="lockedMessage; else normalContent">
+        <h3>Account Locked ⚠️</h3>
+        <p class="locked-message">{{ lockedMessage }}</p>
+        <button (click)="close()">Dismiss</button>
+      </div>
 
-      <ul class="message-list">
-        <li *ngFor="let msg of versionMessage">{{ msg }}</li>
-      </ul>
+      <!-- Normal update & notifications content -->
+      <ng-template #normalContent>
+        <h3>Update Available</h3>
+        <div class="version-label">Version {{ version }}</div>
 
-      <button (click)="close()">Close</button>
+        <ul class="message-list">
+          <li *ngFor="let msg of versionMessage">{{ msg }}</li>
+        </ul>
+
+        <!-- User-specific notifications -->
+        <div *ngIf="notifications?.length">
+          <h4>
+            You have {{ notifications.length }} new message{{
+              notifications.length > 1 ? "s" : ""
+            }}
+          </h4>
+          <ul class="user-notifications">
+            <li *ngFor="let notif of notifications" class="notification-item">
+              <strong>{{ notif.title }}</strong>
+              <p>{{ notif.message }}</p>
+              <button (click)="markAsRead(notif.id)">Mark as read</button>
+            </li>
+          </ul>
+        </div>
+
+        <button (click)="close()">Close</button>
+      </ng-template>
     </div>
   </div>
 </div>

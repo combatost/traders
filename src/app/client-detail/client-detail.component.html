@@ -6,32 +6,34 @@
 >
   <mat-card class="client-card">
     <mat-card-header>
-      <mat-card-title>{{ 'clientDetails' | translate:{ name: client.fullName } }}</mat-card-title>
+      <mat-card-title>{{
+        "clientDetails" | translate : { name: client.fullName }
+      }}</mat-card-title>
       <mat-card-subtitle>{{ client.location }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <mat-list>
         <mat-list-item>
-          <strong>{{ 'phone' | translate }}:</strong> {{ client.phoneNumber }}
+          <strong>{{ "phone" | translate }}:</strong> {{ client.phoneNumber }}
         </mat-list-item>
         <mat-list-item>
-          <strong>{{ 'otherPhone' | translate }}:</strong>
-          {{ client.OtherPhoneNumber || ('notAvailable' | translate) }}
+          <strong>{{ "otherPhone" | translate }}:</strong>
+          {{ client.OtherPhoneNumber || ("notAvailable" | translate) }}
         </mat-list-item>
         <mat-list-item>
-          <strong>{{ 'address' | translate }}:</strong> {{ client.address }}
+          <strong>{{ "address" | translate }}:</strong> {{ client.address }}
         </mat-list-item>
         <mat-list-item>
-          <strong>{{ 'address2' | translate }}:</strong>
-          {{ client.address2 || ('notAvailable' | translate) }}
+          <strong>{{ "address2" | translate }}:</strong>
+          {{ client.address2 || ("notAvailable" | translate) }}
         </mat-list-item>
       </mat-list>
     </mat-card-content>
   </mat-card>
 
   <h3 class="section-title">
-    {{ 'ordersFor' | translate:{ name: client.fullName } }}
+    {{ "ordersFor" | translate : { name: client.fullName } }}
   </h3>
   <div *ngIf="orders$ | async as orders; else noOrders">
     <mat-accordion multi>
@@ -40,32 +42,36 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             <!-- Show Order number instead of order.id -->
-            {{ 'orderId' | translate:{ id: i + 1 } }} &nbsp; - &nbsp;
-            {{ 'cost' | translate:{ cost: order.cost } }}
+            {{ "orderId" | translate : { id: i + 1 } }} &nbsp; - &nbsp;
           </mat-panel-title>
           <mat-panel-description>
-            {{ 'profit' | translate:{ profit: calculateProfit(order) } }}
+            {{ "profit" | translate : { profit: calculateProfit(order) } }}
           </mat-panel-description>
         </mat-expansion-panel-header>
 
         <mat-list>
           <mat-list-item>
-            <strong>{{ 'quantity' | translate }}:</strong> {{ order.quantity }}
+            <strong>{{ "cost" | translate : { cost: order.cost } }} </strong>
           </mat-list-item>
           <mat-list-item>
-            <strong>{{ 'discount' | translate }}:</strong> {{ order.discount }}%
+            <strong>{{ "quantity" | translate }}:</strong> {{ order.quantity }}
           </mat-list-item>
           <mat-list-item>
-            <strong>{{ 'delivery' | translate }}:</strong> ${{ order.delivery }}
+            <strong>{{ "discount" | translate }}:</strong> {{ order.discount }}%
           </mat-list-item>
           <mat-list-item>
-            <strong>{{ 'shippingCost' | translate }}:</strong> ${{ order.shippingCost }}
+            <strong>{{ "delivery" | translate }}:</strong> ${{ order.delivery }}
           </mat-list-item>
           <mat-list-item>
-            <strong>{{ 'tax' | translate }}:</strong> ${{ order.tax }}
+            <strong>{{ "shippingCost" | translate }}:</strong> ${{
+              order.shippingCost
+            }}
           </mat-list-item>
           <mat-list-item>
-            <strong>{{ 'choice' | translate }}:</strong> {{ order.choice }}
+            <strong>{{ "tax" | translate }}:</strong> ${{ order.tax }}
+          </mat-list-item>
+          <mat-list-item>
+            <strong>{{ "choice" | translate }}:</strong> {{ order.choice }}
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
@@ -73,7 +79,7 @@
   </div>
 
   <ng-template #noOrders>
-    <p>{{ 'noOrders' | translate }}</p>
+    <p>{{ "noOrders" | translate }}</p>
   </ng-template>
 
   <h3 class="section-title">Client Images</h3>
@@ -123,6 +129,12 @@
       </mat-grid-tile>
     </mat-grid-list>
   </div>
+  <mat-card class="upload-loader-card" *ngIf="isUploading">
+    <div class="loader-icon-container">
+      <mat-icon class="fade-icon">image</mat-icon>
+      <p class="uploading-text">Uploading...</p>
+    </div>
+  </mat-card>
 </section>
 
 <ng-template #loading>

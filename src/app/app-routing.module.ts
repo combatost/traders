@@ -11,11 +11,15 @@ import { AuthGuard } from './login/auth.guard';
 import { ClientDetailComponent } from './client-detail/client-detail.component';
 import { ListComponent } from './list/list.component';
 import { TermsComponent } from './terms/terms.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { AdminGuard } from './login/admin.guard';
+
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   // { path: 'window', component: WindowComponent, canActivate: [AuthGuard] }, 
+  { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'sheintable', component: SheintableComponent, canActivate: [AuthGuard] },
   { path: 'client', component: ClientComponent, canActivate: [AuthGuard] },
   { path: 'client-details/:id', component: ClientDetailComponent, canActivate: [AuthGuard] },

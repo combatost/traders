@@ -34,7 +34,6 @@ $table-border-color: #ddd
   padding: 1rem
   font-family: 'Roboto', sans-serif
   color: #1a1a1a
-  background: #f9fafb
 
 
 .card
@@ -101,6 +100,12 @@ $table-border-color: #ddd
     font-size: 2.5rem
     margin-bottom: 0.75rem
     color: #ff0000
+.data-2
+  p 
+    font-weight: 700
+    font-size: 2.5rem
+    margin-bottom: 0.75rem
+    color: #4caf50 
 .range
   background: #e0e0e0
   border-radius: 10px
@@ -376,44 +381,32 @@ canvas
   th.mat-header-cell,
   td.mat-cell
     padding: 0.6rem 0.75rem
+// Responsive Design Enhancements
+
+@media (max-width: 1024px)
+  .analytics-cards
+    grid-template-columns: repeat(2, 1fr)
+    gap: 1rem
+
 @media (max-width: 768px)
   .analytics-cards
-    grid-template-columns: 1fr 1fr
-    gap: 1rem
+    grid-template-columns: 1fr
     padding: 0.5rem
-
-  .filter-options
-    flex-direction: column
-    align-items: stretch
-    gap: 0.5rem
-
-  .full-width-table
-    width: 100%
-    min-width: 600px
-    font-size: 0.85rem
-
-    th.mat-header-cell,
-    td.mat-cell
-      padding: 0.5rem 0.75rem
-
-  .table-wrapper
-    overflow-x: auto
-    -webkit-overflow-scrolling: touch
-    margin-bottom: 1rem
-
-  mat-card.mat-elevation-z4.p-4
-    padding: 1rem !important
+    gap: 1rem
 
   .card
-    max-width: 100%
     padding: 1rem
     border-radius: 12px
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08)
 
   .page-title
     font-size: 2rem
     margin-bottom: 1rem
 
-  // Wrap search bar full width
+  .filter-options
+    flex-direction: column
+    gap: 0.75rem
+
   .search-bar
     width: 100%
     margin: 0 auto 1rem
@@ -423,12 +416,28 @@ canvas
     align-items: flex-start
     gap: 1rem
 
-  // Buttons smaller on phone
   mat-raised-button,
   mat-stroked-button
     font-size: 0.9rem
     padding: 0.5rem 1rem
     border-radius: 16px
-mat-button-toggle
- margin: 0 auto 
 
+  .table-wrapper
+    overflow-x: auto
+    margin-bottom: 1rem
+
+    &::-webkit-scrollbar
+      height: 6px
+
+    &::-webkit-scrollbar-thumb
+      background: $accent-blue
+
+  .full-width-table
+    min-width: 650px
+    font-size: 0.85rem
+
+    th, td
+      padding: 0.6rem 0.75rem
+
+  canvas
+    max-height: 250px

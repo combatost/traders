@@ -15,15 +15,16 @@
     "TITLE": "تعرف على الفريق"
   },
   "NAV": {
-    "HOME": "الرئيسية",
+    "HOME": "الطلبات",
     "CLIENTS": "العملاء",
     "ANALYTICS": "التحليلات",
     "ABOUT": "معلومات عنا",
     "SETTINGS": "الإعدادات",
-    "HISTORY": "السجل"
+    "HISTORY": "السجل",
+    "CLIENTS_LIST": "قائمة العملاء"
   },
   "form": {
-    "title": "معلومات العميل",
+    "title": "طلب الزبون",
     "client": "العميل",
     "fullName": "الاسم الكامل",
     "phoneNumber": "رقم الهاتف",
@@ -33,7 +34,7 @@
     "address2": "العنوان ٢",
     "cost": "التكلفة",
     "delivery": "التوصيل",
-    "discount": "الخصم (%)",
+    "discount": "كوبونات(%)",
     "shippingCost": "تكلفة الشحن",
     "quantity": "الكمية",
     "tax": "الضريبة",
@@ -50,7 +51,7 @@
     "title": "قائمة العملاء",
     "actions": "الإجراءات",
     "pending": "قيد الانتظار",
-    "done": "تم",
+    "done": "مكتمل",
     "cancelled": "ألغيت",
     "revenue": "إجمالي الإيرادات",
     "profit": "إجمالي الربح"
@@ -62,7 +63,7 @@
     "SALES": "المبيعات",
     "TOTAL_PROFIT": "إجمالي الربح",
     "ITEMS_SOLD": "عدد العناصر المباعة",
-    "UNIQUE_CLIENTS": "العملاء الفريدون",
+    "UNIQUE_CLIENTS": "العملاء",
     "TOTAL_SHIPPING": "إجمالي الشحن",
     "TOTAL_TAX_COST": "إجمالي تكلفة الضرائب",
     "PENDING_ORDERS": "الطلبات المعلقة",
@@ -76,11 +77,11 @@
     "CLIENT": "العميل",
     "QUANTITY": "الكمية",
     "COST": "التكلفة",
-    "DISCOUNT": "الخصم",
+    "DISCOUNT": "كوبونات",
     "ACTIONS": "الإجراءات"
   },
   "FOOTER": {
-    "HOME": "الرئيسية",
+    "HOME": "الطلبات",
     "ABOUT": "من نحن",
     "SETTINGS": "الإعدادات",
     "CONTACT": "اتصل بنا",
@@ -189,7 +190,7 @@
   "cost": "التكلفة: ${{cost}}",
   "profit": "الربح: ${{profit}}",
   "quantity": "الكمية",
-  "discount": "الخصم",
+  "discount": "كوبونات",
   "delivery": "التوصيل",
   "shippingCost": "تكلفة الشحن",
   "tax": "الضريبة",

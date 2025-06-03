@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core'; // needed for nati
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatGridListModule,
     MatIconModule,
     MatButtonModule,
+     MatChipsModule,
   ]
 })
 export class MaterialModule { }

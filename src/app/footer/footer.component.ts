@@ -48,7 +48,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadUserCounts()
+
   }
 
   ngOnDestroy(): void {
@@ -56,13 +56,6 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.routerEventsSub?.unsubscribe()
   }
 
-  async loadUserCounts() {
-    try {
-      this.userCount = await this.firebaseService.getTotalUserCount()
-    } catch (error) {
-      console.error('Error loading user count:', error)
-    }
-  }
 
   onLanguageChange(event: Event) {
     const lang = (event.target as HTMLSelectElement).value as 'en' | 'ar'

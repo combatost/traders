@@ -64,18 +64,25 @@ export class SheintableComponent implements OnInit {
   loadData(): void {
     this.firestore.collection(`sheinTables/${this.userId}/records`).snapshotChanges().subscribe(snapshot => {
       this.onselect = snapshot.map(doc => {
-        const data = doc.payload.doc.data() as any
-        return { id: doc.payload.doc.id, ...data }
-      })
+        const data = doc.payload.doc.data() as any;
+        return { id: doc.payload.doc.id, ...data };
+      });
 
-      this.isLoading = false
+      // Sort so that 'Done' items go to the bottom
+      this.onselect.sort((a, b) => {
+        if (a.choice === 'Done' && b.choice !== 'Done') return 1;
+        if (a.choice !== 'Done' && b.choice === 'Done') return -1;
+        return 0;
+      });
 
-      this.applyFilter()
+      this.isLoading = false;
+      this.applyFilter();
     }, error => {
-      console.error('Error loading data:', error)
-      this.isLoading = false
-    })
+      console.error('Error loading data:', error);
+      this.isLoading = false;
+    });
   }
+
 
 
   applyFilter(): void {
