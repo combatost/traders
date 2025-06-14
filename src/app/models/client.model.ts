@@ -8,5 +8,6 @@ export interface Client {
   address2: string;         // Additional address details
   orderId: string;   
   images?: string[];          // <-- add this line
-  timestamp?: Date;       // Linked order ID
+  timestamp?: Date;  
+       // Linked order ID
 }

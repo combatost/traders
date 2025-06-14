@@ -1,5 +1,8 @@
-<app-navigation></app-navigation>
-<mat-card class="terms-card mat-elevation-z4">
+<!-- Show navigation only if terms accepted -->
+<app-navigation *ngIf="termsAccepted"></app-navigation>
+
+<!-- Terms card + accept button show only if NOT accepted -->
+<mat-card *ngIf="!termsAccepted" class="terms-card mat-elevation-z4">
   <h2 class="terms-card__title">{{ 'TERMS.TITLE' | translate }}</h2>
 
   <p class="terms-card__intro">{{ 'TERMS.WELCOME' | translate }}</p>
@@ -59,4 +62,16 @@
     <p class="terms-card__section-content">{{ 'TERMS.SECTION10.CONTENT' | translate }}</p>
   </section>
 </mat-card>
-<app-footer></app-footer>
+
+<!-- Accept checkbox and button -->
+<div *ngIf="!termsAccepted" class="terms-accept">
+  <mat-checkbox [(ngModel)]="isAccepted">
+    {{ 'TERMS.ACCEPT_LABEL' | translate }}
+  </mat-checkbox>
+  <button mat-raised-button color="primary" (click)="acceptTerms()" [disabled]="!isAccepted">
+    {{ 'TERMS.CONFIRM' | translate }}
+  </button>
+</div>
+
+<!-- Show footer only if terms accepted -->
+<app-footer *ngIf="termsAccepted"></app-footer>

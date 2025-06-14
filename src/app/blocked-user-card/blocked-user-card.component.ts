@@ -9,4 +9,4 @@ export class BlockedUserCardComponent {
  paySubscription() {
     window.open('https://whish.money/pay/2yuXKc95D', '_blank');
   }
-}
+} 

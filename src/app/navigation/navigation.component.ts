@@ -13,6 +13,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { LoginModeService } from '../services/login-mode.service';
 
 @Component({
   selector: 'app-navigation',
@@ -32,29 +33,39 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
 
   selectedClientLabel = 'NAV.CLIENTS';
   selectedSettingsLabel = 'NAV.SETTINGS';
+  loginModeTitle = 'SHEINTRADERS';
 
   private routerSubscription?: Subscription;
+  private loginModeSubscription?: Subscription;
+
   constructor(
     private el: ElementRef,
     public firebaseServices: FirebaseService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    public afAuth: AngularFireAuth
-  ) { }
-
+    public afAuth: AngularFireAuth,
+    private loginModeService: LoginModeService
+  ) {}
 
   ngOnInit(): void {
     this.updateCurrentSectionFromUrl(this.router.url);
+
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.updateCurrentSectionFromUrl(event.urlAfterRedirects);
-        // Removed: this.closeAllMenus();
+        // Removed this.closeAllMenus() per your comment
       }
+    });
+
+    this.loginModeSubscription = this.loginModeService.currentMode$.subscribe(mode => {
+      this.loginModeTitle = mode === 'shein' ? 'SHEINTRADERS' : 'TRADERS';
+      this.cdr.detectChanges();
     });
   }
 
   ngOnDestroy(): void {
     this.routerSubscription?.unsubscribe();
+    this.loginModeSubscription?.unsubscribe();
   }
 
   private updateCurrentSectionFromUrl(url: string): void {
@@ -87,6 +98,7 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     this.router.navigate(['/sheintable']);
     this.closeAllMenus();
   }
+
   navigateToClient(): void {
     this.currentSection = 'client';
     this.selectedClientLabel = 'NAV.CLIENTS';
@@ -102,8 +114,6 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     this.cdr.detectChanges(); // force immediate UI update
     this.router.navigate(['/clients']);
   }
-
-
 
   navigateToAnalytics(): void {
     this.router.navigate(['/analysic']);
@@ -131,7 +141,6 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     this.router.navigate(['/history']);
   }
 
-
   private setClientSection(section: string, label: string): void {
     this.currentSection = section;
     this.selectedClientLabel = label;
@@ -152,6 +161,7 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
       this.isClientsDropdownOpen = false;
     }
   }
+
   toggleClientsDropdown(): void {
     this.isClientsDropdownOpen = !this.isClientsDropdownOpen;
     if (this.isClientsDropdownOpen) {
@@ -163,16 +173,19 @@ export class NavigationComponent implements AfterViewInit, OnInit, OnDestroy {
     this.isNavbarOpen = !this.isNavbarOpen;
   }
 
-logout(): void {
+  logout(): void {
     this.afAuth.signOut().then(() => {
-      this.router.navigate(['/login'])
-    })
+      this.router.navigate(['/login']);
+      this.isLogout.emit();
+    });
   }
+
   private closeAllMenus(): void {
     this.isNavbarOpen = false;
     this.isDropdownOpen = false;
     this.isClientsDropdownOpen = false;
   }
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const clickedInside = this.el.nativeElement.contains(event.target);
@@ -180,11 +193,12 @@ logout(): void {
       this.closeDropdowns();
     }
   }
-  // Add method to close dropdown manually if needed (optional)
+
   closeDropdowns(): void {
     this.isDropdownOpen = false;
     this.isClientsDropdownOpen = false;
   }
+
   @HostListener('window:scroll')
   onWindowScroll(): void {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -204,5 +218,5 @@ logout(): void {
     }
   }
 
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 }

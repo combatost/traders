@@ -10,6 +10,20 @@
         {{ isSignup ? "Sign up to get started" : "Login to continue" }}
       </p>
 
+      <!-- MODE SWITCH -->
+      <div class="mode-toggle">
+        <label>
+         <input type="radio" name="loginMode" [(ngModel)]="loginMode" (change)="onLoginModeChange(loginMode)" value="shein" />
+
+          <span>SHEIN</span>
+        </label>
+        <label>
+          <input type="radio" name="loginMode" [(ngModel)]="loginMode" (change)="onLoginModeChange(loginMode)" value="traders" />
+
+          <span>TRADERS</span>
+        </label>
+      </div>
+
       <form
         #authForm="ngForm"
         autocomplete="off"
@@ -128,10 +142,7 @@
 <app-loader *ngIf="isLoading" [message]="'WELCOME'"></app-loader>
 <div *ngIf="showSuccess || showError" class="alert-overlay"></div>
 <div class="alert-container" *ngIf="showSuccess || showError">
-  <app-successful-alert
-    *ngIf="showSuccess"
-    [message]="successMessage"
-  ></app-successful-alert>
+  <app-successful-alert *ngIf="showSuccess" [message]="successMessage"></app-successful-alert>
   <app-error-alert *ngIf="showError" [message]="errorMessage"></app-error-alert>
 </div>
 

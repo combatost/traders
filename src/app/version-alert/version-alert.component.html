@@ -25,7 +25,10 @@
         <div class="version-label">Version {{ version }}</div>
 
         <ul class="message-list">
-          <li *ngFor="let msg of versionMessage">{{ msg }}</li>
+          <li *ngFor="let msg of versionMessage" class="version-item">
+            <span class="icon" [innerHTML]="msg.svg"></span>
+            <span class="text">{{ msg.text }}</span>
+          </li>
         </ul>
 
         <!-- User-specific notifications -->

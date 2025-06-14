@@ -35,41 +35,42 @@ export class FirebaseService {
     })
   }
 
-  async signin(email: string, password: string): Promise<void> {
-    try {
-      const res = await this.firebaseAuth.signInWithEmailAndPassword(email, password)
-      const uid = res.user?.uid
-      if (!uid) throw new Error('Invalid user ID')
+ async signin(email: string, password: string): Promise<void> {
+  try {
+    const res = await this.firebaseAuth.signInWithEmailAndPassword(email, password);
+    const uid = res.user?.uid;
+    if (!uid) throw new Error('Invalid user ID');
 
-      const doc = await this.firestore.collection('users').doc(uid).get().toPromise()
-      const userData = doc?.data() as { isActive?: boolean; role?: string } | undefined
+    const doc = await this.firestore.collection('users').doc(uid).get().toPromise();
+    const userData = doc?.data() as { isActive?: boolean; role?: string } | undefined;
 
-      if (!userData?.isActive) {
-        await this.firebaseAuth.signOut()
-        throw new Error('Your account has been disabled by an administrator.')
-      }
+    if (!userData?.isActive) {
+      await this.firebaseAuth.signOut();
+      throw new Error('Your account has been disabled by an administrator.');
+    }
 
-      this.isLoggedIn = true
-      this.userUID = uid
-      localStorage.setItem('user', JSON.stringify(res.user))
-      await this.setUserOnlineStatus(true)
+    this.isLoggedIn = true;
+    this.userUID = uid;
+    localStorage.setItem('user', JSON.stringify(res.user));
+    await this.setUserOnlineStatus(true);
 
-      const role = userData.role || 'user'
+    const role = userData.role || 'user';
 
-      if (role === 'admin') {
-        await this.router.navigate(['/admin-panel'])
-      } else {
-        await this.router.navigate(['/sheintable'])
-      }
-    } catch (error) {
-      console.error('Signin error:', error)
-      if (error instanceof Error) {
-        throw new Error(error.message || 'Signin failed.')
-      } else {
-        throw new Error('Signin failed.')
-      }
+    if (role === 'admin') {
+      await this.router.navigate(['/admin-panel']);
+    } else {
+      await this.router.navigate(['/sheintable']);
+    }
+  } catch (error) {
+    console.error('Signin error:', error);
+    if (error instanceof Error) {
+      throw new Error(error.message || 'Signin failed.');
+    } else {
+      throw new Error('Signin failed.');
     }
   }
+}
+
 
   setupPresence(userId: string) {
     const statusDbRef = this.realtimeDb.object(`status/${userId}`)

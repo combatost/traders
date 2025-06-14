@@ -7,7 +7,7 @@
       <mat-card-title>{{ "form.title" | translate }}</mat-card-title>
       <br />
       <mat-card-content>
-        <form [formGroup]="userForm" (ngSubmit)="onClick()">
+        <form [formGroup]="userForm" (ngSubmit)="onClick()" >
           <div class="form-grid">
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>person</mat-icon>
@@ -32,7 +32,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
               <mat-icon matPrefix>percent</mat-icon>
               <mat-label>{{ "form.discount" | translate }}</mat-label>
               <input
@@ -43,7 +43,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
               <mat-icon matPrefix>flight</mat-icon>
               <mat-label>{{ "form.shippingCost" | translate }}</mat-label>
               <input
@@ -65,7 +65,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
               <mat-icon matPrefix>receipt_long</mat-icon>
               <mat-label>{{ "form.tax" | translate }}</mat-label>
               <input matInput type="number" formControlName="tax" required />
@@ -157,7 +157,7 @@
         <table
           mat-table
           [dataSource]="pagedData"
-          class="mat-elevation-z2 full-width-table"
+          [ngClass]="currentClass"
         >
           <!-- Client -->
           <ng-container matColumnDef="client">
@@ -184,7 +184,7 @@
           </ng-container>
 
           <!-- Discount -->
-          <ng-container matColumnDef="discount">
+          <ng-container matColumnDef="discount" *ngIf="loginMode !== 'traders'">
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.discount" | translate }}
             </th>
@@ -200,7 +200,7 @@
           </ng-container>
 
           <!-- Shipping -->
-          <ng-container matColumnDef="shippingCost">
+          <ng-container matColumnDef="shippingCost" *ngIf="loginMode !== 'traders'">
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.shippingCost" | translate }}
             </th>
@@ -210,7 +210,7 @@
           </ng-container>
 
           <!-- Tax -->
-          <ng-container matColumnDef="tax">
+          <ng-container matColumnDef="tax" *ngIf="loginMode !== 'traders'">
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.tax" | translate }}
             </th>
@@ -284,28 +284,28 @@
           <div class="pagination-buttons">
             <button
               mat-icon-button
-              color="primary"
+              aria-label="Previous Page"
               (click)="previousPage()"
               [disabled]="pageIndex === 0"
             >
-              <mat-icon>chevron_left</mat-icon>
+              <mat-icon>keyboard_arrow_left</mat-icon>
             </button>
+
             <button
               mat-icon-button
-              color="primary"
+              aria-label="Next Page"
               (click)="nextPage()"
-              [disabled]="pageIndex >= maxPageIndex()"
+              [disabled]="
+                (pageIndex + 1) * pageSize >= filteredData.length
+              "
             >
-              <mat-icon>chevron_right</mat-icon>
+              <mat-icon>keyboard_arrow_right</mat-icon>
             </button>
           </div>
-          <p>
-            <strong>{{ "table.profit" | translate }}:</strong>
-            {{ calculateOverallProfit() }}
-          </p>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 </section>
+
 <app-footer></app-footer>

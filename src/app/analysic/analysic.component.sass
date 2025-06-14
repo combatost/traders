@@ -19,8 +19,9 @@ $table-border-color: #ddd
   text-align: center
   margin-top: 1rem
   margin-bottom: 2rem
-  font-weight: 300
+  font-weight: 700
   font-size: 2.8rem
+  color: $accent-blue
 
 .analytics-page
   width: 90%
@@ -228,8 +229,10 @@ mat-stroked-button
 // Responsive Design
 @media (max-width: 768px)
   .analytics-cards
-    grid-template-columns: 1fr 1fr
+    display: flex
     gap: 15px
+    flex-wrap: wrap
+    justify-content: space-around
   .filter-options
     flex-direction: column
     align-items: stretch
@@ -398,6 +401,7 @@ canvas
     padding: 1rem
     border-radius: 12px
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08)
+    width: 180px
 
   .page-title
     font-size: 2rem

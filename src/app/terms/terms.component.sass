@@ -53,3 +53,52 @@
 
     li
       margin-bottom: 0.5rem
+
+.terms-accept
+  display: flex
+  align-items: center
+  gap: 1rem
+  margin-top: 2rem
+  padding: 1rem 0
+  transition: opacity 0.4s ease, max-height 0.4s ease
+  overflow: hidden
+  max-height: 100px
+  opacity: 1
+  margin-left: auto
+  margin-right: auto
+  width: fit-content
+
+
+  &.hidden
+    max-height: 0
+    opacity: 0
+    pointer-events: none
+
+  mat-checkbox
+    flex-shrink: 0
+    cursor: pointer
+
+    // Customize the label text next to checkbox
+    .mat-checkbox-label
+      font-weight: 500
+      font-size: 1rem
+      color: #444
+      user-select: none
+
+  button[mat-raised-button]
+    padding: 0.6rem 1.6rem
+    font-weight: 600
+    font-size: 1rem
+    border-radius: 8px
+    box-shadow: 0 2px 6px rgba(0, 119, 182, 0.4) // soft blue shadow
+    transition: background-color 0.3s ease, box-shadow 0.3s ease
+    cursor: pointer
+
+    &:disabled
+      background-color: #a6c8e0
+      box-shadow: none
+      cursor: not-allowed
+
+    &:not(:disabled):hover
+      background-color: #005f8a
+      box-shadow: 0 4px 10px rgba(0, 95, 138, 0.6)

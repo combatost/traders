@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ChartData, ChartOptions } from 'chart.js/dist/types/index';
 import { combineLatest } from 'rxjs';
+import { LoginModeService } from '../services/login-mode.service';
 
 
 @Component({
@@ -30,16 +31,22 @@ export class AnalysicComponent implements OnInit {
   maxItems: number = 100;           // max value for items, adjust to your logic
   maxClients: number = 50;          // max number of clients, adjust to your logic
   totalOrders: number = 120;        // total number of orders, adjust accordingly
-
+  loginMode: string = 'shein';
 
   userId: string = '';
 
   constructor(
     private firestore: AngularFirestore,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private loginModeService: LoginModeService 
   ) { }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
+    // Subscribe to login mode changes
+    this.loginModeService.currentMode$.subscribe(mode => {
+      this.loginMode = mode;
+    });
+
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userId = user.uid;
@@ -55,13 +62,13 @@ export class AnalysicComponent implements OnInit {
         combineLatest([shein$, history$]).subscribe(([sheinData, historyData]: [any[], any[]]) => {
           this.salesData = sheinData || [];
           this.cancelledHistoryOrders = historyData || [];
-          this.updateStats(); // now includes history
+          this.updateStats();
           this.filterByStatus(this.statusFilter);
-
         });
       }
     });
   }
+
 
 
 updateStats(): void {

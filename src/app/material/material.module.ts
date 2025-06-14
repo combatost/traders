@@ -18,7 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatChipsModule } from '@angular/material/chips';
-
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   exports: [
@@ -45,7 +45,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatGridListModule,
     MatIconModule,
     MatButtonModule,
-     MatChipsModule,
+    MatChipsModule,
+    MatRadioModule,
   ]
 })
 export class MaterialModule { }

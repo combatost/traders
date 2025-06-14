@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore'
 import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { Subscription, of } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
 
 export interface Notification {
   id: string
@@ -27,21 +28,54 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
   private notifSub?: Subscription
   private lockSub?: Subscription
 
-  public static appVersion = '2.8.4' // update on new release
-
+  public static appVersion = '3.0.2' // update on new release
   version = VersionAlertComponent.appVersion
 
-  versionMessage: string[] = [
-    '🚀 New features and improvements',
-    '🔒 Enhanced security measures',
-    '🐛 Bug fixes and performance enhancements',
-    '📱 Improved mobile experience',
+  versionMessage: { svg: SafeHtml; text: string }[]
 
-  ]
+  firebaseService: any // keep your existing service if needed
 
-  firebaseService: any
+  constructor(
+    private afs: AngularFirestore,
+    private auth: AngularFireAuth,
+    private sanitizer: DomSanitizer
+  ) {
+    // Raw SVG + text messages
+    const rawMessages = [
+      {
+        svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/>
+        </svg>`,
+        text: 'Added mandatory terms acceptance'
+      },
+      {
+        svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/>
+        </svg>`,
+        text: 'Redirect new users after acceptance'
+      },
+      {
+        svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 4a8 8 0 1 0 8 8 8 8 0 0 0-8-8zm0 14a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>`,
+        text: 'Show acceptance status for returning users'
+      },
+      {
+        svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3.9 12a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5 5 5 0 0 1-5 5H8.9a5 5 0 0 1-5-5zm2 0a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3 3 3 0 0 0-3-3H8.9a3 3 0 0 0-3 3z"/>
+          <path d="M10 12h4v2h-4z"/>
+        </svg>`,
+        text: 'Footer terms link updated with acceptance info'
+      }
+    ]
 
-  constructor(private afs: AngularFirestore, private auth: AngularFireAuth) { }
+    // Sanitize SVG strings for safe innerHTML usage
+    this.versionMessage = rawMessages.map(msg => ({
+      svg: this.sanitizer.bypassSecurityTrustHtml(msg.svg),
+      text: msg.text
+    }))
+  }
 
   ngOnInit() {
     this.auth.user.subscribe(user => {
@@ -50,9 +84,9 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
 
         this.subscribeToUserState(user.uid)
 
-        this.firebaseService.subscribeToUnreadNotifications()
+        this.firebaseService?.subscribeToUnreadNotifications()
 
-        this.firebaseService.unreadNotifications$.subscribe((notifications: Notification[]) => {
+        this.firebaseService?.unreadNotifications$.subscribe((notifications: Notification[]) => {
           console.log('Unread notifications:', notifications)
           this.notifications = notifications
         })

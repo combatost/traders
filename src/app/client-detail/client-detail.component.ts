@@ -46,7 +46,7 @@ export class ClientDetailComponent implements OnInit {
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
     private imageStorage: ImageStorageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.afAuth.authState.subscribe(user => {
@@ -104,39 +104,39 @@ export class ClientDetailComponent implements OnInit {
     return +(afterTax + quantityBonus).toFixed(2);
   }
 
-onImageSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-  if (!file) return;
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
 
-  this.isUploading = true;
+    this.isUploading = true;
 
-  const reader = new FileReader();
-  reader.onload = async () => {
-    const base64Image = reader.result as string;
-    await this.imageStorage.saveImage(this.clientId, base64Image);
-    this.loadImages();
-    this.isUploading = false;
-  };
-  reader.readAsDataURL(file);
-}
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Image = reader.result as string;
+      await this.imageStorage.saveImage(this.clientId, base64Image);
+      this.loadImages();
+      this.isUploading = false;
+    };
+    reader.readAsDataURL(file);
+  }
 
-async deleteImage(index: number): Promise<void> {
-  // Assuming your ImageStorageService has a deleteImage method accepting clientId and index
-  await this.imageStorage.deleteImage(this.clientId, index);
-  this.loadImages(); // Reload images after delete
-}
+  async deleteImage(index: number): Promise<void> {
+    // Assuming your ImageStorageService has a deleteImage method accepting clientId and index
+    await this.imageStorage.deleteImage(this.clientId, index);
+    this.loadImages(); // Reload images after delete
+  }
 
   async loadImages(): Promise<void> {
     this.clientImages = await this.imageStorage.getImagesForClient(this.clientId);
   }
   downloadImage(url: string, filename: string): void {
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
 }

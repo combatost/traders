@@ -45,6 +45,7 @@ import { BlockedUserCardComponent } from './blocked-user-card/blocked-user-card.
 
 
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -72,6 +73,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TermsComponent,
     AdminPanelComponent,
     BlockedUserCardComponent,
+
 
   ],
   imports: [

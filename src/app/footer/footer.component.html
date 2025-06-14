@@ -1,32 +1,38 @@
-<footer [class.scrolled]="isScrolled" aria-label="Site footer">
+<footer [class.scrolled]="isScrolled" aria-label="Site footer" class="mat-elevation-z2">
   <div class="container">
+
+    <!-- Top -->
     <div class="footer-top">
+
+      <!-- Logo -->
       <div class="logo" (click)="navigate('/')">
         <img src="assets/img/logo.png" alt="Site Logo" />
         <span>SHEIN TRADERS</span>
       </div>
 
+      <!-- Navigation -->
       <nav class="footer-nav" aria-label="Footer navigation">
         <ul>
           <li [class.active]="currentSection === 'home'">
-            <a (click)="navigate('/')">{{ "FOOTER.HOME" | translate }}</a>
+            <a mat-button (click)="navigate('/')">
+              <mat-icon>home</mat-icon>
+              {{ "FOOTER.HOME" | translate }}
+            </a>
           </li>
           <li [class.active]="currentSection === 'aboutme'">
-            <a (click)="navigate('/aboutme')">{{
-              "FOOTER.ABOUT" | translate
-            }}</a>
+            <a mat-button (click)="navigate('/aboutme')">
+              <mat-icon>info</mat-icon>
+              {{ "FOOTER.ABOUT" | translate }}
+            </a>
           </li>
           <li [class.active]="currentSection === 'settings'">
-            <a (click)="navigate('/settings')">{{
-              "FOOTER.SETTINGS" | translate
-            }}</a>
-          </li>
-          <li [class.active]="currentSection === 'terms'">
-            <a (click)="navigate('/terms')">{{ "FOOTER.TERMS" | translate }}</a>
+            <a mat-button (click)="navigate('/settings')">
+              <mat-icon>settings</mat-icon>
+              {{ "FOOTER.SETTINGS" | translate }}
+            </a>
           </li>
         </ul>
       </nav>
-
       <div class="footer-controls">
         <select
           id="language-select"
