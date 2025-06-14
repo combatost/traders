@@ -247,6 +247,8 @@
     "SECTION10": {
       "TITLE": "10. Contact Us",
       "CONTENT": "If you have any questions about these Terms, please contact us at [infokamlion@gmail.com]."
-    }
+    },
+      "ACCEPT_LABEL": "I have read and accept the terms and conditions",
+      "CONFIRM": "Confirm"
   }
 }
