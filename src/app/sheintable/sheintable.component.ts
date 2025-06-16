@@ -33,7 +33,7 @@ export class SheintableComponent implements OnInit {
   isLoading = true;        // show loader initially
   oldClientName: string = ''
   loginMode: string = 'shein';
-
+  Math = Math;
   constructor(
     private fb: FormBuilder,
     private firestore: AngularFirestore,

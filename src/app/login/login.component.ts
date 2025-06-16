@@ -36,7 +36,7 @@ export class LoginComponent {
   fullName = '';
   birthDate = '';
   loginMode: string = 'shein'  // default value
-  
+
 
   private passwordResetIntervalId: any = null;
 
@@ -66,103 +66,104 @@ export class LoginComponent {
     });
   }
 
-onLoginModeChange(newMode: string) {
-  this.loginMode = newMode;
-  this.loginModeService.setMode(newMode);
-}
- async onSignup(email: string, password: string, confirmPassword: string) {
-  this.resetAlerts();
-
-  if (!this.isValidEmail(email)) {
-    return this.showErrorAlert('Please enter a valid email address.');
+  onLoginModeChange(newMode: string) {
+    this.loginMode = newMode;
+    this.loginModeService.setMode(newMode);
   }
+  async onSignup(email: string, password: string, confirmPassword: string) {
+    this.resetAlerts();
 
-  if (password !== confirmPassword) {
-    return this.showErrorAlert('Passwords do not match.');
-  }
-
-  if (!this.fullName || !this.birthDate) {
-    return this.showErrorAlert('Please fill in all the fields.');
-  }
-
-  try {
-    this.isLoading = true;
-
-    await this.firebaseServices.signup(email, password, this.fullName, this.birthDate);
-
-    // Re-fetch user data after signup
-    const user = await this.auth.currentUser;
-    const docSnap = await this.firestore.collection('users').doc(user?.uid!).get().toPromise();
-    const userData = docSnap?.data() as UserData;
-
-    this.isLoading = false;
-
-    if (userData?.isLocked) {
-      await this.auth.signOut();
-      return this.showErrorAlert('Your account has been locked. Please contact support.');
+    if (!this.isValidEmail(email)) {
+      return this.showErrorAlert('Please enter a valid email address.');
     }
 
-    if (!userData?.acceptedTerms) {
-      return this.router.navigate(['/terms'], { queryParams: { uid: user?.uid } });
+    if (password !== confirmPassword) {
+      return this.showErrorAlert('Passwords do not match.');
     }
 
-    this.isSignedIn = true;
-    this.router.navigate(['/sheintable']);
-    this.showSuccessAlert('Account created successfully!');
-  } catch (error: any) {
-    this.isLoading = false;
-    if (error.code === 'auth/email-already-in-use') {
-      this.showErrorAlert('Email address is already in use.');
-    } else {
-      this.showErrorAlert('Error during signup.');
+    if (!this.fullName || !this.birthDate) {
+      return this.showErrorAlert('Please fill in all the fields.');
     }
-  }
-}
 
- async onSignin(email: string, password: string) {
-  this.resetAlerts();
+    try {
+      this.isLoading = true;
 
-  if (!this.isValidEmail(email)) {
-    return this.showErrorAlert('Please enter a valid email address.');
-  }
+      await this.firebaseServices.signup(email, password, this.fullName, this.birthDate);
 
-  try {
-    this.isLoading = true;
+      // Re-fetch user data after signup
+      const user = await this.auth.currentUser;
+      const docSnap = await this.firestore.collection('users').doc(user?.uid!).get().toPromise();
+      const userData = docSnap?.data() as UserData;
 
-    const cred = await this.auth.signInWithEmailAndPassword(email, password);
-    if (!cred.user) {
       this.isLoading = false;
-      return this.showErrorAlert('Login failed. Please try again.');
-    }
 
-    const docSnap = await this.firestore.collection('users').doc<UserData>(cred.user.uid).get().toPromise();
-    const userData = docSnap?.data();
+      if (userData?.isLocked) {
+        await this.auth.signOut();
+        return this.showErrorAlert('Your account has been locked. Please contact support.');
+      }
 
-    if (userData?.isLocked) {
-      await this.auth.signOut();
-      this.isLoading = false;
-      return this.showErrorAlert('Your account has been locked. Please contact support.');
-    }
+      if (!userData?.acceptedTerms) {
+        return this.router.navigate(['/terms'], { queryParams: { uid: user?.uid } });
+      }
 
-    if (!userData?.acceptedTerms) {
-      this.isLoading = false;
-      return this.router.navigate(['/terms'], { queryParams: { uid: cred.user.uid } });
-    }
-
-    this.isSignedIn = true;
-    this.isLoading = false;
-
-    if (email.trim().toLowerCase() === 'alikamlion@gmail.com') {
-      this.router.navigate(['/admin-panel']);
-    } else {
+      this.isSignedIn = true;
       this.router.navigate(['/sheintable']);
+      this.showSuccessAlert('Account created successfully!');
+    } catch (error: any) {
+      this.isLoading = false;
+      if (error.code === 'auth/email-already-in-use') {
+        this.showErrorAlert('Email address is already in use.');
+      } else {
+        this.showErrorAlert('Error during signup.');
+      }
     }
-  } catch (err: any) {
-    this.isLoading = false;
-    console.error('Login error:', err);
-    this.showErrorAlert('Please check your email or password.');
   }
-}
+
+  async onSignin(email: string, password: string) {
+    this.resetAlerts();
+
+    if (!this.isValidEmail(email)) {
+      return this.showErrorAlert('Please enter a valid email address.');
+    }
+
+    try {
+      this.isLoading = true;
+
+      const cred = await this.auth.signInWithEmailAndPassword(email, password);
+      if (!cred.user) {
+        this.isLoading = false;
+        return this.showErrorAlert('Login failed. Please try again.');
+      }
+
+      const docSnap = await this.firestore.collection('users').doc<UserData>(cred.user.uid).get().toPromise();
+      const userData = docSnap?.data();
+
+      // Instead of signing out locked users, allow login and redirect to block page
+      if (userData?.isLocked) {
+        this.isLoading = false;
+        this.router.navigate(['/blocked-user-card']);
+        return; // exit method, no error alert
+      }
+
+      if (!userData?.acceptedTerms) {
+        this.isLoading = false;
+        return this.router.navigate(['/terms'], { queryParams: { uid: cred.user.uid } });
+      }
+
+      this.isSignedIn = true;
+      this.isLoading = false;
+
+      if (email.trim().toLowerCase() === 'alikamlion@gmail.com') {
+        this.router.navigate(['/admin-panel']);
+      } else {
+        this.router.navigate(['/sheintable']);
+      }
+    } catch (err: any) {
+      this.isLoading = false;
+      console.error('Login error:', err);
+      this.showErrorAlert('Please check your email or password.');
+    }
+  }
 
 
   onForgotPassword(email: string) {

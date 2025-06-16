@@ -27,38 +27,57 @@ export class AdminPanelComponent implements OnInit {
   loading = false
   error = ''
   protected currentAdminId = 'admin-id-placeholder'
+  private currentUserId: string | null = null
+
   constructor(
     protected firestore: AngularFirestore,
     protected router: Router,
     protected afAuth: AngularFireAuth
-  ) {}
+  ) {
+    // Subscribe to auth state to track online status
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.currentUserId = user.uid
+        this.setOnlineStatus(user.uid, true)
 
-
+        // Set offline on window/tab close or reload
+        window.addEventListener('beforeunload', () => {
+          this.setOnlineStatus(user.uid, false)
+        })
+      } else {
+        this.currentUserId = null
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.loadUsers()
   }
 
-protected loadUsers(): void {
-  this.loading = true
-  this.error = ''
+  protected loadUsers(): void {
+    this.loading = true
+    this.error = ''
 
-  this.users$ = this.firestore
-    .collection<User>('users')
-    .valueChanges({ idField: 'id' })
-    .pipe(
-      map(users =>
-        users.filter(user => user.email !== 'alikamlion@gmail.com')
+    // Listen for all users except specific excluded email (example admin email)
+    this.users$ = this.firestore
+      .collection<User>('users')
+      .valueChanges({ idField: 'id' })
+      .pipe(
+        map(users => users.filter(user => user.email !== 'alikamlion@gmail.com'))
       )
+
+    // Online users count from real-time Firestore 'online' field
+    this.onlineCount$ = this.users$.pipe(
+      map(users => users.filter(u => u.online).length)
     )
 
-  this.onlineCount$ = this.users$.pipe(
-    map(users => users.filter(u => u.online).length)
-  )
+    this.loading = false
+  }
 
-  this.loading = false
-}
-
+  setOnlineStatus(uid: string, status: boolean) {
+    this.firestore.collection('users').doc(uid).update({ online: status })
+      .catch(err => console.error('Failed to update online status:', err))
+  }
 
   toggleLock(user: User): void {
     const newStatus = !user.isLocked
@@ -120,12 +139,17 @@ protected loadUsers(): void {
       .delete()
       .catch(err => alert('Error deleting user: ' + err.message))
   }
-  logout() {
-  this.afAuth.signOut().then(() => {
-    this.router.navigate(['/login']); // or your login route
-  });
-}goToSheinTable(): void {
-  this.router.navigate(['/sheintable'])
-}
 
+  logout() {
+    if (this.currentUserId) {
+      this.setOnlineStatus(this.currentUserId, false)
+    }
+    this.afAuth.signOut().then(() => {
+      this.router.navigate(['/login'])
+    })
+  }
+
+  goToSheinTable(): void {
+    this.router.navigate(['/sheintable'])
+  }
 }

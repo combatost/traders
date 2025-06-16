@@ -1,5 +1,5 @@
+<app-navigation></app-navigation>
 <div class="page-container">
-  <app-navigation></app-navigation>
   <section class="client-list-container">
     <h2 class="section-title">{{ "CLIENTS.TITLE" | translate }}</h2>
 
@@ -19,8 +19,11 @@
       </button>
     </div>
 
+    <!-- Pagination Buttons -->
+
+    <!-- Paginated client list -->
     <div
-      *ngFor="let item of clientsWithOrderCount; let i = index"
+      *ngFor="let item of pagedClients; let i = index"
       class="client-list-item"
       tabindex="0"
       role="listitem"
@@ -32,7 +35,7 @@
           'Client ' +
           item.client.fullName +
           ', number ' +
-          (i + 1) +
+          (currentPage * pageSize + i + 1) +
           ', phone ' +
           item.client.phoneNumber +
           ', ' +
@@ -49,7 +52,7 @@
           "
           class="order-checkbox"
         ></mat-checkbox>
-        <span class="client-number">{{ i + 1 }}</span>
+        <span class="client-number">{{ currentPage * pageSize + i + 1 }}</span>
         <span class="client-name"
           >{{ "CLIENTS.NAME" | translate }}:
           <strong>{{ item.client.fullName }}</strong></span
@@ -72,6 +75,51 @@
     <div *ngIf="clientsWithOrderCount.length === 0" class="no-clients">
       {{ "CLIENTS.NO_CLIENTS" | translate }}
     </div>
+    <br />
+    <div *ngIf="clientsWithOrderCount.length >= 5" class="pagination-buttons">
+      <button
+        (click)="goPrev()"
+        [disabled]="!hasPrev()"
+        aria-label="Previous page"
+        class="nav-button"
+      >
+        <!-- Left Arrow SVG -->
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        (click)="goNext()"
+        [disabled]="!hasNext()"
+        aria-label="Next page"
+        class="nav-button"
+      >
+        <!-- Right Arrow SVG -->
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
   </section>
-  <app-footer></app-footer>
 </div>
+
+<app-footer></app-footer>

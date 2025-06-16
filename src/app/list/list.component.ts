@@ -29,14 +29,39 @@ export class ListComponent implements OnInit {
   }> = []
 
   masterSelected = false
-
+  pageSize = 5
+  currentPage = 0
   constructor(
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
     private dialog: MatDialog // ✅ Add this
-  ) {}
+  ) { }
 
+  get pagedClients() {
+    const start = this.currentPage * this.pageSize
+    return this.clientsWithOrderCount.slice(start, start + this.pageSize)
+  }
+
+  hasPrev() {
+    return this.currentPage > 0
+  }
+
+  hasNext() {
+    return (this.currentPage + 1) * this.pageSize < this.clientsWithOrderCount.length
+  }
+
+  goPrev() {
+    if (this.hasPrev()) {
+      this.currentPage--
+    }
+  }
+
+  goNext() {
+    if (this.hasNext()) {
+      this.currentPage++
+    }
+  }
   ngOnInit(): void {
     this.afAuth.authState
       .pipe(
@@ -104,42 +129,42 @@ export class ListComponent implements OnInit {
     return this.clientsWithOrderCount.some(client => client.selected)
   }
 
- deleteSelectedClients(): void {
-  const toDelete = this.clientsWithOrderCount.filter(c => c.selected);
-  if (toDelete.length === 0) return;
+  deleteSelectedClients(): void {
+    const toDelete = this.clientsWithOrderCount.filter(c => c.selected);
+    if (toDelete.length === 0) return;
 
-  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-    width: '320px',
-    data: {
-      title: 'Delete Clients',
-      message: `Are you sure you want to delete ${toDelete.length} client(s)?`
-    }
-  });
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '320px',
+      data: {
+        title: 'Delete Clients',
+        message: `Are you sure you want to delete ${toDelete.length} client(s)?`
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result === true) {
-      const batch = this.firestore.firestore.batch();
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        const batch = this.firestore.firestore.batch();
 
-      toDelete.forEach(client => {
-        const docRef = this.firestore
-          .collection(`clients/${this.userId}/records`)
-          .doc(client.id).ref;
-        batch.delete(docRef);
-      });
-
-      batch
-        .commit()
-        .then(() => {
-          this.clientsWithOrderCount = this.clientsWithOrderCount.filter(
-            c => !c.selected
-          );
-          this.masterSelected = false;
-        })
-        .catch(err => {
-          console.error('Error deleting clients:', err);
-          // Optionally open an error dialog here
+        toDelete.forEach(client => {
+          const docRef = this.firestore
+            .collection(`clients/${this.userId}/records`)
+            .doc(client.id).ref;
+          batch.delete(docRef);
         });
-    }
-  });
-}
+
+        batch
+          .commit()
+          .then(() => {
+            this.clientsWithOrderCount = this.clientsWithOrderCount.filter(
+              c => !c.selected
+            );
+            this.masterSelected = false;
+          })
+          .catch(err => {
+            console.error('Error deleting clients:', err);
+            // Optionally open an error dialog here
+          });
+      }
+    });
+  }
 }

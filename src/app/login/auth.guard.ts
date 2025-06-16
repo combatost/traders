@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
-import { switchMap, map, take } from 'rxjs/operators';
+import { Injectable } from '@angular/core'
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router'
+import { AngularFireAuth } from '@angular/fire/compat/auth'
+import { AngularFirestore } from '@angular/fire/compat/firestore'
+import { Observable, of } from 'rxjs'
+import { switchMap, map, take } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -14,37 +14,44 @@ export class AuthGuard implements CanActivate {
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router
-  ) {}
+  ) { }
 
-  canActivate(): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     return this.afAuth.authState.pipe(
       take(1),
       switchMap(user => {
         if (!user) {
-          this.router.navigate(['/login']);
-          return of(false);
+          // Not logged in, redirect to login
+          this.router.navigate(['/login'])
+          return of(false)
         }
 
-        const uid = user.uid;
+        const uid = user.uid
 
         return this.firestore.collection('users').doc(uid).get().pipe(
           map(snapshot => {
             interface UserData {
-              isLocked?: boolean;
-              [key: string]: any;
+              isLocked?: boolean
+              [key: string]: any
             }
-            const userData = snapshot.data() as UserData;
+            const userData = snapshot.data() as UserData
 
             if (userData?.isLocked) {
-              // User is locked — just block route (or optionally redirect to a locked info page)
-              // No alert, no sign out — UI handles locked state via your card component
-              return false;
+              // Allow login route always (so locked users can sign in)
+              if (state.url === '/login') {
+                return true
+              }
+
+              // Redirect locked users to blocked-user-card page
+              this.router.navigate(['/blocked-user-card'])
+              return false
             }
 
-            return true;
+            // Not locked, allow navigation anywhere
+            return true
           })
-        );
+        )
       })
-    );
+    )
   }
 }

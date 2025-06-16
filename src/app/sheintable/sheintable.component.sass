@@ -1,7 +1,7 @@
 // Theme Colors
-$primary-blue: #1a73e8
-$blue-dark: #174ea6
-$accent-blue: #4285f4
+$primary-blue: #3f51b5
+$blue-dark: #3f51b5
+$accent-blue: #3f51b5
 $light-bg: #f0f4f8
 $white: #ffffff
 $text-dark: #1f1f1f
@@ -391,3 +391,29 @@ tr.matched:hover, td.matched:hover
 
   tr:hover
     background-color: #f4faff
+.pagination-controls
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 1rem
+  margin-top: 1.5rem
+
+  .nav-btn
+    background: transparent
+    border: none
+    cursor: pointer
+    padding: 0.5rem
+    border-radius: 50%
+    transition: background 0.2s ease
+
+    &:hover:not(:disabled)
+      background: rgba(63, 81, 181, 0.1)
+
+    &:disabled
+      opacity: 0.3
+      cursor: not-allowed
+
+  .page-count
+    font-weight: 600
+    font-size: 1rem
+    color: #3f51b5

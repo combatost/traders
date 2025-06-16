@@ -1,277 +1,282 @@
-// Variables (unchanged)
-$primary-color: #1f1f1f
-$secondary-color: #1a73e8
-$bg-color: #f5f5f5
-$card-bg-color: #fff
-$card-border-radius: 12px
-$card-shadow: 0 6px 16px rgba(0, 0, 0, 0.1)
-$transition-speed: 0.3s
+// Variables
 
-.about-us-container
-  font-family: 'Roboto', sans-serif
-  background-color: $bg-color
-  padding: 40px 20px
+$primary-color: #3f51b5
+$secondary-color: #f50057
+
+$background-color: #fafafa
+$text-color: #333
+$text-light: #666
+$card-bg: #fff
+$shadow-light: rgba(0, 0, 0, 0.1)
+$shadow-strong: rgba(0, 0, 0, 0.15)
+$font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+
+// Mixins
+@mixin flex-center($direction: row, $justify: center, $align: center)
   display: flex
-  flex-direction: column
-  align-items: center
-  gap: 40px
-  max-width: 1300px
+  flex-direction: $direction
+  justify-content: $justify
+  align-items: $align
+
+// Global resets for this container
+.about-us-container
+  padding: 3rem 1rem
+  font-family: $font-family
+  color: $text-color
+  max-width: 1200px
   margin: 0 auto
 
-  // Hero card improvements
+  // HERO CARD
   .hero-card
-    background: $secondary-color
+    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 10%) 100%)
     color: white
-    padding: 40px 30px
-    border-radius: $card-border-radius
-    box-shadow: $card-shadow
+    border-radius: 16px
+    padding: 3rem 2rem
+    box-shadow: 0 8px 20px $shadow-strong
+    margin-bottom: 4rem
     text-align: center
-    width: 100%
-    max-width: 1100px
-    margin-bottom: 40px
-    transition: box-shadow $transition-speed ease, transform $transition-speed ease
-
-    &:hover
-      box-shadow: 0 12px 28px rgba(26, 115, 232, 0.5)
-      transform: translateY(-5px)  // subtle lift on hover
 
     .hero-content
-      h1
-        font-size: clamp(2rem, 4vw, 3rem)
-        font-weight: 700
-        letter-spacing: 1.5px
-        margin-bottom: 15px
-        line-height: 1.2
-      p
-        font-size: clamp(1rem, 2vw, 1.4rem)
-        font-weight: 400
-        line-height: 1.5
+      @include flex-center(column)
+      gap: 1rem
 
-  // Stats grid with soft hover and backdrop blur
+      .title
+        font-size: 2.8rem
+        font-weight: 700
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25)
+
+      .subtitle
+        font-size: 1.25rem
+        font-weight: 400
+        opacity: 0.9
+        max-width: 600px
+        margin: 0 auto
+
+      .hero-cta
+        margin-top: 2rem
+        font-weight: 600
+        font-size: 1.1rem
+        padding: 0.8rem 2rem
+        border-radius: 50px
+        box-shadow: 0 4px 12px rgba($primary-color, 0.5)
+        transition: background-color 0.3s ease, box-shadow 0.3s ease
+
+        &:hover
+          background-color: lighten($primary-color, 10%)
+          box-shadow: 0 6px 20px rgba($primary-color, 0.7)
+
+  // STATS GRID
   .stats-grid
     display: grid
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))
-    gap: 30px
-    width: 100%
-    max-width: 1100px
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))
+    gap: 2rem
+    margin-bottom: 5rem
 
     .stat-card
-      background-color: $card-bg-color
-      border-radius: $card-border-radius
-      box-shadow: $card-shadow
-      padding: 25px
-      display: flex
-      flex-direction: column
-      align-items: center
+      background: $card-bg
+      border-radius: 14px
+      padding: 2rem
+      box-shadow: 0 4px 12px $shadow-light
       text-align: center
-      transition: transform $transition-speed ease, box-shadow $transition-speed ease, background-color $transition-speed ease
       cursor: pointer
-      position: relative
-      backdrop-filter: saturate(180%) blur(10px)
-      will-change: transform
+      transition: transform 0.3s ease, box-shadow 0.3s ease
+      user-select: none
 
-      &:hover
-        transform: translateY(-8px)
-        box-shadow: 0 12px 25px rgba(26, 115, 232, 0.35)
-        background-color: lighten($secondary-color, 45%)  // soft tint on hover
+      &:hover,
+      &:focus
+        transform: translateY(-6px)
+        box-shadow: 0 12px 24px $shadow-strong
+        outline: none
 
       .stat-icon
-        margin-bottom: 15px
-        color: $secondary-color
-        transition: color $transition-speed ease
+        width: 30px
+        color: $primary-color
+        margin-bottom: 1rem
 
       h3
-        font-size: 1.5rem
-        font-weight: 600
-        color: $primary-color
-        margin-top: 15px
+        font-weight: 700
+        margin-bottom: 0.5rem
 
       p
-        font-size: 1.1rem
-        color: #666
+        color: $text-light
+        font-size: 0.95rem
         line-height: 1.4
 
-  // Video header improvements
+  // VIDEO HEADER
   .video-header
     position: relative
-    width: 90%
-    height: 0
-    padding-bottom: 20%  // less tall for better ratio on wide screens
+    height: 360px
+    border-radius: 16px
     overflow: hidden
-    border-radius: $card-border-radius
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25)
-    cursor: pointer
-    user-select: none
-    transition: box-shadow $transition-speed ease, transform $transition-speed ease
-
-    &:hover
-      box-shadow: 0 14px 38px rgba(26, 115, 232, 0.4)
-      transform: scale(1.02)
+    margin-bottom: 5rem
+    box-shadow: 0 8px 20px $shadow-strong
 
     .bg-video
-      position: absolute
-      top: 0
-      left: 0
       width: 100%
       height: 100%
       object-fit: cover
-      border-radius: $card-border-radius
+      filter: brightness(0.65)
+      transition: filter 0.4s ease
+
+    &:hover .bg-video
+      filter: brightness(0.8)
 
     .overlay
       position: absolute
-      inset: 0
-      background: rgba(0, 0, 0, 0.35)
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: center
-      color: #fff
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      color: white
       text-align: center
-      padding: 1.5rem
-      border-radius: $card-border-radius
-      pointer-events: none
-      user-select: none
+      padding: 0 1rem
 
       h1
-        font-size: clamp(1.8rem, 4vw, 2.8rem)
+        font-size: 2.5rem
         font-weight: 700
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6)
         margin-bottom: 0.5rem
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7)
 
       p
-        font-size: clamp(1rem, 2vw, 1.3rem)
+        font-size: 1.2rem
         font-weight: 400
-        max-width: 600px
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6)
+        opacity: 0.85
+        max-width: 700px
+        margin: 0 auto
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5)
 
-    .play-button
-      position: absolute
-      bottom: 20px
-      right: 20px
-      width: 50px
-      height: 50px
-      background: rgba(255, 255, 255, 0.85)
-      border-radius: 50%
-      display: flex
-      justify-content: center
-      align-items: center
-      cursor: pointer
-      transition: background-color $transition-speed ease, box-shadow $transition-speed ease
-      user-select: none
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25)
+    .loading-text
+      @include flex-center(column)
+      height: 100%
+      font-style: italic
+      font-weight: 500
+      color: $text-light
 
-      &:hover
-        background: rgba(255, 255, 255, 1)
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35)
-
-      svg
-        fill: #333
-        width: 24px
-        height: 24px
-
-  // Vision card & Team card keep existing softness with hover scale
-  .vision-card,
-  .team-card
-    background-color: $card-bg-color
-    padding: 30px 25px
-    border-radius: $card-border-radius
-    box-shadow: $card-shadow
-    width: 90%
-    margin-bottom: 40px
-    transition: box-shadow $transition-speed ease, transform $transition-speed ease
-
-    &:hover
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15)
-      transform: translateY(-6px)
+  // VISION CARD
+  .vision-card
+    background: $card-bg
+    border-radius: 14px
+    padding: 2rem 3rem
+    box-shadow: 0 6px 18px $shadow-light
+    margin-bottom: 5rem
+    text-align: center
 
     h2
-      font-size: clamp(1.6rem, 3vw, 2rem)
-      font-weight: 600
+      font-size: 2rem
+      font-weight: 700
+      margin-bottom: 1rem
       color: $primary-color
-      margin-bottom: 15px
 
     p
-      font-size: clamp(1rem, 2vw, 1.3rem)
-      color: #333
-      line-height: 1.5
+      font-size: 1.1rem
+      line-height: 1.6
+      color: $text-light
+      max-width: 800px
+      margin: 0 auto
 
-  // Team grid and members keep clean layout & softness
-  .team-grid
-    display: grid
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
-    gap: 30px
+  // TEAM CARD
+  .team-card
+    background: $card-bg
+    border-radius: 14px
+    padding: 2rem 2rem 3rem
+    box-shadow: 0 6px 18px $shadow-light
 
-    .team-member
-      display: flex
-      flex-direction: column
-      align-items: center
+    h2
+      font-size: 2rem
+      font-weight: 700
+      margin-bottom: 2rem
+      color: $primary-color
       text-align: center
-      padding: 20px
-      background-color: #fafafa
-      border-radius: 10px
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
-      transition: transform $transition-speed ease, box-shadow $transition-speed ease
-      cursor: default
 
-      &:hover
-        transform: translateY(-6px)
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15)
+    .team-grid
+      display: grid
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+      gap: 2.5rem
 
-      .team-photo
-        width: 90px
-        height: 90px
-        object-fit: cover
-        border-radius: 50%
-        margin-bottom: 15px
-        transition: transform $transition-speed ease
+      .team-member
+        background: lighten($primary-color, 48%)
+        border-radius: 14px
+        padding: 1.5rem
+        text-align: center
+        box-shadow: 0 4px 12px $shadow-light
+        transition: box-shadow 0.3s ease, transform 0.3s ease
+        cursor: default
 
-      h4
-        font-size: 1.25rem
-        font-weight: 600
-        color: $primary-color
-        margin-bottom: 5px
+        &:hover,
+        &:focus
+          box-shadow: 0 12px 30px $shadow-strong
+          transform: translateY(-6px)
+          outline: none
 
-      p
-        font-size: 1rem
-        color: #777
+        .photo-wrapper
+          position: relative
+          margin-bottom: 1rem
 
-// Responsive tweaks
-@media (max-width: 768px)
-  .about-us-container
-    padding: 30px 15px
-    gap: 30px
+          .team-photo
+            width: 120px
+            height: 120px
+            border-radius: 50%
+            object-fit: cover
+            border: 4px solid $primary-color
+            transition: border-color 0.3s ease
 
-  .hero-card
-    padding: 30px 20px
+          .social-links
+            margin-top: 0.5rem
+            display: flex
+            justify-content: center
+            gap: 1rem
 
-  .vision-card, .team-card
-    padding: 25px 20px
+            a
+              color: $primary-color
+              font-size: 1.3rem
+              transition: color 0.3s ease
 
-  .team-grid
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
+              &:hover,
+              &:focus
+                color: $secondary-color
+                outline: none
 
-@media (max-width: 480px)
-  .about-us-container
-    padding: 20px 10px
-    gap: 20px
+              mat-icon
+                font-size: 1.6rem
 
-  .hero-card
-    padding: 25px 15px
+        .team-member-name
+          font-size: 1.2rem
+          font-weight: 700
+          margin-top: 0.25rem
+          color: darken($primary-color, 10%)
 
-  .vision-card, .team-card
-    padding: 20px 15px
+        .team-member-role
+          font-size: 0.95rem
+          color: $text-light
+          margin-top: 0.1rem
+          font-style: italic
 
-  .hero-content h1
-    font-size: 1.8rem
+  // Responsive tweaks
+  @media (max-width: 768px)
+    padding: 2rem 1rem
 
-  .hero-content p
-    font-size: 1rem
+    .hero-card .hero-content .title
+      font-size: 2rem
 
-  .stats-grid
-    grid-template-columns: 1fr
+    .hero-card .hero-content .subtitle
+      font-size: 1rem
 
-  .team-grid
-    grid-template-columns: 1fr
+    .stats-grid
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
 
-  .video-header
-    padding-bottom: 56.25%  // 16:9 ratio for small screens
+    .video-header
+      height: 240px
+
+    .team-card .team-grid
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr))
+      gap: 1.5rem
+
+    .team-member .photo-wrapper .team-photo
+      width: 90px
+      height: 90px
+      border-width: 3px
+
+    .team-member-name
+      font-size: 1rem
+
+    .team-member-role
+      font-size: 0.85rem

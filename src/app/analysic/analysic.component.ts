@@ -32,16 +32,19 @@ export class AnalysicComponent implements OnInit {
   maxClients: number = 50;          // max number of clients, adjust to your logic
   totalOrders: number = 120;        // total number of orders, adjust accordingly
   loginMode: string = 'shein';
+  currentPage: number = 0;
+  itemsPerPage: number = 5;
+  pagedSalesData: any[] = [];
 
   userId: string = '';
 
   constructor(
     private firestore: AngularFirestore,
     private afAuth: AngularFireAuth,
-    private loginModeService: LoginModeService 
+    private loginModeService: LoginModeService
   ) { }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     // Subscribe to login mode changes
     this.loginModeService.currentMode$.subscribe(mode => {
       this.loginMode = mode;
@@ -71,88 +74,113 @@ export class AnalysicComponent implements OnInit {
 
 
 
-updateStats(): void {
-  const clients = new Set<string>();
-  this.totalSales = 0;
-  this.totalProfit = 0;
-  this.totalItems = 0;
-  this.totalDeliveryCost = 0;
-  this.totalTaxCost = 0;
-  this.pendingCount = 0;
-  this.doneCount = 0;
+  updateStats(): void {
+    const clients = new Set<string>();
+    this.totalSales = 0;
+    this.totalProfit = 0;
+    this.totalItems = 0;
+    this.totalDeliveryCost = 0;
+    this.totalTaxCost = 0;
+    this.pendingCount = 0;
+    this.doneCount = 0;
 
-  // Count cancelled orders from both sources
-  const cancelledActiveCount = this.salesData.filter(order => order.choice === 'Cancelled').length;
-  const cancelledHistoryCount = this.cancelledHistoryOrders.length;
-  this.cancelledCount = cancelledActiveCount + cancelledHistoryCount;
+    // Count cancelled orders from both sources
+    const cancelledActiveCount = this.salesData.filter(order => order.choice === 'Cancelled').length;
+    const cancelledHistoryCount = this.cancelledHistoryOrders.length;
+    this.cancelledCount = cancelledActiveCount + cancelledHistoryCount;
 
-  // Weekly data (Mon–Sun)
-  const weeklyTotals = new Array(7).fill(0);
-  const today = new Date();
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
-  startOfWeek.setHours(0, 0, 0, 0);
+    // Weekly data (Mon–Sun)
+    const weeklyTotals = new Array(7).fill(0);
+    const today = new Date();
+    const startOfWeek = new Date(today);
+    startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
+    startOfWeek.setHours(0, 0, 0, 0);
 
-  this.salesData.forEach(order => {
-    this.totalSales += order.cost || 0;
-    this.totalProfit += this.calculateProfit(order);
-    this.totalItems += order.quantity || 0;
-    this.totalDeliveryCost += order.shippingCost || 0;
-    this.totalTaxCost += order.tax || 0;
+    this.salesData.forEach(order => {
+      this.totalSales += order.cost || 0;
+      this.totalProfit += this.calculateProfit(order);
+      this.totalItems += order.quantity || 0;
+      this.totalDeliveryCost += order.shippingCost || 0;
+      this.totalTaxCost += order.tax || 0;
 
-    if (order.choice === 'Pending') this.pendingCount++;
-    if (order.choice === 'Done') this.doneCount++;
+      if (order.choice === 'Pending') this.pendingCount++;
+      if (order.choice === 'Done') this.doneCount++;
 
-    if (order.client) clients.add(order.client);
+      if (order.client) clients.add(order.client);
 
-    if (order.date) {
-      const dateObj = new Date(order.date);
-      dateObj.setHours(0, 0, 0, 0); // normalize time
-      if (dateObj >= startOfWeek) {
-        const dayIndex = (dateObj.getDay() + 6) % 7; // Monday = 0, Sunday = 6
-        weeklyTotals[dayIndex] += order.cost || 0;
+      if (order.date) {
+        const dateObj = new Date(order.date);
+        dateObj.setHours(0, 0, 0, 0); // normalize time
+        if (dateObj >= startOfWeek) {
+          const dayIndex = (dateObj.getDay() + 6) % 7; // Monday = 0, Sunday = 6
+          weeklyTotals[dayIndex] += order.cost || 0;
+        }
       }
-    }
-  });
+    });
 
-  // Count unique clients from history
-  this.cancelledHistoryOrders.forEach(order => {
-    if (order.client) clients.add(order.client);
-  });
+    // Count unique clients from history
+    this.cancelledHistoryOrders.forEach(order => {
+      if (order.client) clients.add(order.client);
+    });
 
-  this.uniqueClientsCount = clients.size;
+    this.uniqueClientsCount = clients.size;
 
-  this.profitRate = this.totalSales > 0
-    ? +((this.totalProfit / this.totalSales) * 100).toFixed(2)
-    : 0;
+    this.profitRate = this.totalSales > 0
+      ? +((this.totalProfit / this.totalSales) * 100).toFixed(2)
+      : 0;
 
-  this.weeklySalesData.datasets[0].data = weeklyTotals;
-  this.weeklySalesData = { ...this.weeklySalesData };
+    this.weeklySalesData.datasets[0].data = weeklyTotals;
+    this.weeklySalesData = { ...this.weeklySalesData };
 
-  this.orderStatusData.datasets[0].data = [
-    this.pendingCount,
-    this.doneCount,
-    this.cancelledCount
-  ];
-  this.orderStatusData = { ...this.orderStatusData };
-}
-
-
-filterByStatus(status: string): void {
-  this.statusFilter = status;
-  if (status === 'All') {
-    this.filteredSalesData = [...this.salesData];
-  } else {
-    this.filteredSalesData = this.salesData.filter(order => order.choice === status);
+    this.orderStatusData.datasets[0].data = [
+      this.pendingCount,
+      this.doneCount,
+      this.cancelledCount
+    ];
+    this.orderStatusData = { ...this.orderStatusData };
   }
 
-  // Sort so 'Done' rows go to the bottom
-  this.filteredSalesData.sort((a, b) => {
-    if (a.choice === 'Done' && b.choice !== 'Done') return 1  // a after b
-    if (a.choice !== 'Done' && b.choice === 'Done') return -1 // a before b
-    return 0 // keep order if both same
-  });
-}
+
+  filterByStatus(status: string): void {
+    this.statusFilter = status;
+    let filtered = status === 'All'
+      ? [...this.salesData]
+      : this.salesData.filter(order => order.choice === status);
+
+    // Sort 'Done' to the bottom
+    filtered.sort((a, b) => {
+      if (a.choice === 'Done' && b.choice !== 'Done') return 1;
+      if (a.choice !== 'Done' && b.choice === 'Done') return -1;
+      return 0;
+    });
+
+    this.filteredSalesData = filtered;
+    this.currentPage = 0;
+    this.updatePagedData();
+  }
+  updatePagedData(): void {
+    const start = this.currentPage * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.pagedSalesData = this.filteredSalesData.slice(start, end);
+  }
+
+  nextPage(): void {
+    if ((this.currentPage + 1) * this.itemsPerPage < this.filteredSalesData.length) {
+      this.currentPage++;
+      this.updatePagedData();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.updatePagedData();
+    }
+  }
+  get totalPages(): number {
+    return Math.ceil(this.filteredSalesData.length / this.itemsPerPage);
+  }
+
 
   calculateProfit(order: any): number {
     const discountProfit = (order.cost * order.discount) / 100;
@@ -190,19 +218,19 @@ filterByStatus(status: string): void {
   }
 
   // Chart config and data
-weeklySalesLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  weeklySalesLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-weeklySalesData: ChartData<'bar'> = {
-  labels: this.weeklySalesLabels,
-  datasets: [
-    {
-      label: 'Weekly Sales',
-      data: new Array(7).fill(0),
-      backgroundColor: '#3f51b5',
-      borderRadius: 4,
-    }
-  ],
-};
+  weeklySalesData: ChartData<'bar'> = {
+    labels: this.weeklySalesLabels,
+    datasets: [
+      {
+        label: 'Weekly Sales',
+        data: new Array(7).fill(0),
+        backgroundColor: '#3f51b5',
+        borderRadius: 4,
+      }
+    ],
+  };
 
   barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
@@ -222,7 +250,7 @@ weeklySalesData: ChartData<'bar'> = {
     datasets: [
       {
         data: [0, 0, 0],
-        backgroundColor: ['#ff9800', '#4caf50', '#f44336'],
+        backgroundColor: ['#3f51b5', '#4caf50', '#f44336'],
         hoverOffset: 10
       }
     ],

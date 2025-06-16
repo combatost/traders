@@ -363,7 +363,7 @@
         <div class="table-wrapper">
           <table
             mat-table
-            [dataSource]="filteredSalesData"
+            [dataSource]="pagedSalesData"
             class="mat-elevation-z2 full-width-table"
           >
             <ng-container matColumnDef="client">
@@ -472,6 +472,48 @@
           </table>
         </div>
       </mat-card>
+    </div>
+    <div
+      *ngIf="filteredSalesData.length > itemsPerPage"
+      class="pagination-controls"
+    >
+      <button
+        class="nav-btn"
+        (click)="previousPage()"
+        [disabled]="currentPage === 0"
+        aria-label="Previous Page"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M15 6L9 12L15 18"
+            stroke="#3f51b5"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <span class="page-count"> {{ currentPage + 1 }} / {{ totalPages }} </span>
+
+      <button
+        class="nav-btn"
+        (click)="nextPage()"
+        [disabled]="
+          (currentPage + 1) * itemsPerPage >= filteredSalesData.length
+        "
+        aria-label="Next Page"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M9 6L15 12L9 18"
+            stroke="#3f51b5"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </div>
 
     <!-- No Data Template -->

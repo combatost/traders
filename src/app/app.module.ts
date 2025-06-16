@@ -110,6 +110,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     NgParticlesModule,
     BrowserAnimationsModule,
+    
   ],
   providers: [
     provideClientHydration(),

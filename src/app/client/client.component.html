@@ -108,7 +108,9 @@
                 <a
                   class="highlight-name"
                   href="#"
-                  (click)="openClientDetails(client.id); $event.preventDefault()"
+                  (click)="
+                    openClientDetails(client.id); $event.preventDefault()
+                  "
                 >
                   {{ client.fullName }}
                 </a>
@@ -119,7 +121,9 @@
               <th mat-header-cell *matHeaderCellDef>
                 {{ "form.phoneNumber" | translate }}
               </th>
-              <td mat-cell *matCellDef="let client">{{ client.phoneNumber }}</td>
+              <td mat-cell *matCellDef="let client">
+                {{ client.phoneNumber }}
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="OtherPhoneNumber">
@@ -157,15 +161,44 @@
                 {{ "table.actions" | translate }}
               </th>
               <td mat-cell *matCellDef="let client">
-                <button mat-icon-button color="accent" (click)="onEdit(client)">
-                  <mat-icon>edit</mat-icon>
-                </button>
                 <button
                   mat-icon-button
-                  color="warn"
-                  (click)="onDelete(client.id)"
+                  (click)="onEdit(client)"
+                  aria-label="Edit"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    fill="#3f51b5"
+                  >
+                    <path
+                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 
+            7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 
+            1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
+                    />
+                  </svg>
+                </button>
+
+                <button
+                  mat-icon-button
+                  (click)="onDelete(client.id)"
+                  aria-label="Delete"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    fill="#d93025"
+                  >
+                    <path
+                      d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1zM18 
+            7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 
+            2-2V7z"
+                    />
+                  </svg>
                 </button>
               </td>
             </ng-container>
@@ -203,27 +236,26 @@
 
       <!-- Custom Pagination Buttons -->
       <div class="pagination-buttons">
-  <button
-    mat-icon-button
-    color="primary"
-    (click)="onPrevPage()"
-    [disabled]="pageIndex === 0"
-    aria-label="Previous page"
-  >
-    <mat-icon>chevron_left</mat-icon>
-  </button>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="onPrevPage()"
+          [disabled]="pageIndex === 0"
+          aria-label="Previous page"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
 
-  <button
-    mat-icon-button
-    color="primary"
-    (click)="onNextPage()"
-    [disabled]="pageIndex >= totalPages - 1"
-    aria-label="Next page"
-  >
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-</div>
-
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="onNextPage()"
+          [disabled]="pageIndex >= totalPages - 1"
+          aria-label="Next page"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
     </mat-card>
   </div>
 </section>

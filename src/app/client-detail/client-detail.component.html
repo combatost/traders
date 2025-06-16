@@ -83,7 +83,7 @@
   </ng-template>
 
   <h3 class="section-title">Client Images</h3>
-  <mat-card class="image-upload-card">
+  <div class="image-upload-card">
     <input
       type="file"
       accept="image/*"
@@ -91,16 +91,26 @@
       id="image-upload"
       hidden
     />
-    <label
-      mat-raised-button
-      color="primary"
-      for="image-upload"
-      class="upload-label"
-    >
-      Upload Image
-      <mat-icon>upload</mat-icon>
+    <label for="image-upload" class="custom-upload-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="upload-icon"
+      >
+        <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+        <polyline points="7 9 12 4 17 9" />
+        <line x1="12" y1="4" x2="12" y2="16" />
+      </svg>
+      <span>Upload Image</span>
     </label>
-  </mat-card>
+  </div>
 
   <div class="uploaded-images">
     <mat-grid-list cols="4" rowHeight="150px" gutterSize="12px">
@@ -138,10 +148,7 @@
 </section>
 
 <ng-template #loading>
-  <div class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p>Loading client details...</p>
-  </div>
+  <app-loader></app-loader>
 </ng-template>
 
 <app-footer></app-footer>

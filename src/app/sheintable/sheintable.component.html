@@ -1,5 +1,5 @@
 <app-navigation></app-navigation>
-
+<br />
 <section>
   <div class="card-container">
     <!-- FORM CARD -->
@@ -7,7 +7,7 @@
       <mat-card-title>{{ "form.title" | translate }}</mat-card-title>
       <br />
       <mat-card-content>
-        <form [formGroup]="userForm" (ngSubmit)="onClick()" >
+        <form [formGroup]="userForm" (ngSubmit)="onClick()">
           <div class="form-grid">
             <mat-form-field appearance="fill">
               <mat-icon matPrefix>person</mat-icon>
@@ -149,16 +149,13 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
+
     <!-- TABLE CARD -->
     <mat-card class="table-card mat-elevation-z4">
       <mat-card-title>{{ "table.title" | translate }}</mat-card-title>
-
+      <br />
       <mat-card-content>
-        <table
-          mat-table
-          [dataSource]="pagedData"
-          [ngClass]="currentClass"
-        >
+        <table mat-table [dataSource]="pagedData" [ngClass]="currentClass">
           <!-- Client -->
           <ng-container matColumnDef="client">
             <th mat-header-cell *matHeaderCellDef>
@@ -200,7 +197,10 @@
           </ng-container>
 
           <!-- Shipping -->
-          <ng-container matColumnDef="shippingCost" *ngIf="loginMode !== 'traders'">
+          <ng-container
+            matColumnDef="shippingCost"
+            *ngIf="loginMode !== 'traders'"
+          >
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.shippingCost" | translate }}
             </th>
@@ -248,15 +248,42 @@
                   mat-icon-button
                   color="accent"
                   (click)="onEdit(pageIndex * pageSize + i)"
+                  aria-label="Edit"
                 >
-                  <mat-icon>edit</mat-icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    fill="#3f51b5"
+                  >
+                    <path
+                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 
+              7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 
+              1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
+                    />
+                  </svg>
                 </button>
+
                 <button
                   mat-icon-button
                   color="warn"
                   (click)="onClean(pageIndex * pageSize + i)"
+                  aria-label="Delete"
                 >
-                  <mat-icon>delete</mat-icon>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1zM18 
+              7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 
+              2-2V7z"
+                    />
+                  </svg>
                 </button>
               </ng-container>
             </td>
@@ -281,25 +308,47 @@
             <strong>{{ "table.revenue" | translate }}:</strong>
             {{ calculateOverallTotal() }}
           </p>
-          <div class="pagination-buttons">
+          <div
+            *ngIf="filteredData.length > pageSize"
+            class="pagination-controls"
+          >
             <button
-              mat-icon-button
-              aria-label="Previous Page"
+              class="nav-btn"
               (click)="previousPage()"
               [disabled]="pageIndex === 0"
+              aria-label="Previous Page"
             >
-              <mat-icon>keyboard_arrow_left</mat-icon>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M15 6L9 12L15 18"
+                  stroke="#3f51b5"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
 
+            <span class="page-count">
+              {{ pageIndex + 1 }} /
+              {{ Math.ceil(filteredData.length / pageSize) }}
+            </span>
+
             <button
-              mat-icon-button
-              aria-label="Next Page"
+              class="nav-btn"
               (click)="nextPage()"
-              [disabled]="
-                (pageIndex + 1) * pageSize >= filteredData.length
-              "
+              [disabled]="(pageIndex + 1) * pageSize >= filteredData.length"
+              aria-label="Next Page"
             >
-              <mat-icon>keyboard_arrow_right</mat-icon>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M9 6L15 12L9 18"
+                  stroke="#3f51b5"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -307,5 +356,6 @@
     </mat-card>
   </div>
 </section>
+<br />
 
 <app-footer></app-footer>

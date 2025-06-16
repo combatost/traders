@@ -1,8 +1,9 @@
 // Color Variables
-$primary-blue: #1a73e8
 
-$blue-dark: #174ea6
-$accent-blue: #4285f4
+$primary-blue: #3f51b5
+
+$blue-dark: #3f51b5
+$accent-blue: #3f51b5
 $light-bg: transparent
 $white: #ffffff
 $text-dark: #1f1f1f
@@ -100,7 +101,7 @@ $table-border-color: #ddd
     font-weight: 700
     font-size: 2.5rem
     margin-bottom: 0.75rem
-    color: #ff0000
+    color: #f44336
 .data-2
   p 
     font-weight: 700
@@ -116,7 +117,7 @@ $table-border-color: #ddd
 
   .fill
     height: 100%
-    background: linear-gradient(90deg, #3f51b5, #1a237e)
+    background: linear-gradient(90deg,rgb(82, 109, 248), #3f51b5)
     border-radius: 10px
     transition: width 0.5s ease
 
@@ -445,3 +446,40 @@ canvas
 
   canvas
     max-height: 250px
+
+
+.pagination-controls
+  display: flex
+  justify-content: center
+  align-items: center
+  gap: 1.5rem
+  margin-top: 1.5rem
+
+  .nav-btn
+    background: #f5f7fa
+    border: none
+    border-radius: 50%
+    width: 40px
+    height: 40px
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1)
+    transition: all 0.2s ease
+    cursor: pointer
+
+    &:hover:enabled
+      background: #e1e7f0
+      transform: scale(1.05)
+
+    &:disabled
+      opacity: 0.4
+      cursor: not-allowed
+
+  .page-count
+    font-size: 1rem
+    font-weight: 500
+    color: #3f51b5
+
+
+    

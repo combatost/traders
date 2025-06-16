@@ -28,7 +28,7 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
   private notifSub?: Subscription
   private lockSub?: Subscription
 
-  public static appVersion = '3.0.2' // update on new release
+  public static appVersion = '3.1.0' // update on new release
   version = VersionAlertComponent.appVersion
 
   versionMessage: { svg: SafeHtml; text: string }[]

@@ -142,3 +142,30 @@
     color: #9ea7b8
     margin-top: 4rem
     font-style: italic
+
+.pagination-buttons
+  display: flex
+  justify-content: center
+  gap: 1rem
+  margin: 1rem 0
+
+.nav-button
+  background: none
+  border: none
+  cursor: pointer
+  color: #333
+  transition: color 0.3s ease, transform 0.2s ease
+  padding: 0.25rem
+  border-radius: 4px
+  display: flex
+  align-items: center
+  justify-content: center
+
+  &:disabled
+    color: #ccc
+    cursor: not-allowed
+    opacity: 0.6
+
+  &:hover:not(:disabled)
+    color: #1976d2
+    transform: scale(1.1)
