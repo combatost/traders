@@ -181,7 +181,7 @@
   "clientDetails": "Client Details: {{name}}",
   "location": "{{location}}",
   "phone": "Phone",
-  "otherPhone": "Other Phone",
+  "otherPhone": "2nd Phone",
   "address": "Address",
   "address2": "Address 2",
   "notAvailable": "N/A",
