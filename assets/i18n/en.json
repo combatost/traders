@@ -163,9 +163,6 @@
     },
     "LOGOUT": "Logout"
   },
-  "HISTORY": {
-    "DELETE_SELECTED": "Delete Selected"
-  },
   "form2": {
     "includeProfit": "Include Quantity in Profit",
     "includeProfitExplanation": "When enabled, the profit calculation will take the quantity into account, providing a more accurate total profit."
@@ -250,5 +247,13 @@
     },
       "ACCEPT_LABEL": "I have read and accept the terms and conditions",
       "CONFIRM": "Confirm"
+  },
+  
+  "HISTORY": {
+    "DELETED_AT": "Deleted At",
+    "SEARCH": "Search History",
+    "DELETE_SELECTED": "Delete Selected"
   }
+
+
 }
