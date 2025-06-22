@@ -5,7 +5,6 @@ import { ChartData, ChartOptions } from 'chart.js/dist/types/index';
 import { combineLatest } from 'rxjs';
 import { LoginModeService } from '../services/login-mode.service';
 
-
 @Component({
   selector: 'app-analysic',
   templateUrl: './analysic.component.html',
@@ -28,15 +27,43 @@ export class AnalysicComponent implements OnInit {
   cancelledCount: number = 0;
   profitRate: number = 0;
   totalprof: number = 0;
-  maxItems: number = 100;           // max value for items, adjust to your logic
-  maxClients: number = 50;          // max number of clients, adjust to your logic
-  totalOrders: number = 120;        // total number of orders, adjust accordingly
+  maxItems: number = 100;
+  maxClients: number = 50;
+  totalOrders: number = 120;
   loginMode: string = 'shein';
   currentPage: number = 0;
   itemsPerPage: number = 5;
   pagedSalesData: any[] = [];
-
   userId: string = '';
+
+  // Monthly sales chart
+  monthlySalesLabels = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+
+  monthlySalesData: ChartData<'bar'> = {
+    labels: this.monthlySalesLabels,
+    datasets: [
+      {
+        label: 'Monthly Sales',
+        data: new Array(12).fill(0),
+        backgroundColor: '#ff9800',
+        borderRadius: 4,
+      }
+    ],
+  };
+
+  monthlyBarChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true }
+    },
+    scales: {
+      y: { beginAtZero: true }
+    }
+  };
 
   constructor(
     private firestore: AngularFirestore,
@@ -72,8 +99,6 @@ export class AnalysicComponent implements OnInit {
     });
   }
 
-
-
   updateStats(): void {
     const clients = new Set<string>();
     this.totalSales = 0;
@@ -96,6 +121,10 @@ export class AnalysicComponent implements OnInit {
     startOfWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
     startOfWeek.setHours(0, 0, 0, 0);
 
+    // Monthly data (Jan–Dec)
+    const monthlyTotals = new Array(12).fill(0);
+    const currentYear = today.getFullYear();
+
     this.salesData.forEach(order => {
       this.totalSales += order.cost || 0;
       this.totalProfit += this.calculateProfit(order);
@@ -111,9 +140,17 @@ export class AnalysicComponent implements OnInit {
       if (order.date) {
         const dateObj = new Date(order.date);
         dateObj.setHours(0, 0, 0, 0); // normalize time
+
+        // Weekly
         if (dateObj >= startOfWeek) {
           const dayIndex = (dateObj.getDay() + 6) % 7; // Monday = 0, Sunday = 6
           weeklyTotals[dayIndex] += order.cost || 0;
+        }
+
+        // Monthly
+        if (dateObj.getFullYear() === currentYear) {
+          const monthIndex = dateObj.getMonth(); // 0 = Jan, 11 = Dec
+          monthlyTotals[monthIndex] += order.cost || 0;
         }
       }
     });
@@ -132,6 +169,9 @@ export class AnalysicComponent implements OnInit {
     this.weeklySalesData.datasets[0].data = weeklyTotals;
     this.weeklySalesData = { ...this.weeklySalesData };
 
+    this.monthlySalesData.datasets[0].data = monthlyTotals;
+    this.monthlySalesData = { ...this.monthlySalesData };
+
     this.orderStatusData.datasets[0].data = [
       this.pendingCount,
       this.doneCount,
@@ -139,7 +179,6 @@ export class AnalysicComponent implements OnInit {
     ];
     this.orderStatusData = { ...this.orderStatusData };
   }
-
 
   filterByStatus(status: string): void {
     this.statusFilter = status;
@@ -158,6 +197,7 @@ export class AnalysicComponent implements OnInit {
     this.currentPage = 0;
     this.updatePagedData();
   }
+
   updatePagedData(): void {
     const start = this.currentPage * this.itemsPerPage;
     const end = start + this.itemsPerPage;
@@ -177,10 +217,10 @@ export class AnalysicComponent implements OnInit {
       this.updatePagedData();
     }
   }
+
   get totalPages(): number {
     return Math.ceil(this.filteredSalesData.length / this.itemsPerPage);
   }
-
 
   calculateProfit(order: any): number {
     const discountProfit = (order.cost * order.discount) / 100;

@@ -41,7 +41,9 @@ import { TermsComponent } from './terms/terms.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlockedUserCardComponent } from './blocked-user-card/blocked-user-card.component';
-
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCarouselModule } from '@ngmodule/material-carousel';
+import { WindowSplashComponent } from './window-splash/window-splash.component';
 
 
 
@@ -73,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TermsComponent,
     AdminPanelComponent,
     BlockedUserCardComponent,
+    WindowSplashComponent,
 
 
   ],
@@ -110,6 +113,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDatepickerModule,
     NgParticlesModule,
     BrowserAnimationsModule,
+    MatChipsModule,
+
+
     
   ],
   providers: [

@@ -5,7 +5,6 @@
   font-family: 'Roboto', sans-serif
   user-select: none
 
-
 .ring-button
   position: relative
   background: none
@@ -65,7 +64,7 @@
   width: 90%
   max-width: 420px
   z-index: 1100
-  animation: fadeIn 0.35s ease forwards
+  animation: popupFadeIn 0.5s ease-out, dropIn 0.6s ease-out
   font-family: 'Roboto', sans-serif
 
   .card
@@ -74,6 +73,7 @@
     gap: 16px
     text-align: center
     color: #222
+    animation: fadeInUp 0.45s ease-in-out
 
     h3
       margin: 0
@@ -106,7 +106,6 @@
   scrollbar-width: thin
   scrollbar-color: #3f51b5 transparent
 
-  // Webkit scrollbar style
   &::-webkit-scrollbar
     width: 6px
   &::-webkit-scrollbar-track
@@ -141,6 +140,12 @@
     fill: currentColor
     vertical-align: middle
 
+.version-label
+  font-size: 14px
+  color: #888
+  margin-bottom: 14px
+  font-weight: 600
+
 .version-tag
   position: fixed
   bottom: 16px
@@ -154,13 +159,30 @@
   font-weight: 500
   user-select: none
 
-.version-label
-  font-size: 14px
-  color: #888
-  margin-bottom: 14px
-  font-weight: 600
+// Intro animations
+@keyframes popupFadeIn
+  0%
+    opacity: 0
+    transform: scale(0.95) translate(-50%, -50%)
+  100%
+    opacity: 1
+    transform: scale(1) translate(-50%, -50%)
 
-// Responsive breakpoints
+@keyframes dropIn
+  0%
+    transform: translate(-50%, -60%)
+  100%
+    transform: translate(-50%, -50%)
+
+@keyframes fadeInUp
+  0%
+    opacity: 0
+    transform: translateY(20px)
+  100%
+    opacity: 1
+    transform: translateY(0)
+
+// Responsive
 @media (max-width: 480px)
   .version-popup
     padding: 20px 24px

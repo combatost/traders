@@ -12,12 +12,31 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 })
 export class HistoryComponent implements OnInit {
   historyRecords: any[] = [];
+  filteredRecords: any[] = [];
+  noResults: boolean = false;
   userId: string = '';
   history$!: Observable<any[]>;
   pageIndex = 0;
   pageSize = 10;
 
   selection: { [key: string]: boolean } = {};
+
+  searchTerm: string = '';
+  dateRange: { begin: Date | null; end: Date | null } = { begin: null, end: null };
+
+  displayedColumns: string[] = [
+    'select',
+    'client',
+    'quantity',
+    'cost',
+    'discount',
+    'delivery',
+    'shippingCost',
+    'tax',
+    'choice',
+    'profit',
+    'deletedAt',
+  ];
 
   constructor(
     private firestore: AngularFirestore,
@@ -35,6 +54,7 @@ export class HistoryComponent implements OnInit {
 
         this.history$.subscribe(data => {
           this.historyRecords = data;
+          this.applyFilters();
           this.pageIndex = 0; // reset to first page on new data
           this.selection = {}; // clear selection
         });
@@ -42,9 +62,90 @@ export class HistoryComponent implements OnInit {
     });
   }
 
+  onSearchChange() {
+    this.pageIndex = 0;
+    this.applyFilters();
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.onSearchChange();
+  }
+
+  onDateRangeChange() {
+    this.pageIndex = 0;
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let records = [...this.historyRecords];
+
+    // Always apply date range filter if set
+    if (this.dateRange.begin && this.dateRange.end) {
+      // Ensure begin and end are Date objects
+      const start = new Date(this.dateRange.begin as Date);
+      const end = new Date(this.dateRange.end as Date);
+      // Include the whole end day
+      end.setHours(23, 59, 59, 999);
+
+      records = records.filter(record => {
+        let deletedAtDate: Date | null = null;
+        if (record.deletedAt) {
+          // Firestore Timestamp
+          if (record.deletedAt instanceof Date) {
+            deletedAtDate = record.deletedAt;
+          } else if (typeof record.deletedAt.toDate === 'function') {
+            deletedAtDate = record.deletedAt.toDate();
+          } else if (typeof record.deletedAt === 'string' || typeof record.deletedAt === 'number') {
+            deletedAtDate = new Date(record.deletedAt);
+          }
+        }
+        // Only include if deletedAtDate is valid and within range
+        return (
+          deletedAtDate &&
+          !isNaN(deletedAtDate.getTime()) &&
+          deletedAtDate >= start &&
+          deletedAtDate <= end
+        );
+      });
+    }
+
+    // Apply search filter after date range filter
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      const term = this.searchTerm.trim().toLowerCase();
+      records = records.filter(record => {
+        return (
+          (record.client && record.client.toString().toLowerCase().includes(term)) ||
+          (record.choice && record.choice.toString().toLowerCase().includes(term)) ||
+          (record.delivery && record.delivery.toString().toLowerCase().includes(term)) ||
+          (record.quantity && record.quantity.toString().toLowerCase().includes(term)) ||
+          (record.cost && record.cost.toString().toLowerCase().includes(term)) ||
+          (record.discount && record.discount.toString().toLowerCase().includes(term)) ||
+          (record.shippingCost && record.shippingCost.toString().toLowerCase().includes(term)) ||
+          (record.tax && record.tax.toString().toLowerCase().includes(term)) ||
+          (record.profit && record.profit.toString().toLowerCase().includes(term)) ||
+          (record.deletedAt &&
+            (
+              (typeof record.deletedAt.toDate === 'function'
+                ? record.deletedAt.toDate().toLocaleString().toLowerCase()
+                : new Date(record.deletedAt).toLocaleString().toLowerCase()
+              ).includes(term)
+            )
+          )
+        );
+      });
+    }
+
+    this.filteredRecords = records;
+    this.noResults = this.filteredRecords.length === 0;
+
+    // If date range is set and no results, hide table (filteredRecords will be empty)
+    // This is handled in the template by checking filteredRecords.length or noResults
+  }
+
   get pagedRecords() {
     const start = this.pageIndex * this.pageSize;
-    return this.historyRecords.slice(start, start + this.pageSize);
+    return this.filteredRecords.slice(start, start + this.pageSize);
   }
 
   previousPage() {
@@ -52,7 +153,7 @@ export class HistoryComponent implements OnInit {
   }
 
   nextPage() {
-    if ((this.pageIndex + 1) * this.pageSize < this.historyRecords.length) this.pageIndex++;
+    if ((this.pageIndex + 1) * this.pageSize < this.filteredRecords.length) this.pageIndex++;
   }
 
   isAllSelected(): boolean {
@@ -88,6 +189,7 @@ export class HistoryComponent implements OnInit {
           .delete()
           .then(() => {
             this.historyRecords = this.historyRecords.filter(record => record.id !== id);
+            this.applyFilters();
             if (this.pagedRecords.length === 0 && this.pageIndex > 0) this.pageIndex--;
           })
           .catch(err => console.error('Error deleting record:', err));
@@ -121,6 +223,7 @@ export class HistoryComponent implements OnInit {
           .then(() => {
             this.historyRecords = this.historyRecords.filter(record => !idsToDelete.includes(record.id));
             this.selection = {};
+            this.applyFilters();
             if (this.pagedRecords.length === 0 && this.pageIndex > 0) this.pageIndex--;
           })
           .catch(err => console.error('Batch delete failed:', err));
@@ -129,7 +232,6 @@ export class HistoryComponent implements OnInit {
   }
 
   get totalPages(): number {
-  return Math.ceil(this.historyRecords.length / this.pageSize);
-}
-
+    return Math.max(1, Math.ceil(this.filteredRecords.length / this.pageSize));
+  }
 }

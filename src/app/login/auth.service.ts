@@ -15,9 +15,13 @@ export interface AppUser {
   providedIn: 'root'
 })
 export class AuthService {
+   isLoggedIn(): boolean {
+    // e.g. check localStorage token or Firebase auth state
+    return !!localStorage.getItem('userToken')  // or however you track auth
+  }
   public loading$ = new BehaviorSubject<boolean>(true);
   public isAuthenticated$ = new BehaviorSubject<boolean>(false);
-
+  isLoggedIn$ = new BehaviorSubject<boolean>(false); // Add this line
   // Observable of current Firestore user data
   public appUser$ = this.afAuth.authState.pipe(
     switchMap(user => {

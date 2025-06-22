@@ -1,53 +1,249 @@
-<!-- From Uiverse.io by YeiserBytes --> 
-<section class="card">
-  <header>
-    <h2 class="title">Beginner</h2>
-    <h1 class="price">Free</h1>
-  </header>
-  <p class="desc">Etiam ac convallis enim, eget euismod dolor.</p>
-  <ul class="lists">
-    <li class="list">
-      <svg
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          clip-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          fill-rule="evenodd"
-        ></path>
-      </svg>
-      <p>Aenean quis</p>
-    </li>
-    <li class="list">
-      <svg
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          clip-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          fill-rule="evenodd"
-        ></path>
-      </svg>
-      <p>Morbi semper</p>
-    </li>
-    <li class="list">
-      <svg
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          clip-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          fill-rule="evenodd"
-        ></path>
-      </svg>
-      <p>Tristique enim nec</p>
-    </li>
-  </ul>
-  <button class="action" type="button">Get Started</button>
-</section>
+<mat-toolbar color="primary" class="splash-toolbar">
+  <span class="splash-logo">SheinTraders</span>
+  <span class="spacer"></span>
+  <button
+    mat-button
+    style="color: white; background-color: #3f51b5"
+    (click)="goToLogin()"
+  >
+    Login
+  </button>
+</mat-toolbar>
+
+<div class="splash-main-container">
+  <mat-card class="splash-hero-card">
+    <div class="splash-hero-content">
+      <div class="splash-hero-text">
+        <h1>Welcome to <span class="brand">SheinTraders</span></h1>
+        <h2>Smart tools for smart resellers</h2>
+        <p>
+          <mat-icon color="accent">verified_user</mat-icon>
+          <b>100% Private & Secure</b>
+        </p>
+        <p>
+          <mat-icon color="accent">analytics</mat-icon>
+          <b>Powerful Analytics</b>
+        </p>
+        <p>
+          <mat-icon color="accent">history</mat-icon>
+          <b>Order History & Image Upload</b>
+        </p>
+        <p>
+          <mat-icon color="accent">attach_money</mat-icon>
+          <b>Subscribe for just $1/month</b>
+        </p>
+        <button
+          mat-raised-button
+          color="accent"
+          class="cta-btn"
+          (click)="goToWindowSplash()"
+        >
+          Start Now
+        </button>
+      </div>
+      <div class="splash-hero-media">
+        <video
+          width="320"
+          height="200"
+          controls
+          poster="assets/subscribe-preview.jpg"
+          class="splash-video"
+        >
+          <source src="assets/videos/how.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <b>Watch our explainer video</b>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="splash-features-card">
+    <mat-card-title>Features</mat-card-title>
+    <mat-list>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">track_changes</mat-icon>
+        <h4 matLine>Effortless Order Management</h4>
+        <p matLine>Track, update, and manage orders in real time.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">insights</mat-icon>
+        <h4 matLine>Daily & Weekly Analytics</h4>
+        <p matLine>Visualize your sales and growth with beautiful charts.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">security</mat-icon>
+        <h4 matLine>Private & Secure</h4>
+        <p matLine>Your data is encrypted and never shared.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">cloud_upload</mat-icon>
+        <h4 matLine>Image Upload</h4>
+        <p matLine>Attach images to orders for better tracking.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">history</mat-icon>
+        <h4 matLine>Order History</h4>
+        <p matLine>Access your complete order history anytime.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">support_agent</mat-icon>
+        <h4 matLine>24/7 Support</h4>
+        <p matLine>Contact us anytime for help and guidance.</p>
+      </mat-list-item>
+      <!-- Additional Features -->
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">notifications_active</mat-icon>
+        <h4 matLine>Instant Notifications</h4>
+        <p matLine>Get real-time alerts for new orders and updates.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">group</mat-icon>
+        <h4 matLine>Multi-User Collaboration</h4>
+        <p matLine>Invite team members and manage together.</p>
+      </mat-list-item>
+      <mat-list-item>
+        <mat-icon matListIcon color="primary">language</mat-icon>
+        <h4 matLine>Multi-Language Support</h4>
+        <p matLine>Use the platform in your preferred language.</p>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <mat-card class="splash-subscribe-card">
+    <mat-card-header>
+      <mat-card-title>
+        <svg
+          width="36"
+          height="36"
+          viewBox="0 0 36 36"
+          aria-label="Premium"
+          style="vertical-align: middle; display: inline-block"
+        >
+          <defs>
+            <radialGradient id="gold-glow" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#fffbe7" />
+              <stop offset="60%" stop-color="#ffe066" />
+              <stop offset="100%" stop-color="#bfa100" />
+            </radialGradient>
+            <linearGradient
+              id="star-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stop-color="#fffbe7" />
+              <stop offset="100%" stop-color="#FFD700" />
+            </linearGradient>
+            <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- Animated glowing circle -->
+          <circle
+            cx="18"
+            cy="18"
+            r="15"
+            fill="url(#gold-glow)"
+            filter="url(#glow)"
+          >
+            <animate
+              attributeName="opacity"
+              values="0.8;1;0.8"
+              dur="2s"
+              repeatCount="indefinite"
+            />
+          </circle>
+          <!-- Animated star -->
+          <g>
+            <polygon
+              id="star"
+              points="18,6 21.09,14.26 30,14.27 22.97,19.74 25.18,28.02 18,22.98 10.82,28.02 13.03,19.74 6,14.27 14.91,14.26"
+              fill="url(#star-gradient)"
+              stroke="#FFD700"
+              stroke-width="1.2"
+            >
+              <animateTransform
+                attributeName="transform"
+                type="rotate"
+                from="0 18 18"
+                to="360 18 18"
+                dur="4s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="1;0.7;1"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </polygon>
+            <!-- Sparkle effect -->
+            <circle cx="18" cy="8" r="1.2" fill="#fff" opacity="0.8">
+              <animate
+                attributeName="r"
+                values="1.2;2;1.2"
+                dur="1.2s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.8;0.2;0.8"
+                dur="1.2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="26" cy="16" r="0.8" fill="#fff" opacity="0.7">
+              <animate
+                attributeName="r"
+                values="0.8;1.5;0.8"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.7;0.2;0.7"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="10" cy="20" r="0.7" fill="#fff" opacity="0.6">
+              <animate
+                attributeName="r"
+                values="0.7;1.3;0.7"
+                dur="1.3s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.6;0.2;0.6"
+                dur="1.3s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </g>
+        </svg>
+        Subscribe for just <span class="price">$1/month</span>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="display: flex; gap: 16px; align-items: flex-start">
+      <!-- Text and CTA -->
+      <div>
+      <p style="margin: 0 0 12px; font-size: 1rem; color: #333">
+        <strong style="color: #1976d2">Free for 1 month!</strong>
+        Get full access to real-time order tracking, image uploads, detailed
+        analytics, and premium support.
+        <br />
+        After your free trial, continue with a simple monthly plan.
+      </p>
+   
+      </div>
+      
+    </mat-card-content>
+  </mat-card>
+</div>
+<br>

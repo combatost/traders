@@ -1,72 +1,308 @@
-$primary-color: #0ea5e9
-$secondary-color: #f8fafc
-$accent-color: #020617
+$primary: #3f51b5
+$accent: #3f51b5
 
-.card
-  margin-left: -1rem
-  margin-right: -1rem
+$bg: #f5f7fa
+$card-bg: #fff
+$shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18)
+$radius: 18px
+$transition: all 0.3s cubic-bezier(.25,.8,.25,1)
+$brand-gradient: linear-gradient(90deg, #3f51b5 0%, #512da8 100%)
+$brand-glow: 0 0 16px 2px rgba(81,45,168,0.15)
+$toolbar-height: 72px
+
+// Mixins
+@mixin flex-center
   display: flex
-  flex-wrap: wrap
-  align-items: stretch
-  margin-bottom: 2rem
-  width: 320px
-  flex-direction: column
-  border-radius: 1rem
-  background-color: $accent-color
-  padding: 1.5rem
+  align-items: center
+  justify-content: center
 
-  header
-    display: flex
-    flex-direction: column
+@mixin glass
+  background: rgba(255,255,255,0.85)
+  box-shadow: $shadow
+  border-radius: $radius
+  backdrop-filter: blur(6px)
 
-  .title
-    font-size: 1.2rem
-    line-height: 2rem
+body, :host
+  background: $bg
+  min-height: 100vh
+
+.splash-toolbar
+  width: 90%
+  margin: 0 auto
+  border-radius: 0 0 12px 12px
+  height: $toolbar-height
+  background: #1f1f1f
+  box-shadow: 0 2px 16px rgba(81,45,168,0.08)
+  @include flex-center
+  padding: 0 32px
+  .splash-logo
+    font-family: 'Montserrat', sans-serif
     font-weight: 700
-    color: rgba($secondary-color, 0.56)
-
-  .price
-    font-size: 3.75rem
-    line-height: 1
-    font-weight: 700
-    color: $secondary-color
-
-  .desc
-    margin-top: 0.75rem
-    margin-bottom: 0.75rem
-    line-height: 1.625
-    color: rgba($secondary-color, 0.56)
-
-  .lists
-    margin-bottom: 1.5rem
-    flex: 1 1 0%
-    color: rgba($secondary-color, 0.56)
-
-    .list
-      margin-bottom: 0.5rem
-      display: flex
-      margin-left: 0.5rem
-
-      svg
-        height: 1.5rem
-        width: 1.5rem
-        flex-shrink: 0
-        margin-right: 0.5rem
-        color: $primary-color
-
-  .action
-    border: none
-    outline: none
-    display: inline-block
-    border-radius: 0.5rem
-    background-color: $primary-color
-    padding: 0.75rem 1.25rem
-    text-align: center
+    font-size: 2.4rem
+    color: #f8f9fa
+    text-transform: uppercase
+    letter-spacing: .1em
+    text-shadow: $brand-glow
+    user-select: none
+  .spacer
+    flex: 1 1 auto
+  button[mat-button]
     font-weight: 600
-    letter-spacing: 0.05em
-    color: $secondary-color
-    cursor: pointer
-    transition: all 0.3s ease-in-out
-
+    font-size: 1.1rem
+    border-radius: 24px
+    padding: 8px 28px
+    box-shadow: 0 2px 8px rgba(255,64,129,0.08)
+    transition: $transition
     &:hover
-      background-color: darken($primary-color, 15%)
+      background: $accent
+      color: #fff
+
+.splash-main-container
+  margin: 48px auto 0 auto
+  max-width: 90%
+  display: flex
+  flex-direction: column
+  gap: 36px
+  padding: 0 16px
+
+.splash-hero-card
+  @include glass
+  padding: 48px 36px
+  display: flex
+  flex-direction: column
+  align-items: stretch
+  box-shadow: $shadow
+  border: none
+
+.splash-hero-content
+  display: flex
+  flex-direction: row
+  gap: 48px
+  align-items: center
+  justify-content: space-between
+
+.splash-hero-text
+  flex: 2
+  h1
+    font-size: 2.8rem
+    font-weight: 900
+    margin-bottom: 12px
+    .brand
+      background: $brand-gradient
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      text-shadow: $brand-glow
+  h2
+    font-size: 1.5rem
+    font-weight: 600
+    color: $primary
+    margin-bottom: 24px
+  p
+    display: flex
+    align-items: center
+    gap: 10px
+    font-size: 1.1rem
+    margin: 0 0 8px 0
+    mat-icon
+      font-size: 1.3rem
+      color: $accent
+    b
+      font-weight: 700
+  .cta-btn
+    margin-top: 24px
+    font-size: 1.2rem
+    padding: 12px 36px
+    border-radius: 32px
+    font-weight: 700
+    box-shadow: 0 4px 16px rgba(255,64,129,0.12)
+    background: $brand-gradient
+    color: #fff
+    transition: $transition
+    &:hover
+      filter: brightness(1.1)
+      box-shadow: 0 8px 32px rgba(81,45,168,0.18)
+
+.splash-hero-media
+  flex: 1
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 18px
+  .splash-video
+    border-radius: 16px
+    box-shadow: 0 4px 24px rgba(81,45,168,0.10)
+    width: 450px
+    max-width: 450px
+    margin-bottom: 8px
+  .splash-img
+    width: 180px
+    max-width: 100%
+    border-radius: 12px
+    box-shadow: 0 2px 12px rgba(81,45,168,0.10)
+
+.splash-features-card
+  @include glass
+  padding: 32px 28px
+  box-shadow: $shadow
+  mat-card-title
+    font-size: 2rem
+    font-weight: 800
+    color: $primary
+    margin-bottom: 18px
+    letter-spacing: 1px
+  mat-list
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+    gap: 18px
+    mat-list-item
+      background: rgba(81,45,168,0.04)
+      border-radius: 14px
+      padding: 40px
+      box-shadow: 0 2px 8px rgba(81,45,168,0.06)
+      display: flex
+      align-items: flex-start
+      gap: 16px
+      transition: $transition
+      &:hover
+        background: rgba(255,64,129,0.08)
+        box-shadow: 0 4px 16px rgba(255,64,129,0.10)
+      mat-icon
+        font-size: 2rem
+        margin-right: 10px
+      h4
+        font-size: 1.2rem
+        font-weight: 700
+        margin: 0
+        color: $primary
+      p
+        font-size: 1rem
+        color: #444
+        margin: 0
+
+.splash-subscribe-card
+  @include glass
+  padding: 28px 24px
+  display: flex
+  flex-direction: column
+  align-items: flex-start
+  box-shadow: $shadow
+  mat-card-header
+    display: flex
+    align-items: center
+    mat-card-title
+      display: flex
+      align-items: center
+      gap: 10px
+      font-size: 1.5rem
+      font-weight: 800
+      color: $accent
+      .price
+        font-size: 2rem
+        font-weight: 900
+        background: $brand-gradient
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+  mat-card-content
+    font-size: 1.1rem
+    color: #333
+    margin: 12px 0 0 0
+    button[mat-stroked-button]
+      margin-top: 18px
+      font-size: 1.1rem
+      font-weight: 700
+      border-radius: 24px
+      padding: 10px 32px
+      border: 2px solid $primary
+      color: $primary
+      transition: $transition
+      &:hover
+        background: $primary
+        color: #fff
+        border-color: $accent
+
+// Responsive
+@media (max-width: 1200px)
+  .splash-main-container
+    max-width: 90%
+  
+
+@media (max-width: 900px)
+  .splash-main-container
+    max-width: 100%
+    width: 100%
+    flex-direction: column
+    gap: 24px
+  .splash-hero-content
+    flex-direction: column
+    gap: 32px
+    align-items: stretch
+  .splash-hero-card,
+  .splash-features-card,
+  .splash-subscribe-card
+    width: 100%
+    margin: 0 auto
+    flex-direction: column
+  .splash-hero-media
+    align-items: flex-start
+    width: 100%
+    .splash-video
+      width: 100%
+      min-width: 0
+    .splash-img
+      width: 140px
+
+@media (max-width: 600px)
+  .splash-toolbar
+    flex-direction: row
+    height: auto
+    padding: 12px 8px
+    width: 98%
+    min-width: 0
+    .splash-logo
+      font-size: 1.5rem
+  .splash-main-container
+    margin-top: 18px
+    padding: 0 4px
+    max-width: 100%
+    width: 100%
+  .splash-hero-card, .splash-features-card, .splash-subscribe-card
+    padding: 18px 6px
+    width: 100%
+  .splash-hero-text h1
+    font-size: 1.6rem
+  .splash-hero-text h2
+    font-size: 1.1rem
+  .splash-hero-media .splash-video
+    width: 100%
+    min-width: 0
+  .splash-img
+    width: 100px
+
+// Animations
+@keyframes fadeInUp
+  from
+    opacity: 0
+    transform: translateY(40px)
+  to
+    opacity: 1
+    transform: translateY(0)
+
+.splash-hero-card, .splash-features-card, .splash-subscribe-card
+  animation: fadeInUp 0.8s cubic-bezier(.25,.8,.25,1) both
+
+// Scrollbar styling
+::-webkit-scrollbar
+  width: 8px
+  background: #ece9f6
+::-webkit-scrollbar-thumb
+  background: $primary
+  border-radius: 8px
+
+// Utility
+.text-center
+  text-align: center
+.uppercase
+  text-transform: uppercase
+.bold
+  font-weight: 800
+

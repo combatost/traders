@@ -1,187 +1,109 @@
-<div class="admin-container" *ngIf="!loading; else loadingTemplate">
-  <div class="admin-header">
-    <h2>User Management</h2>
-    <button class="logout-btn" (click)="logout()">
-      <svg
-        class="icon logout-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-        <polyline points="16 17 21 12 16 7" />
-        <line x1="21" y1="12" x2="9" y2="12" />
-      </svg>
-      Logout
-    </button>
+<mat-toolbar color="primary" class="admin-toolbar">
+  <span>
+    <mat-icon>supervisor_account</mat-icon>
+    User Management
+  </span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="logout()" matTooltip="Logout">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
 
-  </div>
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-  <div class="summary-bar" *ngIf="users$ | async as users">
-    <div class="summary-item total-users">
-      <span class="count">{{ users.length }}</span>
-      <span class="label">Total Users</span>
+<div class="admin-content" *ngIf="!loading">
+  <mat-card class="summary-bar" *ngIf="users$ | async as users">
+    <div class="summary-item">
+      <mat-icon color="accent">group</mat-icon>
+      <div>
+        <div class="count">{{ users.length }}</div>
+        <div class="label">Total Users</div>
+      </div>
     </div>
-
-    <div class="summary-item online-users">
-      <span class="count">{{ onlineCount$ | async }}</span>
-      <span class="label">Online Now</span>
+    <div class="summary-item">
+      <mat-icon color="primary">online_prediction</mat-icon>
+      <div>
+        <div class="count">{{ onlineCount$ | async }}</div>
+        <div class="label">Online Now</div>
+      </div>
     </div>
-  </div>
+  </mat-card>
 
-  <table class="admin-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Locked</th>
-        <th>Unlock Since</th>
-        <th>Online</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <mat-card>
+    <mat-table [dataSource]="(users$ | async) || []" class="mat-elevation-z2">
 
-    <tbody>
-      <tr *ngFor="let user of (users$ | async) || []">
-        <td>
+      <ng-container matColumnDef="user">
+        <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+        <mat-cell *matCellDef="let user">
           <div class="user-cell">
-            <svg
-              class="icon user-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="7" r="4" />
-              <path d="M5.5 21a8.38 8.38 0 0 1 13 0" />
-            </svg>
+            <mat-icon class="user-avatar" color="primary">person</mat-icon>
             <div>
               <div class="user-name">{{ user.fullName }}</div>
               <div class="user-email">{{ user.email }}</div>
             </div>
           </div>
-        </td>
+        </mat-cell>
+      </ng-container>
 
-        <td>
-          <span
-            [class.locked]="user.isLocked"
-            [class.unlocked]="!user.isLocked"
-          >
-            {{ user.isLocked ? "Locked" : "Unlocked" }}
-          </span>
-        </td>
+      <ng-container matColumnDef="locked">
+        <mat-header-cell *matHeaderCellDef>Locked</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <mat-chip [color]="user.isLocked ? 'warn' : 'primary'" selected>
+            {{ user.isLocked ? 'Locked' : 'Unlocked' }}
+          </mat-chip>
+        </mat-cell>
+      </ng-container>
 
-        <td>
+      <ng-container matColumnDef="unlockSince">
+        <mat-header-cell *matHeaderCellDef>Unlock Since</mat-header-cell>
+        <mat-cell *matCellDef="let user">
           <span *ngIf="user.unlockSince; else noDate">
             {{ user.unlockSince?.toDate() | date : "short" }}
           </span>
-          <ng-template #noDate><span>-</span></ng-template>
-        </td>
+          <ng-template #noDate>-</ng-template>
+        </mat-cell>
+      </ng-container>
 
-        <td>
-          <svg
-            *ngIf="user.online"
-            class="icon online-circle"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="12" r="8" />
-          </svg>
-          <svg
-            *ngIf="!user.online"
-            class="icon offline-circle"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="12" cy="12" r="8" />
-          </svg>
-        </td>
+      <ng-container matColumnDef="online">
+        <mat-header-cell *matHeaderCellDef>Online</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <mat-icon [color]="user.online ? 'accent' : 'warn'">
+            {{ user.online ? 'circle' : 'radio_button_unchecked' }}
+          </mat-icon>
+        </mat-cell>
+      </ng-container>
 
-        <td>
-          <span class="role-chip" *ngIf="user.isAdmin">Admin</span>
-          <span *ngIf="!user.isAdmin">User</span>
-        </td>
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef>Role</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <mat-chip [color]="user.isAdmin ? 'accent' : undefined" selected>
+            {{ user.isAdmin ? 'Admin' : 'User' }}
+          </mat-chip>
+        </mat-cell>
+      </ng-container>
 
-        <td>
-          <button
-            class="action-btn lock-btn"
-            (click)="toggleLock(user)"
-            [title]="user.isLocked ? 'Unlock User' : 'Lock User'"
-          >
-            <svg
-              *ngIf="user.isLocked"
-              class="icon lock-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#f5a623"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <svg
-              *ngIf="!user.isLocked"
-              class="icon unlock-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#4caf50"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0" />
-            </svg>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          <button mat-icon-button (click)="toggleLock(user)" [matTooltip]="user.isLocked ? 'Unlock User' : 'Lock User'">
+            <mat-icon color="warn" *ngIf="user.isLocked">lock</mat-icon>
+            <mat-icon color="primary" *ngIf="!user.isLocked">lock_open</mat-icon>
           </button>
-
-          <button
-            class="action-btn delete-btn"
-            (click)="deleteUser(user)"
-            title="Delete User"
-          >
-            <svg
-              class="icon delete-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#f44336"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="3 6 5 6 21 6" />
-              <path d="M19 6l-2 14H7L5 6" />
-              <path d="M10 11v6" />
-              <path d="M14 11v6" />
-              <path d="M9 6V4h6v2" />
-            </svg>
+          <button mat-icon-button (click)="deleteUser(user)" matTooltip="Delete User">
+            <mat-icon color="warn">delete</mat-icon>
           </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </mat-cell>
+      </ng-container>
 
-  <div class="error" *ngIf="error">{{ error }}</div>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+
+  <mat-card *ngIf="error" class="error-card">
+    <mat-icon color="warn">error</mat-icon>
+    {{ error }}
+  </mat-card>
 </div>
 
-<ng-template #loadingTemplate>
-  <div class="loading-spinner">
-    <svg class="spinner" viewBox="0 0 50 50">
-      <circle
-        class="path"
-        cx="25"
-        cy="25"
-        r="20"
-        fill="none"
-        stroke-width="5"
-      />
-    </svg>
-    <p>Loading users...</p>
-  </div>
-</ng-template>
+

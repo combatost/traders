@@ -5,7 +5,7 @@ $accent-blue: #3f51b5
 $light-bg: #f0f4f8
 $white: #ffffff
 $text-dark: #1f1f1f
-$card-radius: 14px
+$card-radius: 12px
 $shadow: 0 8px 16px rgba(26, 115, 232, 0.1)
 $transition: all 0.3s ease
 $gap: 1.5rem
@@ -28,6 +28,7 @@ mat-card
   padding: 2rem
   box-shadow: $shadow
   transition: $transition
+  border-bottom: 0.40rem solid #3f51b5
 
   &:hover
     transform: translateY(-4px)
@@ -100,9 +101,7 @@ mat-form-field
   width: 100%
   overflow-x: auto
   -webkit-overflow-scrolling: touch
-  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1)
-  border-radius: $card-radius
-  background-color: $white
+  border-radius: 20px
   padding: 1rem 0
 
 // Table Styling

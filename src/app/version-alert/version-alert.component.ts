@@ -28,7 +28,7 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
   private notifSub?: Subscription
   private lockSub?: Subscription
 
-  public static appVersion = '3.1.0' // update on new release
+  public static appVersion = '3.5.0' // update on new release
   version = VersionAlertComponent.appVersion
 
   versionMessage: { svg: SafeHtml; text: string }[]
@@ -44,31 +44,36 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
     const rawMessages = [
       {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M9 16.2l-3.5-3.5-1.4 1.4L9 19 20 8l-1.4-1.4z"/>
-        </svg>`,
-        text: 'Added mandatory terms acceptance'
+      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/>
+    </svg>`,
+        text: 'Version popup redesigned with modern animation and style'
       },
       {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/>
-        </svg>`,
-        text: 'Redirect new users after acceptance'
+      <path d="M17 10.5V6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v4.5L5 13v1h14v-1l-2-2.5zM9 6h6v4H9V6z"/>
+    </svg>`,
+        text: 'All video sections now use modern HTML5 players with poster and controls'
       },
       {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 4a8 8 0 1 0 8 8 8 8 0 0 0-8-8zm0 14a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>`,
-        text: 'Show acceptance status for returning users'
+      <path d="M12 2a6 6 0 0 1 6 6c0 4.5-6 10-6 10S6 12.5 6 8a6 6 0 0 1 6-6zm0 8a2 2 0 1 0-2-2 2 2 0 0 0 2 2z"/>
+    </svg>`,
+        text: 'Notification bell now glows with animation for new alerts'
       },
       {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3.9 12a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5 5 5 0 0 1-5 5H8.9a5 5 0 0 1-5-5zm2 0a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3 3 3 0 0 0-3-3H8.9a3 3 0 0 0-3 3z"/>
-          <path d="M10 12h4v2h-4z"/>
-        </svg>`,
-        text: 'Footer terms link updated with acceptance info'
+      <path d="M5 4h14a1 1 0 0 1 1 1v14l-4-4H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/>
+    </svg>`,
+        text: 'Dialogs now styled with premium animated design, no Angular Material used'
+      },
+      {
+        svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+    </svg>`,
+        text: 'History and section titles now use modern bold style with animation'
       }
-    ]
+    ];
+
 
     // Sanitize SVG strings for safe innerHTML usage
     this.versionMessage = rawMessages.map(msg => ({

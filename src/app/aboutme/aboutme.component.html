@@ -29,26 +29,10 @@
 
   <!-- Background Video Section -->
   <div class="video-header">
-    <ng-container *ngIf="videoUrl; else loading">
-      <video
-        #bgVideo
-        autoplay
-        muted
-        loop
-        playsinline
-        class="bg-video"
-        [src]="videoUrl"
-      ></video>
-
-      <div class="overlay">
-        <h1>{{ "aboutUs.hero.title" | translate }}</h1>
-        <p>{{ "aboutUs.hero.subtitle" | translate }}</p>
-      </div>
-    </ng-container>
-
-    <ng-template #loading>
-      <p class="loading-text">{{ "aboutUs.video.loading" | translate }}</p>
-    </ng-template>
+    <video controls playsinline class="bg-video">
+      <source src="assets/videos/how.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
   </div>
 
   <!-- Vision Section -->

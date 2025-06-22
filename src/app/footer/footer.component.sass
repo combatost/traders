@@ -142,28 +142,7 @@ footer
           color: $color-primary
 
 // Responsive Breakpoints
-@media (max-width: 768px)
-  footer
-    padding: 2rem 1rem
 
-    .footer-top
-      flex-direction: column
-      align-items: flex-start
-      gap: 1.5rem
-
-    .footer-nav ul
-      gap: 1rem
-
-    .footer-controls
-      width: 100%
-      select
-        width: 100%
-
-    .footer-bottom
-      flex-direction: column
-      align-items: flex-start
-
-@media (max-width: 480px)
   footer
     padding: 1.5rem 0.75rem
 
@@ -225,3 +204,68 @@ footer
       &:hover
         color: #42a5f5
         cursor: pointer
+
+
+@media (max-width: 1024px)
+  footer
+    padding: 2rem 1rem
+
+    .container
+      max-width: 100%
+
+    .footer-top
+      flex-wrap: wrap
+      justify-content: center
+      gap: 1.5rem
+
+    .footer-nav ul
+      justify-content: center
+      gap: 1.5rem
+
+    .footer-controls
+      display: flex
+      justify-content: center
+      width: 100%
+      select
+        width: auto
+
+    .footer-bottom
+      flex-wrap: wrap
+      justify-content: center
+      gap: 1rem
+      text-align: center
+
+@media (max-width: 768px)
+  footer
+    padding: 1.5rem 1rem
+
+    .footer-top
+      flex-direction: row
+      justify-content: center
+      gap: 1.5rem
+
+    .footer-nav ul
+      flex-wrap: wrap
+      justify-content: center
+      gap: 1rem
+
+    .footer-controls
+      justify-content: center
+      width: 100%
+      select
+        width: auto
+
+    .footer-bottom
+      flex-direction: row
+      flex-wrap: wrap
+      justify-content: center
+      align-items: center
+      gap: 1rem
+
+      p
+        justify-content: center
+        text-align: center
+
+      .social-links
+        justify-content: center
+        flex-wrap: wrap

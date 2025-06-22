@@ -1,331 +1,203 @@
-.admin-container
-  max-width: 960px
-  margin: 20px auto
-  padding: 20px
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-  color: #202124
-  background-color: #fff
-  border-radius: 12px
-  box-shadow: 0 8px 24px rgba(32, 33, 36, 0.1)
-  
-  h2
-    font-weight: 600
-    font-size: 2.2rem
-    margin-bottom: 24px
-    color: #1a73e8
+// admin-panel.component.sass
 
-  .admin-table
-    width: 100%
-    border-collapse: separate
-    border-spacing: 0 10px
-    font-size: 1rem
-    table-layout: fixed
+// Palette
+$primary: #1565c0
+$accent: #ff6f00
+$warn: #e53935
+$bg: #f4f8fb
+$card-bg: #fff
+$radius: 16px
+$shadow: 0 2px 16px rgba(21, 101, 192, 0.10)
+$transition: all 0.18s cubic-bezier(.4,0,.2,1)
+$toolbar-h: 60px
 
-    thead
-      tr
-        th
-          text-align: left
-          padding: 12px 16px
-          font-weight: 600
-          font-size: 1.1rem
-          color: #5f6368
-          border-bottom: 2px solid #e8eaed
-          user-select: none
+:host
+  display: block
+  background: $bg
+  min-height: 100vh
 
-    tbody
-      tr
-        background-color: #f8f9fa
-        border-radius: 12px
-        box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1)
-        transition: background-color 0.3s ease
-        cursor: default
-
-        &:hover
-          background-color: #e8f0fe
-
-        td
-          padding: 14px 16px
-          vertical-align: middle
-          overflow: hidden
-          text-overflow: ellipsis
-          white-space: nowrap
-
-  .user-cell
-    display: flex
-    align-items: center
-    gap: 12px
-
-    .user-icon
-      width: 36px
-      height: 36px
-      stroke: #1a73e8
-      flex-shrink: 0
-
-    .user-name
-      font-weight: 600
-      font-size: 1.05rem
-      color: #202124
-
-    .user-email
-      font-size: 0.875rem
-      color: #5f6368
-      user-select: text
-
-  span.locked
-    color: #d93025
-    font-weight: 600
-  span.unlocked
-    color: #188038
-    font-weight: 600
-
-  .role-chip
-    display: inline-block
-    background-color: #fce8e6
-    color: #d93025
-    font-weight: 700
-    font-size: 0.85rem
-    padding: 3px 10px
-    border-radius: 16px
-    user-select: none
-
-  .icon
-    width: 22px
-    height: 22px
-    stroke-width: 2
-    stroke-linecap: round
-    stroke-linejoin: round
-    flex-shrink: 0
-
-  .online-icon
-    stroke: #1a73e8
-    filter: drop-shadow(0 0 2px #1a73e8)
-  .offline-icon
-    stroke: #9e9e9e
-    opacity: 0.7
-
-  .action-btn
-    background: none
-    border: none
-    cursor: pointer
-    padding: 6px
-    border-radius: 8px
-    transition: background-color 0.3s ease
-    display: inline-flex
-    align-items: center
-    justify-content: center
-
-    &:hover
-      background-color: rgba(26, 115, 232, 0.1)
-
-  .lock-btn
-    .lock-icon
-      stroke: #fbbc04
-    .unlock-icon
-      stroke: #34a853
-
-  .delete-btn
-    margin-left: 6px
-    .delete-icon
-      stroke: #ea4335
-
-    &:hover
-      background-color: rgba(234, 67, 53, 0.12)
-
-  .error
-    margin-top: 20px
-    color: #d93025
-    font-weight: 600
-    text-align: center
-
-  .loading-spinner
-    display: flex
-    flex-direction: column
-    align-items: center
-    justify-content: center
-    padding: 40px 0
-    color: #5f6368
-
-    .spinner
-      animation: spin 1.2s linear infinite
-      width: 50px
-      height: 50px
-
-    .path
-      stroke: #1a73e8
-      stroke-linecap: round
-
-@keyframes spin
-  100%
-    transform: rotate(360deg)
-.icon
-  width: 24px
-  height: 24px
-  display: inline-block
-
-.online-circle circle
-  fill: #1976d2
-  animation: blink 1.5s infinite
-
-.offline-circle circle
-  fill: #9e9e9e
-  opacity: 0.6
-
-@keyframes blink
-  0%, 100%
-    opacity: 1
-  50%
-    opacity: 0.3
-.summary-bar
+.admin-toolbar
+  height: $toolbar-h
+  background: linear-gradient(90deg, $primary 70%, $accent 100%)
+  color: #fff
+  border-radius: 0 0 $radius $radius
+  box-shadow: $shadow
   display: flex
-  gap: 2rem
-  margin-bottom: 1rem
-  padding: 0.5rem 1rem
-  background: #f0f4ff
-  border-radius: 8px
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1)
+  align-items: center
+  padding: 0 28px
+  font-size: 1.15rem
+  .mat-icon
+    margin-right: 7px
+    font-size: 1.8rem
+  .spacer
+    flex: 1 1 auto
+  button[mat-icon-button]
+    color: #fff
+    transition: $transition
+    &:hover
+      background: rgba(255,255,255,0.10)
 
-.summary-item
+mat-progress-bar
+  margin-bottom: 0.5rem
+  height: 4px
+  border-radius: 2px
+  background: lighten($primary, 38%)
+
+.admin-content
+  max-width: 1000px
+  margin: 28px auto
   display: flex
   flex-direction: column
-  align-items: center
-  font-weight: 600
-  color: #3a4a8f
+  gap: 20px
 
-  .count
-    font-size: 1.8rem
-    color: #1a237e
-
-  .label
-    font-size: 0.9rem
-    color: #5c6bc0
-.admin-header
+.summary-bar
   display: flex
-  justify-content: space-between
+  gap: 36px
   align-items: center
-
-.admin-header
-  display: flex
-  justify-content: space-between
-  align-items: center
-  margin-bottom: 1rem
-
-.logout-btn
-  display: flex
-  align-items: center
-  background-color: #f44336
-  color: white
-  padding: 6px 12px
-  border: none
-  border-radius: 4px
-  font-weight: 600
-  cursor: pointer
-  transition: background-color 0.2s
-
-.logout-btn:hover
-  background-color: #d32f2f
-
-.logout-icon
-  width: 20px
-  height: 20px
-  margin-right: 6px
-.shein-btn
-  background-color: #4caf50
-  color: white
-  border: none
-  padding: 8px 16px
-  border-radius: 8px
-  display: flex
-  align-items: center
-  gap: 8px
-  cursor: pointer
-  transition: background-color 0.3s ease
-
-  &:hover
-    background-color: #43a047
-
-.shein-icon
-  width: 20px
-  height: 20px
-@media screen and (max-width: 768px)
-  .admin-container
-    padding: 12px
-    border-radius: 10px
-
-    h2
-      font-size: 1.6rem
-      margin-bottom: 16px
-
-  .admin-header
-    flex-direction: column
-    align-items: flex-start
+  background: linear-gradient(90deg, $primary 85%, $accent 100%)
+  color: #fff
+  border-radius: $radius
+  box-shadow: $shadow
+  padding: 18px 26px
+  .summary-item
+    display: flex
+    align-items: center
     gap: 12px
+    .mat-icon
+      font-size: 2.1rem
+      background: rgba(255,255,255,0.13)
+      border-radius: 50%
+      padding: 7px
+    .count
+      font-size: 1.6rem
+      font-weight: 600
+    .label
+      font-size: 0.98rem
+      opacity: 0.85
 
+mat-card
+  background: $card-bg
+  border-radius: $radius
+  box-shadow: $shadow
+  padding: 18px 0
+  transition: $transition
+
+.mat-table
+  width: 100%
+  background: transparent
+  border-radius: $radius
+  overflow: hidden
+  .mat-header-row, .mat-row
+    transition: $transition
+    &:hover
+      background: lighten($primary, 50%)
+  .mat-header-cell
+    font-weight: 600
+    font-size: 1.05rem
+    color: $primary
+    background: rgba($primary, 0.06)
+    border-bottom: 2px solid $primary
+    padding: 14px 12px
+  .mat-cell
+    font-size: 0.98rem
+    padding: 13px 12px
+    border-bottom: 1px solid #e0e6ef
+
+.user-cell
+  display: flex
+  align-items: center
+  gap: 11px
+  .user-avatar
+    font-size: 1.7rem
+    background: linear-gradient(135deg, $primary 65%, $accent 100%)
+    color: #fff
+    border-radius: 50%
+    padding: 7px
+    box-shadow: 0 1px 6px rgba($primary, 0.13)
+  .user-name
+    font-weight: 500
+    font-size: 1.05rem
+    color: $primary
+  .user-email
+    font-size: 0.93rem
+    color: #7a7a7a
+
+mat-chip
+  font-size: 0.96rem
+  font-weight: 500
+  border-radius: 7px
+  padding: 0 9px
+  height: 26px
+  &.mat-primary
+    background: lighten($primary, 38%)
+    color: $primary
+  &.mat-warn
+    background: lighten($warn, 38%)
+    color: $warn
+  &.mat-accent
+    background: lighten($accent, 38%)
+    color: $accent
+
+mat-icon[color="warn"]
+  color: $warn !important
+mat-icon[color="primary"]
+  color: $primary !important
+mat-icon[color="accent"]
+  color: $accent !important
+
+button[mat-icon-button]
+  margin-right: 5px
+  border-radius: 50%
+  transition: $transition
+  &:hover
+    background: rgba($primary, 0.09)
+    transform: scale(1.07)
+
+.error-card
+  display: flex
+  align-items: center
+  gap: 10px
+  background: lighten($warn, 38%)
+  color: $warn
+  border-radius: $radius
+  box-shadow: $shadow
+  padding: 14px 22px
+  font-size: 1.05rem
+
+// Responsive
+@media (max-width: 900px)
+  .admin-content
+    max-width: 99vw
+    margin: 12px auto
+    gap: 12px
   .summary-bar
     flex-direction: column
-    gap: 1rem
-    padding: 0.75rem
+    gap: 12px
+    padding: 12px 8px
+  mat-card
+    padding: 8px 0
+  .mat-header-cell, .mat-cell
+    padding: 8px 4px
 
-  .summary-item
-    width: 100%
-    flex-direction: row
-    justify-content: space-between
-    .count
-      font-size: 1.4rem
-    .label
-      font-size: 0.85rem
-
-  .admin-table
-    font-size: 0.875rem
-    thead
-      display: none
-
-    tbody
-      tr
-        display: block
-        margin-bottom: 12px
-        padding: 12px
-        border-radius: 10px
-        background-color: #f8f9fa
-        box-shadow: 0 1px 3px rgba(60, 64, 67, 0.15)
-
-        td
-          display: flex
-          justify-content: space-between
-          align-items: center
-          padding: 8px 0
-          border-bottom: 1px solid #e0e0e0
-
-          &:last-child
-            border-bottom: none
-
-  .user-cell
+@media (max-width: 600px)
+  .admin-toolbar
     flex-direction: column
-    align-items: flex-start
-    gap: 6px
-
-  .user-icon
-    width: 30px
-    height: 30px
-
-  .user-name
-    font-size: 1rem
-
-  .user-email
-    font-size: 0.8rem
-
-  .action-btn
-    padding: 4px
-
-  .logout-btn,
-  .shein-btn
-    width: 100%
-    justify-content: center
-    font-size: 0.9rem
-
-  .icon
-    width: 20px
-    height: 20px
-
-  .error
-    font-size: 0.9rem
-    padding: 10px
+    height: auto
+    padding: 8px 4px
+    font-size: 0.98rem
+  .summary-bar
+    padding: 7px 2px
+    .summary-item
+      .mat-icon
+        font-size: 1.5rem
+  .mat-header-cell, .mat-cell
+    font-size: 0.93rem
+    padding: 5px 1px
+  .user-cell
+    .user-avatar
+      font-size: 1.1rem
+      padding: 2px
+    .user-name
+      font-size: 0.95rem
+    .user-email
+      font-size: 0.8rem

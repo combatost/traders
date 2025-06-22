@@ -1,0 +1,79 @@
+// Modern splash screen with entrance and exit animations
+
+@keyframes splash-fade-in
+  0%
+    opacity: 0
+    transform: scale(0.95) translateY(40px)
+  100%
+    opacity: 1
+    transform: scale(1) translateY(0)
+
+@keyframes splash-fade-out
+  0%
+    opacity: 1
+    transform: scale(1) translateY(0)
+  100%
+    opacity: 0
+    transform: scale(1.05) translateY(-40px)
+
+@keyframes loader-bounce
+  to
+    opacity: 0.3
+    transform: translateY(-10px)
+
+.splash-container
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  height: 100vh
+  background: linear-gradient(135deg, #fff 0%, #f8e1f4 100%)
+  animation: splash-fade-in 0.8s cubic-bezier(0.4,0,0.2,1) forwards
+  // To trigger exit, add a class .splash-exit to .splash-container
+  &.splash-exit
+    animation: splash-fade-out 0.6s cubic-bezier(0.4,0,0.2,1) forwards
+
+.splash-logo
+  margin-bottom: 2rem
+  filter: drop-shadow(0 4px 16px rgba(255,64,129,0.15))
+  animation: splash-fade-in 1s 0.2s cubic-bezier(0.4,0,0.2,1) backwards
+
+.splash-logo img
+  width: 120px
+  height: auto
+
+.splash-title
+  font-size: 2.2rem
+  font-weight: bold
+  margin-bottom: 1rem
+  color: #222
+  letter-spacing: 1px
+  background: linear-gradient(90deg, #3f51b5 40%, #7c3aed 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  animation: splash-fade-in 1s 0.4s cubic-bezier(0.4,0,0.2,1) backwards
+
+.splash-tagline
+  font-size: 1.1rem
+  color: #888
+  margin-bottom: 2rem
+  animation: splash-fade-in 1s 0.6s cubic-bezier(0.4,0,0.2,1) backwards
+
+.splash-loader
+  display: flex
+  gap: 0.5rem
+  animation: splash-fade-in 1s 0.8s cubic-bezier(0.4,0,0.2,1) backwards
+
+.loader-dot
+  width: 14px
+  height: 14px
+  border-radius: 50%
+  background: linear-gradient(135deg, #3f51b5 60%, #7c3aed 100%)
+  animation: loader-bounce 1s infinite alternate
+  box-shadow: 0 2px 8px rgba(255,64,129,0.15)
+
+.loader-dot:nth-child(2)
+  animation-delay: 0.2s
+
+.loader-dot:nth-child(3)
+  animation-delay: 0.4s

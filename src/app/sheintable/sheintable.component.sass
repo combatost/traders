@@ -28,6 +28,7 @@ mat-card
   padding: 2rem
   box-shadow: $shadow
   transition: $transition
+  border-bottom: 0.40rem solid #3f51b5
 
   &:hover
     transform: translateY(-4px)
@@ -49,7 +50,7 @@ mat-card-title
 // Grid Form
 .form-grid
   display: grid
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
   gap: $gap
 
 mat-form-field
@@ -308,7 +309,7 @@ tr.matched:hover, td.matched:hover
     padding: 1rem
 
   .form-grid
-    grid-template-columns: 1fr
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))
 
   .form-actions
     flex-direction: column
@@ -417,3 +418,5 @@ tr.matched:hover, td.matched:hover
     font-weight: 600
     font-size: 1rem
     color: #3f51b5
+
+

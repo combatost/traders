@@ -49,16 +49,27 @@ export class LoginComponent {
   ) { }
 
   ngOnInit() {
+    // ✅ Safe check for localStorage
+    if (typeof window !== 'undefined' && localStorage) {
+      const savedMode = localStorage.getItem('loginMode');
+      this.loginMode = savedMode ? savedMode : 'shein';
+    } else {
+      this.loginMode = 'shein'; // fallback for SSR/testing
+    }
+
     this.auth.authState.subscribe(async (user) => {
       if (user) {
         this.isSignedIn = true;
         const email = user.email?.toLowerCase();
 
-        // Check if user is admin or not
         if (email === 'alikamlion@gmail.com') {
           this.router.navigate(['/admin-panel'], { replaceUrl: true });
         } else {
-          this.router.navigate(['/sheintable'], { replaceUrl: true });
+          if (this.loginMode === 'traders') {
+            this.router.navigate(['/traders'], { replaceUrl: true });
+          } else {
+            this.router.navigate(['/sheintable'], { replaceUrl: true });
+          }
         }
       } else {
         this.isSignedIn = false;
@@ -66,10 +77,16 @@ export class LoginComponent {
     });
   }
 
+
   onLoginModeChange(newMode: string) {
     this.loginMode = newMode;
     this.loginModeService.setMode(newMode);
+    if (typeof window !== 'undefined' && localStorage) {
+      localStorage.setItem('loginMode', newMode);
+    }
   }
+
+
   async onSignup(email: string, password: string, confirmPassword: string) {
     this.resetAlerts();
 

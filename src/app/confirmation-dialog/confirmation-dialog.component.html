@@ -1,16 +1,15 @@
-<div class="dialog-container">
-  <div class="g-icon-wrapper">
-    <svg class="g-icon" viewBox="0 0 24 24">
-      <path d="M9 3h6m2 0h1a1 1 0 011 1v1H5V4a1 1 0 011-1h1m2 0v1h6V3M6 7v12a2 2 0 002 2h8a2 2 0 002-2V7H6z"
-            stroke="#d93025" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<div class="platinum-dialog">
+  <div class="dialog-icon bounce">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#d93025" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 3h6m2 0h1a1 1 0 011 1v1H5V4a1 1 0 011-1h1m2 0v1h6V3M6 7v12a2 2 0 002 2h8a2 2 0 002-2V7H6z"/>
     </svg>
   </div>
 
   <h2 class="dialog-title">{{ data.title }}</h2>
   <p class="dialog-message">{{ data.message }}</p>
 
-  <mat-dialog-actions>
-    <button mat-stroked-button class="btn cancel" (click)="onCancel()">Cancel</button>
-    <button mat-flat-button class="btn delete" (click)="onConfirm()">Delete</button>
-  </mat-dialog-actions>
+  <div class="dialog-buttons">
+    <button class="btn cancel" (click)="onCancel()">Cancel</button>
+    <button class="btn confirm" (click)="onConfirm()">Delete</button>
+  </div>
 </div>

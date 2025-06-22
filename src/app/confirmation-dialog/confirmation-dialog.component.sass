@@ -1,75 +1,88 @@
-:host
-  display: block
-  font-family: 'Roboto', sans-serif
-
-.dialog-container
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
+.platinum-dialog
+  background: rgba(255, 255, 255, 0.95)
+  backdrop-filter: blur(16px)
+  border-radius: 20px
   padding: 2rem
-  max-width: 360px
-  border-radius: 2rem
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
-  text-align: center
-
-
-.g-icon-wrapper
-  display: flex
-  justify-content: center
-  align-items: center
-  background: #fbe9e7
-  width: 72px
-  height: 72px
-  margin: 0 auto 1rem
-  border-radius: 50%
-
-.g-icon
-  width: 32px
-  height: 32px
-
-.dialog-title
-  font-size: 1.4rem
-  font-weight: 600
-  margin-bottom: 0.5rem
-  color: #202124
-
-.dialog-message
-  font-size: 1rem
-  color: #5f6368
-  margin-bottom: 1.5rem
-
-::ng-deep mat-dialog-content
-  display: flex
-  justify-content: center
   width: 100%
+  max-width: 420px
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15)
+  font-family: 'Outfit', sans-serif
+  text-align: center
+  animation: fadeIn 0.4s ease
 
-::ng-deep mat-dialog-actions
-  display: flex
-  justify-content: center
-  gap: 1rem
-  margin-top: 1rem
+  .dialog-icon
+    width: 64px
+    height: 64px
+    margin: 0 auto 1.2rem
+    background: #fdecea
+    border-radius: 50%
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 6px 12px rgba(217, 48, 37, 0.2)
 
-.btn
-  min-width: 100px
-  padding: 0.5rem 1rem
-  border-radius: 8px
-  font-weight: 500
-  text-transform: uppercase
-  font-size: 0.9rem
+    svg
+      width: 32px
+      height: 32px
 
-.cancel
-  color: #5f6368
+  .dialog-title
+    font-size: 1.6rem
+    font-weight: 700
+    color: #202124
+    margin-bottom: 0.5rem
 
-.delete
-  background-color: #d93025
-  color: white
+  .dialog-message
+    font-size: 1rem
+    color: #5f6368
+    margin-bottom: 1.5rem
+    line-height: 1.5
 
-  &:hover
-    background-color: #b1271b
+  .dialog-buttons
+    display: flex
+    justify-content: center
+    gap: 1rem
 
-@keyframes bounce
-  0%
+    .btn
+      padding: 0.75rem 1.5rem
+      border: none
+      border-radius: 12px
+      font-weight: 600
+      font-size: 1rem
+      cursor: pointer
+      transition: all 0.25s ease
+
+    .cancel
+      background: #e0e0e0
+      color: #333
+
+      &:hover
+        background: #d5d5d5
+
+    .confirm
+      background: #d93025
+      color: #fff
+      box-shadow: 0 4px 12px rgba(217, 48, 37, 0.3)
+
+      &:hover
+        background: darken(#d93025, 5%)
+
+@keyframes fadeIn
+  from
+    opacity: 0
+    transform: translateY(20px)
+  to
+    opacity: 1
     transform: translateY(0)
+
+.bounce
+  animation: bounceIn 0.5s ease
+
+@keyframes bounceIn
+  0%
+    transform: scale(0.6)
+    opacity: 0
+  60%
+    transform: scale(1.1)
+    opacity: 1
   100%
-    transform: translateY(-8px)
+    transform: scale(1)

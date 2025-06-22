@@ -1,7 +1,8 @@
 import { Component, HostListener } from '@angular/core';
-import { AuthService, AppUser } from './login/auth.service'; // adjust path
+import { AuthService } from './login/auth.service'; // adjust path
 import { TranslateService } from '@ngx-translate/core';
 import { FirebaseService } from './services/firebase.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ import { FirebaseService } from './services/firebase.service';
 })
 export class AppComponent {
   isLocked = false;
+  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   @HostListener('window:beforeunload')
   onUnload() {
@@ -29,4 +31,9 @@ export class AppComponent {
       this.isLocked = !!user?.isLocked;
     });
   }
+
+   setLoggedIn(isLoggedIn: boolean) {
+    this._isLoggedIn$.next(isLoggedIn);
+  }
 }
+

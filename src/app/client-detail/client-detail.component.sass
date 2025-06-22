@@ -1,177 +1,206 @@
-// Theme Colors
-
-$primary-blue: #3f51b5
-$blue-dark: #3f51b5
-
-$accent-blue: #3f51b5
-$light-bg: #ffffff
-$white: #ffffff
-$text-dark: #1f1f1f
-$card-radius: 14px
-$shadow-light: 0 8px 16px rgba(26, 115, 232, 0.1)
-$shadow-hover: 0 12px 24px rgba(26, 115, 232, 0.2)
-$transition: all 0.3s ease
+// Variables
+$primary: #3f51b5
+$primary-light: #e8eaf6
+$primary-dark: #303f9f
+$accent: #536dfe
+$text-primary: #202124
+$text-secondary: #5f6368
+$background: #fff
+$surface: #f8f8fa
+$shadow-light: rgba(63, 81, 181, 0.06)
+$shadow-medium: rgba(63, 81, 181, 0.1)
+$radius: 12px
 $gap: 1.5rem
+$transition: all 0.3s cubic-bezier(.4, 0, .2, 1)
+$platinum: #e5e4e2
+$platinum-dark: #b3b2b1
+$platinum-light: #f8f8fa
 
-.client-detail-container
-  max-width: 90%
+.platinum-client-detail
+  max-width: 1000px
   margin: 2rem auto
-  padding: 2rem 1rem
+  padding: 2.5rem 1.5rem
   display: flex
   flex-direction: column
-  gap: 2rem
-  transition: $transition
+  gap: 3rem
+  font-family: 'Google Sans', Roboto, Arial, sans-serif
+  color: $text-primary
 
-  &:hover
-    transform: translateY(-4px)
-
-  .client-card
+  .platinum-header
     display: flex
-    flex-wrap: wrap
-    gap: $gap
-    margin: 0 auto
-    background: linear-gradient(135deg, #ffffff, #f7faff)
-    border: 1px solid lighten($primary-blue, 42%)
-    border-radius: $card-radius
-    padding: 2rem
-    box-shadow: $shadow-light
-    transition: $transition
-    backdrop-filter: blur(6px)
-    position: relative
-    overflow: hidden
+    align-items: center
+    gap: 2rem
+    padding: 2rem 2.5rem
+    background: $background
+    border-radius: $radius
+    box-shadow: 0 4px 12px $shadow-light
+    color: $text-primary
+    border-bottom: 0.40rem solid #3f51b5
 
-    &::before
-      content: ''
-      position: absolute
-      top: -30%
-      left: -30%
-      width: 240px
-      height: 240px
-      background: rgba($primary-blue, 0.06)
+    .avatar-container
+      width: 72px
+      height: 72px
+      background-color: $primary-light
       border-radius: 50%
-      filter: blur(80px)
-      z-index: 0
-
-    &:hover
-      box-shadow: $shadow-hover
-      transform: translateY(-4px) scale(1.01)
-
-    mat-card-header,
-    mat-card-content
-      position: relative
-      z-index: 1
-      width: 80%
-
-    mat-card-title
-      font-size: 1.6rem
-      font-weight: 700
-      color: $blue-dark
-      margin-bottom: 0.5rem
       display: flex
       align-items: center
-      gap: 8px
+      justify-content: center
+      box-shadow: 0 2px 8px $shadow-medium
+      border-bottom: 0.40rem solid #3f51b5
 
-      &::before
-        content: '👤'
-        font-size: 1.4rem
+      .avatar-icon
+        font-size: 30px
+        color: $primary-dark
 
-    mat-card-subtitle
-      font-size: 1rem
-      color: darken($primary-blue, 10%)
+    .client-info
+      flex: 1
       display: flex
-      align-items: center
-      gap: 6px
+      flex-direction: column
+      gap: 0.8rem
 
-      &::before
-        content: '📍'
-
-    mat-list
-      display: flex
-      flex-wrap: wrap
-      gap: 1rem
-      margin-top: 1rem
-      width: 100%
-
-      mat-list-item
-        background: $light-bg
-        padding: 1rem
-        border-radius: $card-radius
-        font-size: 0.95rem
-        box-shadow: $shadow-light
-        flex: 1 1 calc(50% - 1rem)
-        display: flex
-        flex-direction: column
-        color: $text-dark
-
-        strong
-          color: $blue-dark
-          margin-bottom: 0.3rem
-
-  .section-title
-    font-weight: 700
-    font-size: 1.5rem
-    margin-bottom: 1rem
-    color: $primary-blue
-    border-bottom: 2px solid lighten($primary-blue, 40%)
-    padding-bottom: 0.5rem
-
-  mat-accordion
-    display: flex
-    flex-direction: column
-    gap: $gap
-
-    mat-expansion-panel
-      border-radius: $card-radius
-      box-shadow: $shadow-light
-      overflow: hidden
-      transition: $transition
-
-      &:hover
-        box-shadow: $shadow-hover
-        transform: translateY(-2px)
-
-      mat-expansion-panel-header
-        background: $light-bg
-        padding: 1rem 1.5rem
-        font-weight: 600
-        color: $text-dark
+      .client-name
+        font-size: 2rem
+        font-weight: 700
+        margin-bottom: 1rem
+        color: $primary-dark
 
       mat-list
-        padding: 1rem 2rem
-        display: grid
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
-        gap: 1rem
+        padding: 0
 
         mat-list-item
-          font-size: 0.95rem
-          color: $text-dark
+          padding: 0.4rem 0
+          border-bottom: 1px solid lighten($primary-light, 15%)
+          display: flex
+          align-items: center
+          gap: 1rem
+          
 
-  .image-upload-card
-    display: flex
-    justify-content: center
-    margin-bottom: 1rem
-    
+          &:last-child
+            border-bottom: none
 
-    .upload-label
-      display: inline-flex
+          mat-icon[matListIcon]
+            font-size: 24px
+            color: $primary
+
+          .label
+            font-weight: 600
+            font-size: 1rem
+            color: $text-secondary
+            flex: 0 0 120px
+
+          .value
+            font-size: 1rem
+            font-weight: 400
+            color: $text-primary
+            word-break: break-word
+
+  .platinum-section
+    background: $surface
+    border-radius: $radius
+    box-shadow: 0 4px 12px $shadow-light
+    padding: 2rem 2rem
+    color: $text-primary
+    border-bottom: 0.40rem solid #3f51b5
+
+    h2
+      display: flex
       align-items: center
-      gap: 8px
-      cursor: pointer
-      font-weight: 600
-      font-size: 1rem
-      padding: 10px 24px
-      border-radius: 8px
-      background-color: $accent-blue
-      color: $white
-      user-select: none
-      transition: background-color 0.3s ease
-      max-width: 120px
-
-      &:hover
-        background-color: darken($accent-blue, 10%)
+      gap: 0.6rem
+      font-weight: 700
+      font-size: 1.5rem
+      color: $primary-dark
+      margin-bottom: 1.5rem
 
       mat-icon
-        font-size: 20px
+        font-size: 1.5rem
+        color: $primary
+
+    .no-orders
+      font-weight: 600
+      color: darken($primary, 20%)
+      text-align: center
+      margin: 3rem 0
+
+    mat-accordion
+      width: 100%
+
+      mat-expansion-panel
+        border-radius: $radius
+        margin-bottom: 1rem
+        box-shadow: 0 2px 8px $shadow-medium
+        transition: $transition
+        overflow: hidden
+
+        &:hover
+          box-shadow: 0 6px 20px rgba($primary-dark, 0.15)
+          transform: translateY(-3px) scale(1.01)
+
+        mat-expansion-panel-header
+          background: $primary-light
+          color: $primary-dark
+          font-weight: 600
+          padding: 1rem 1.5rem
+
+          mat-panel-title
+            font-size: 1.1rem
+
+          mat-panel-description
+            display: flex
+            align-items: center
+            gap: 0.7rem
+
+            mat-chip
+              font-weight: 700
+              font-size: 1rem
+              background-color: $primary
+              color: white
+
+        .order-details
+          display: grid
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
+          gap: 1rem
+          padding: 1rem 1.5rem
+
+          .order-detail
+            display: flex
+            align-items: center
+            gap: 0.5rem
+            background: $background
+            border-radius: 8px
+            padding: 0.7rem 1rem
+            font-size: 1.3rem
+            color: $text-primary
+
+            mat-icon
+              color: $accent
+              font-size: 1.4rem
+
+  .image-upload-card
+    margin-bottom: 1.5rem
+    display: flex
+    justify-content: flex-start
+    align-items: center
+
+    .custom-upload-button
+      display: inline-flex
+      align-items: center
+      gap: 0.7rem
+      background: linear-gradient(90deg, $primary 60%, $accent 100%)
+      color: white
+      font-weight: 700
+      font-size: 1rem
+      padding: 0.85rem 2rem
+      border-radius: 10px
+      cursor: pointer
+      border: none
+      box-shadow: 0 2px 10px rgba($primary, 0.3)
+      transition: background 0.3s
+
+      &:hover
+        background: linear-gradient(90deg, $accent 60%, $primary 100%)
+
+      mat-icon
+        font-size: 1.3rem
 
   .uploaded-images
     mat-grid-list
@@ -183,63 +212,72 @@ $gap: 1.5rem
 
         .image-card
           position: relative
-          border-radius: $card-radius
-          box-shadow: 0 4px 12px rgba(26, 115, 232, 0.1)
+          border-radius: $radius
+          box-shadow: 0 4px 16px $shadow-medium
           transition: box-shadow 0.3s ease
 
           &:hover
-            box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2)
+            box-shadow: 0 8px 28px rgba($primary-dark, 0.18)
 
           img[mat-card-image]
             width: 100%
             height: 150px
             object-fit: cover
-            border-radius: $card-radius
+            border-radius: $radius
 
           mat-card-actions
             position: absolute
             top: 8px
             right: 8px
-            padding: 4px
+            display: flex
+            gap: 0.5rem
             z-index: 10
 
             button
-              color: #1a73e8
-              width: 32px
-              height: 32px
-              
+              color: $primary
+              background: white
+              border-radius: 50%
+              width: 36px
+              height: 36px
+              box-shadow: 0 2px 8px rgba(63, 81, 181, 0.08)
+              transition: background 0.2s ease
+
+              &:hover
+                background: $surface
 
               mat-icon
-                font-size: 20px
+                font-size: 1.2rem
 
+          &.platinum-image-card
+            border: 2px solid $platinum-dark
 
-.upload-loader-card
-  display: flex
-  align-items: center
-  justify-content: center
-  background-color: rgba($accent-blue, 0.05)
-  border: 2px dashed $accent-blue
-  border-radius: $card-radius
-  height: 120px
-  margin: 0.5rem 0
-  box-shadow: $shadow-light
-
-  .loader-icon-container
+  .upload-loader-card
     display: flex
-    flex-direction: column
     align-items: center
-    gap: 0.5rem
-    animation: fadeInOut 1.2s infinite
+    justify-content: center
+    background: rgba($primary, 0.05)
+    border: 2px dashed $primary
+    border-radius: $radius
+    height: 120px
+    margin: 0.5rem 0
+    box-shadow: 0 8px 32px rgba($primary, 0.10)
 
-    .fade-icon
-      font-size: 48px
-      color: $accent-blue
-      opacity: 0.6
+    .loader-icon-container
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 0.5rem
+      animation: fadeInOut 1.2s infinite
 
-    .uploading-text
-      font-size: 1rem
-      color: $text-dark
-      font-weight: 500
+      .fade-icon
+        font-size: 2.5rem
+        color: $primary
+        opacity: 0.7
+
+      .uploading-text
+        font-size: 1rem
+        font-weight: 600
+        color: $text-primary
 
 @keyframes fadeInOut
   0%, 100%
@@ -247,29 +285,136 @@ $gap: 1.5rem
   50%
     opacity: 1
 
-.image-upload-card
-  padding: 1.5rem
-  text-align: center
+// Responsive
+@media (max-width: 900px)
+  .platinum-client-detail
+    padding: 1.5rem 1rem
+
+    .platinum-header
+      flex-direction: column
+      align-items: flex-start
+      gap: 1rem
+      padding: 1.2rem 1rem
+
+      .avatar-container
+        width: 70px
+        height: 70px
+
+      .client-info
+        .client-name
+          font-size: 1.6rem
+
+    .platinum-section
+      padding: 1.5rem 1rem
+
+      h2
+        font-size: 1.2rem
+
+      .uploaded-images mat-grid-list
+        mat-grid-tile
+          .image-card img[mat-card-image]
+            height: 110px
+
+@media (max-width: 600px)
+  .platinum-client-detail
+    padding: 1rem 0.5rem
+
+    .platinum-header
+      padding: 1rem 0.5rem
+
+      .avatar-container
+        width: 50px
+        height: 50px
+
+      .client-info
+        .client-name
+          font-size: 1.3rem
+
+    .platinum-section
+      padding: 1rem 0.5rem
+
+      h2
+        font-size: 1rem
+
+      .uploaded-images mat-grid-list
+        mat-grid-tile
+          .image-card img[mat-card-image]
+            height: 80px
+
+      .custom-upload-button
+        font-size: 0.9rem
+        padding: 0.5rem 1rem
 
 
-.custom-upload-button
-  display: inline-flex
+// Client header updated layout for avatar + details side-by-side
+.platinum-header
+  display: flex
   align-items: center
-  justify-content: center
-  gap: 0.5rem
-  background-color: #3f51b5
-  color: white
-  padding: 0.6rem 1.2rem
-  border-radius: 8px
-  font-size: 1rem
-  cursor: pointer
-  font-weight: 500
-  text-decoration: none
-  border: none
-  transition: background 0.3s ease
+  gap: 3rem
+  padding: 2rem 2.5rem
+  background: $background
+  border-radius: $radius
+  box-shadow: 0 2px 6px rgba(60, 64, 67, 0.15), 0 2px 6px rgba(60, 64, 67, 0.12)
+  font-family: 'Google Sans', Roboto, Arial, sans-serif
+  color: $text-primary
+  flex-wrap: wrap
 
-  &:hover
-    background-color: #1565c0
+  .avatar-name
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 0.7rem
+    min-width: 150px
 
-  .upload-icon
-    stroke: white
+    .avatar-container
+      background-color: $primary-light
+      border-radius: 50%
+      width: 90px
+      height: 90px
+      display: flex
+      align-items: center
+      justify-content: center
+      box-shadow: 0 2px 4px rgba(60, 64, 67, 0.3)
+
+    .avatar-icon
+      font-size: 48px
+      color: $primary-dark
+
+    .client-name
+      font-weight: 700
+      font-size: 1.8rem
+      color: $text-primary
+      text-align: center
+
+  .client-details
+    display: flex
+    flex-wrap: wrap
+    gap: 2.5rem
+    flex: 1
+    justify-content: flex-start
+
+    .detail-group
+      display: flex
+      flex-direction: column
+      align-items: center
+      min-width: 120px
+      max-width: 140px
+
+      mat-icon
+        font-size: 28px
+        color: $accent
+        margin-bottom: 0.3rem
+
+      .detail-label
+        font-weight: 600
+        font-size: 0.9rem
+        color: $text-secondary
+        margin-bottom: 0.25rem
+        text-align: center
+
+      .detail-value
+        font-size: 1rem
+        font-weight: 500
+        color: $text-primary
+        text-align: center
+        word-break: break-word

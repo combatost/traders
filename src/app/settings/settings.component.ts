@@ -92,7 +92,7 @@ export class SettingsComponent implements OnInit {
         bio: this.userData.bio || '',
         photoURL: this.userData.photoURL || '',
       })
-      await this.confirmDialog('Profile updated successfully.')
+      // Removed confirm dialog after saving info
       this.originalUserData = { ...this.userData }
       this.isEditMode = false
     } catch (err: any) {

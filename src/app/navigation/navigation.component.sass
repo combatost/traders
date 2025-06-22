@@ -1,185 +1,211 @@
+// ===================
+// Variables
+// ===================
 $primary-color: #f8f9fa
-$accent-color: #1a73e8 
+$accent-color: #3b52cc
 $bg-light: #f8f9fa
-$bg-surface:  #1f1f1f
+$bg-surface: #1f1f1f
 $shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
 $transition: 0.3s ease
 $radius: 12px
+$font-family: 'Inter', 'Montserrat', 'Roboto', Arial, sans-serif
+$font-size-base: 1.1rem
+$font-weight-base: 400
+$font-weight-medium: 500
+$font-weight-bold: 700
+$letter-spacing: 0.02em
 
+// ===================
+// Navbar Base
+// ===================
 .navbar
   display: flex
   justify-content: space-between
   align-items: center
-  background-color: $bg-surface
+  flex-wrap: wrap
+  width: 90%
+  margin: 0 auto
   padding: 1rem 2rem
+  background-color: $bg-surface
   border-radius: 0 0 $radius $radius
   box-shadow: $shadow
   position: sticky
   top: 0
   z-index: 1000
-  transition: transform 0.3s ease
-  width: 90%
-  margin: 0 auto
-  flex-wrap: wrap
+  font-family: $font-family
+  font-size: $font-size-base
+  font-weight: $font-weight-base
+  letter-spacing: $letter-spacing
+  transition: transform $transition
 
   &.hidden
     transform: translateY(-100%)
 
-  &__brand 
-    font-family: 'Montserrat', sans-serif
-    font-weight: 700
-    font-size: 2.4rem
-    color: $primary-color
-    text-transform: uppercase
-    letter-spacing: .1em
-    transition: color $transition
-    cursor: pointer
+// ===================
+// Navbar Brand
+// ===================
+.navbar__brand
+  font-weight: $font-weight-bold
+  font-size: 2.2rem
+  color: $primary-color
+  text-transform: uppercase
+  letter-spacing: 0.1em
+  cursor: pointer
+  transition: color $transition
 
-    &:hover
-      color: $accent-color
+  &:hover
+    color: $accent-color
 
-  &__toggle
-    display: none
-    background: transparent
-    border: none
-    color: $primary-color
-    font-size: 1.8rem
-    cursor: pointer
-    transition: color $transition
-    margin-left: auto
+// ===================
+// Toggle (Mobile)
+// ===================
+.navbar__toggle
+  display: none
+  background: transparent
+  border: none
+  color: $primary-color
+  font-size: $font-size-base
+  cursor: pointer
+  transition: color $transition
+  margin-left: auto
 
-    &:hover
-      color: $accent-color
+  &:hover
+    color: $accent-color
 
-  &__menu
+// ===================
+// Navbar Menu
+// ===================
+.navbar__menu
+  display: flex
+  align-items: center
+  gap: 1.5rem
+  position: relative
+  transition: all $transition
+
+  &.open
+    flex-direction: column
+    align-items: flex-start
+    width: 100%
+    background: $bg-surface
+    padding: 1rem 2rem
+    border-radius: $radius
+    box-shadow: $shadow
+    position: absolute
+    top: 64px
+    left: 0
+    z-index: 999
+
+  a
     display: flex
     align-items: center
-    gap: 1.5rem
-    transition: max-height $transition
-    position: relative
+    gap: 0.5rem
+    text-decoration: none
+    color: $primary-color
+    font-size: $font-size-base
+    font-weight: $font-weight-medium
+    padding: 0.5rem 0.75rem
+    border-radius: $radius
+    transition: background $transition, color $transition
 
-    a
-      display: flex
-      align-items: center
-      gap: 0.5rem
-      text-decoration: none
-      color: $primary-color
-      font-size: 1.2rem
-      font-weight: 500
-      padding: 0.5rem 0.75rem
-      border-radius: $radius
-      transition: background $transition, color $transition
+    &:hover,
+    &.active
+      background-color: rgba(26, 115, 232, 0.1)
+      color: $accent-color
+      cursor: pointer
 
-      &:hover,
-      &.active
-        background-color: rgba(26, 115, 232, 0.1)
-        color: $accent-color
-        cursor: pointer
+// ===================
+// Profile + Logout Area
+// ===================
+.navbar__status-logout
+  display: flex
+  align-items: center
+  gap: 1rem
+  margin-left: auto
 
-    &.open
-      display: flex
-      flex-direction: column
-      align-items: flex-start
-      background: $bg-surface
-      width: 100%
-      padding: 1rem 2rem
-      position: absolute
-      top: 64px
-      left: 0
-      border-radius: 0 0 $radius $radius
-      box-shadow: $shadow
-      z-index: 999
+.navbar__profile
+  display: flex
+  align-items: center
+  gap: 0.5rem
+  min-width: 100px
+  height: 35px
+  background: rgba(240, 244, 248, 0.6)
+  border-radius: 999px
+  padding: 0.25rem 0.75rem
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04)
+  transition: background $transition
 
-  &__status-logout
-    display: flex
-    align-items: center
-    gap: 1.5rem
-    justify-content: flex-end
-    margin-left: auto
+  &:hover
+    background: rgba(240, 244, 248, 0.8)
 
-  &__logout
+  .profile-avatar
+    width: 30px
+    height: 30px
+    min-width: 30px
+    min-height: 30px
+    border-radius: 50%
+    background: #f3f4f6
     display: flex
     align-items: center
     justify-content: center
-    gap: 0.5rem
-    background-color: rgba(0, 0, 0, 0.03)
-    border: none
-    color: $primary-color
-    font-size: 1.4rem
-    font-weight: 500
-    padding: 0.6rem 1.2rem
-    border-radius: $radius
-    cursor: pointer
-    transition: all $transition
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06)
 
     svg
-      width: 2rem
-      height: 2rem
-      stroke: $primary-color
-      transition: stroke $transition
+      width: 24px
+      height: 24px
+      stroke: #6366f1
 
-    &:hover
-      color: $accent-color
-      background-color: rgba(26, 115, 232, 0.1)
+  .profile-username
+    font-size: 1.2rem
+    font-weight: 600
+    color: #374151
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
 
-      svg
-        stroke: $accent-color
-        
+.navbar__logout
+  background: transparent
+  border: none
+  padding: 0.5rem
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 0.5rem
+  cursor: pointer
+  transition: background $transition
 
+  svg
+    width: 20px
+    height: 20px
+    stroke: white
+    transition: stroke $transition
 
-.icon
-  width: 1.25rem
-  height: 1.25rem
-  stroke: $primary-color
-  stroke-width: 2
-  fill: none
-  vertical-align: middle
-  transition: stroke $transition
-  margin-right: 0.5rem
+  &:hover
+    background: rgba(0, 0, 0, 0.05)
 
-  .navbar__menu a:hover &,
-  .navbar__menu a.active &
-    stroke: $accent-color
+    svg
+      stroke: $accent-color
 
-  &.dropdown-icon
-    transform: rotate(0deg)
-    transition: transform $transition
-
-    &.rotated
-      transform: rotate(180deg)
-
+// ===================
+// Dropdowns
+// ===================
 .dropdown-container
   position: relative
   display: inline-block
-  z-index: 1001 // Ensure it's above other nav items
-
-.dropdown-menu
-  left: 0  // replace right: 0
-  right: auto
-  background-color: $bg-surface
-  pointer-events: none
-  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease
-
-  &.open
-    pointer-events: auto
-    opacity: 1
-    transform: translateY(0)
-    max-height: 500px
-
+  z-index: 1001
 
 .dropdown-btn
   background: none
   border: none
   color: $primary-color
-  font-size: 1.2rem
-  font-weight: 500
+  font-size: $font-size-base
+  font-weight: $font-weight-medium
   padding: 0.5rem 0.75rem
   border-radius: $radius
   cursor: pointer
-  transition: background $transition, color $transition
   display: flex
   align-items: center
   gap: 0.25rem
+  transition: background $transition, color $transition
 
   &:hover
     background-color: rgba(26, 115, 232, 0.05)
@@ -192,7 +218,6 @@ $radius: 12px
   box-shadow: $shadow
   border-radius: $radius
   padding: 0.5rem 0
-  margin-top: 0.5rem
   position: absolute
   top: 100%
   right: 0
@@ -202,8 +227,8 @@ $radius: 12px
   overflow: hidden
   opacity: 0
   transform: translateY(-10px)
-  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease
   pointer-events: none
+  transition: all 0.3s ease
 
   &.open
     max-height: 500px
@@ -213,7 +238,8 @@ $radius: 12px
 
   a
     padding: 0.5rem 1rem
-    font-size: 1.1rem
+    font-size: $font-size-base
+    font-weight: $font-weight-medium
     text-decoration: none
     color: $primary-color
     display: flex
@@ -226,50 +252,89 @@ $radius: 12px
       background-color: rgba(26, 115, 232, 0.1)
       color: $accent-color
 
+// ===================
+// Icons
+// ===================
+.icon
+  width: 1.6rem
+  height: 1.6rem
+  stroke: $primary-color
+  stroke-width: 2
+  fill: none
+  transition: stroke $transition
+  margin-right: 0.5rem
+
+  &.dropdown-icon
+    transform: rotate(0deg)
+    transition: transform $transition
+
+    &.rotated
+      transform: rotate(180deg)
+
+// ===================
+// Responsive
+// ===================
 @media (max-width: 768px)
   .navbar
     flex-direction: row
-    padding: 15px
+    padding: 1rem
 
     &__toggle
       display: block
 
     &__menu
-      display: none
+      flex-direction: column
+      align-items: flex-start
       width: 100%
-
-      &.open
-        display: flex
-        flex-direction: column
-        align-items: flex-start
-
-      a
-        font-size: 1.05rem
-        padding: 0.75rem 1rem
-
-    .dropdown-container
-      width: 100%
-
-    .dropdown-btn
-      width: 100%
-      justify-content: start
-      font-size: 1.05rem
-
-    .dropdown-menu
-      position: relative
-      width: 100%
-      top: 0
-      right: 0
-      box-shadow: none
-      margin: 0.25rem 0
-      padding: 0.25rem 0
-      max-height: 0
       overflow: hidden
-      transition: max-height 0.3s ease
+      max-height: 0
+      opacity: 0
+      transform: translateY(-10px)
+      transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease
 
       &.open
         max-height: 500px
+        opacity: 1
+        transform: translateY(0)
 
       a
-        font-size: 1.05rem
-        padding: 0.65rem 1rem
+        font-size: $font-size-base
+        padding: 0.75rem 1rem
+
+  .dropdown-container
+    width: 100%
+
+  .dropdown-btn
+    width: 100%
+    justify-content: flex-start
+
+  .dropdown-menu
+    position: relative
+    width: 100%
+    top: 0
+    right: 0
+    box-shadow: none
+    margin: 0.25rem 0
+    padding: 0.25rem 0
+
+  .navbar__profile
+    position: absolute
+    top: 10px
+    right: 10px
+    margin-right: 0
+    gap: 0.4rem
+    z-index: 1100
+
+    .profile-avatar
+      width: 1.7rem
+      height: 1.7rem
+
+    .profile-username
+      font-size: 0.95rem
+      max-width: 90px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+
+  app-version-alert
+    display: none !important

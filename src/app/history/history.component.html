@@ -1,69 +1,150 @@
 <app-navigation></app-navigation>
 
 <section>
+  <br />
+  <h2 class="history-title">{{ "NAV.HISTORY" | translate }}</h2>
+  <br />
+  <div class="history-header">
+    <div class="history-actions">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="deleteSelectedRecords()"
+        [disabled]="!hasSelected()"
+        class="bulk-delete-btn"
+      >
+        <mat-icon>delete</mat-icon>
+        {{ "HISTORY.DELETE_SELECTED" | translate }}
+      </button>
+    </div>
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>{{ "HISTORY.SEARCH" | translate }}</mat-label>
+      <input
+        matInput
+        placeholder="Search by client, choice, etc."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        *ngIf="searchTerm"
+        (click)="clearSearch()"
+        aria-label="Clear search"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
   <div
     class="history-container"
-    *ngIf="historyRecords.length > 0; else noHistory"
+    *ngIf="filteredRecords.length > 0; else noHistory"
   >
-    <h2>{{ "NAV.HISTORY" | translate }}</h2>
+    <div class="table-wrapper modern-table">
+      <table mat-table [dataSource]="pagedRecords" class="mat-elevation-z8">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              [checked]="isAllSelected()"
+              (change)="toggleSelectAll($event.checked)"
+              aria-label="Select all records"
+            ></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let record">
+            <mat-checkbox
+              [(ngModel)]="selection[record.id]"
+              (click)="$event.stopPropagation()"
+              aria-label="Select record"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
 
-    <button
-      mat-raised-button
-      color="warn"
-      (click)="deleteSelectedRecords()"
-      [disabled]="!hasSelected()"
-      class="bulk-delete-btn"
-    >
-      {{ "HISTORY.DELETE_SELECTED" | translate }}
-    </button>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <mat-checkbox
-                [checked]="isAllSelected()"
-                (change)="toggleSelectAll($event.checked)"
-                aria-label="Select all records"
-              >
-              </mat-checkbox>
-            </th>
-            <th>{{ "form.client" | translate }}</th>
-            <th>{{ "form.quantity" | translate }}</th>
-            <th>{{ "form.cost" | translate }}</th>
-            <th>{{ "form.discount" | translate }}</th>
-            <th>{{ "form.delivery" | translate }}</th>
-            <th>{{ "form.shippingCost" | translate }}</th>
-            <th>{{ "form.tax" | translate }}</th>
-            <th>{{ "form.choice" | translate }}</th>
-            <th>{{ "table.profit" | translate }}</th>
-            <th>Deleted At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let record of pagedRecords">
-            <td>
-              <mat-checkbox
-                [(ngModel)]="selection[record.id]"
-                (click)="$event.stopPropagation()"
-                aria-label="Select record"
-              ></mat-checkbox>
-            </td>
-            <td>{{ record.client }}</td>
-            <td>{{ record.quantity }}</td>
-            <td>{{ record.cost }}</td>
-            <td>{{ record.discount }}</td>
-            <td>{{ record.delivery }}</td>
-            <td>{{ record.shippingCost }}</td>
-            <td>{{ record.tax }}</td>
-            <td>{{ record.choice }}</td>
-            <td>{{ record.profit }}</td>
-            <td>{{ record.deletedAt?.toDate() | date : "short" }}</td>
-          </tr>
-        </tbody>
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.client" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">{{ record.client }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.quantity" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">{{ record.quantity }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cost">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.cost" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">
+            {{ record.cost | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="discount">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.discount" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">
+            {{ record.discount / 100 | percent : "1.0-2" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delivery">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.delivery" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">{{ record.delivery }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="shippingCost">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.shippingCost" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">
+            {{ record.shippingCost | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tax">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.tax" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">{{ record.tax | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="choice">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "form.choice" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">{{ record.choice }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="profit">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "table.profit" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">
+            {{ record.profit | currency }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deletedAt">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "HISTORY.DELETED_AT" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let record">
+            {{ record.deletedAt?.toDate() | date : "short" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
-    <div class="pagination-controls">
+    <div class="pagination-controls modern-pagination">
       <button
         mat-icon-button
         color="primary"
@@ -73,14 +154,12 @@
       >
         <mat-icon>chevron_left</mat-icon>
       </button>
-
       <span class="page-info"> {{ pageIndex + 1 }} / {{ totalPages }} </span>
-
       <button
         mat-icon-button
         color="primary"
         (click)="nextPage()"
-        [disabled]="(pageIndex + 1) * pageSize >= historyRecords.length"
+        [disabled]="(pageIndex + 1) * pageSize >= filteredRecords.length"
         aria-label="Next page"
       >
         <mat-icon>chevron_right</mat-icon>
@@ -104,9 +183,10 @@
           />
         </svg>
       </div>
-
-      <p class="empty-state__text">No deleted orders history found.</p>
+      <p class="empty-state__text">
+        {{ "HISTORY.NO_HISTORY" | translate }}
+      </p>
     </section>
   </ng-template>
 </section>
-<app-footer></app-footer>
+

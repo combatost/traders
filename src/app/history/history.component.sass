@@ -1,223 +1,289 @@
-// Theme Colors
-$primary-blue: #3f51b5
-$blue-dark: #3f51b5
-$accent-blue: #3f51b5
-$light-bg: #f0f4f8
-$white: #ffffff
-$text-dark: #1f1f1f
-$card-radius: 14px
-$shadow: 0 12px 24px rgba(26, 115, 232, 0.15)
-$transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1)
+// Modern Soft Clean SASS for History Page
+
+// Color Palette
+$primary: #3f51b5
+$primary-dark: #3f51b5
+$accent: #e3f0ff
+$background: #f7fafd
+$white: #fff
+$text: #232b3b
+$text-light: #7a8ca3
+$border: #e3eaf3
+$shadow: 0 4px 24px rgba(79, 140, 255, 0.09)
+$radius: 16px
+$transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1)
 $gap: 1.5rem
 
-// Container for history section
-.history-container
-  width: 90%
-  margin: 3rem auto
-  padding: 2rem 3rem
-  transition: $transition
+body
+  background: $background
+
+// Navigation and Footer
+app-navigation, app-footer
+  display: block
+  width: 100%
+
+// History Header
+.history-header
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  justify-content: space-between
+  gap: 1.5rem
+  margin: 2.5rem auto 1.5rem auto
+  max-width: 1200px
+  padding: 0 1rem
 
   h2
-    color: $primary-blue
-    margin-bottom: 1.5rem
+    color: $primary-dark
+    font-size: 2.2rem
     font-weight: 700
-    font-size: 2rem
+    letter-spacing: 0.03em
+    margin: 0
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-    letter-spacing: 0.05em
 
-// Table styling
-table
+  .history-actions
+    display: flex
+    align-items: center
+    gap: 1rem
+
+  .bulk-delete-btn
+    background: $primary
+    color: $white
+    font-weight: 600
+    border-radius: 8px
+    box-shadow: 0 2px 8px rgba(79, 140, 255, 0.13)
+    transition: $transition
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    padding: 0.6rem 1.2rem
+    border: none
+
+    &:hover:not(:disabled)
+      background: $primary-dark
+
+    &:disabled
+      background: $accent
+      color: $text-light
+      cursor: not-allowed
+      opacity: 0.7
+
+  .search-field
+    
+    max-width: 520px
+    width: 100%
+    margin-left: 1rem
+
+    .mat-form-field-outline
+      border-radius: 8px
+
+    input[matInput]
+      border-radius: 8px
+      padding: 0.7rem 1rem
+      font-size: 1rem
+
+    button[mat-icon-button]
+      color: $primary
+      &:hover
+        color: $primary-dark
+
+// History Container
+.history-container
+  background: $white
+  border-radius: $radius
+  box-shadow: $shadow
+  padding: 2rem 2.5rem
+  margin: 0 auto 2.5rem auto
+  max-width: 1200px
+  transition: $transition
+  border-bottom: 0.40rem solid #3f51b5
+
+// Table Wrapper
+.table-wrapper
+  overflow-x: auto
+  border-radius: $radius
+  margin-bottom: 1.5rem
+
+// Modern Table
+.modern-table table
   width: 100%
   border-collapse: separate
-  border-spacing: 0 0.6rem
+  border-spacing: 0 0.7rem
   background: transparent
+  min-width: 900px
 
   thead
-    background: lighten($primary-blue, 50%)
-    border-radius: $card-radius $card-radius 0 0
+    background: $accent
 
     th
-      color: $blue-dark
+      color: $primary-dark
       font-weight: 700
-      padding: 1.2rem 1rem
+      padding: 1.1rem 0.9rem
       text-align: left
-      border-bottom: 3px solid $accent-blue
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+      border-bottom: 2px solid $primary
+      font-size: 1rem
       text-transform: uppercase
-      letter-spacing: 0.07em
+      letter-spacing: 0.06em
+      background: $accent
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 
   tbody
     tr
       background: $white
-      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.1)
-      border-radius: $card-radius
-      transition: background-color 0.3s ease, box-shadow 0.3s ease
+      box-shadow: 0 2px 10px rgba(79, 140, 255, 0.07)
+      border-radius: $radius
+      transition: background 0.2s, box-shadow 0.2s
       cursor: pointer
 
       &:hover
-        background-color: lighten($accent-blue, 85%)
-        box-shadow: 0 6px 18px rgba(66, 133, 244, 0.2)
+        background: lighten($primary, 45%)
+        box-shadow: 0 6px 18px rgba(79, 140, 255, 0.13)
 
     td
-      padding: 1rem 1rem
-      color: $text-dark
+      padding: 1rem 0.9rem
+      color: $text
+      font-size: 1rem
       border-bottom: none
       vertical-align: middle
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 
-// Checkbox column alignment
-td:first-child, th:first-child
-  width: 48px
-  text-align: center
+  th:first-child, td:first-child
+    width: 48px
+    text-align: center
 
-// Action button inside table
+// Checkbox
+.mat-checkbox-inner-container
+  width: 22px !important
+  height: 22px !important
+
+// Action Buttons
 .action-cell button.btn-clear,
 button[mat-icon-button]
   background: transparent
   border: none
-  font-size: 1.4rem
+  font-size: 1.3rem
+  color: $primary
   cursor: pointer
-  color: $accent-blue
-  transition: color 0.3s ease
+  transition: color 0.2s
 
   &:hover
-    color: darken($accent-blue, 20%)
+    color: $primary-dark
 
-// Bulk Delete button
-.bulk-delete-btn
-  margin-bottom: 1.5rem
-  font-weight: 600
-  border-radius: 8px
-  box-shadow: 0 6px 14px rgba(66, 133, 244, 0.2)
-
-  &:disabled
-    background-color: lighten($accent-blue, 60%)
-    cursor: not-allowed
-    opacity: 0.7
-
-// Pagination buttons container
-.pagination-buttons
+// Pagination Controls
+.pagination-controls
   display: flex
+  align-items: center
   justify-content: center
-  gap: $gap
-  margin-top: 2rem
+  gap: 1.5rem
+  margin-top: 1.5rem
 
-  button
-    background-color: $accent-blue
-    color: $white
-    border: none
-    padding: 0.65rem 1.5rem
-    border-radius: 8px
-    font-weight: 600
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-    cursor: pointer
-    box-shadow: 0 5px 12px rgba(66, 133, 244, 0.25)
+  button[mat-icon-button]
+    background: $accent
+    color: $primary
+    border-radius: 50%
+    box-shadow: 0 2px 8px rgba(79, 140, 255, 0.09)
     transition: $transition
 
-    &:disabled
-      background-color: lighten($accent-blue, 50%)
-      cursor: not-allowed
-      opacity: 0.65
-      box-shadow: none
-
     &:hover:not(:disabled)
-      background-color: darken($accent-blue, 15%)
-      box-shadow: 0 7px 20px rgba(66, 133, 244, 0.35)
+      background: $primary
+      color: $white
 
-// Empty state styling
+    &:disabled
+      background: $border
+      color: $text-light
+      cursor: not-allowed
+
+  .page-info
+    font-weight: 600
+    color: $primary-dark
+    font-size: 1.1rem
+    letter-spacing: 0.03em
+
+// Empty State
 .empty-state
   text-align: center
-  color: $blue-dark
+  color: $primary-dark
   display: flex
   flex-direction: column
   align-items: center
-  gap: 1.25rem
+  gap: 1.5rem
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  min-height: 60vh
+  justify-content: center
 
   &__icon
     font-size: 5rem
-    opacity: 0.35
-    color: $accent-blue
+    opacity: 0.22
+    color: $primary
     transition: $transition
 
   &__text
     font-weight: 600
-    font-size: 1.25rem
-    color: gray
+    font-size: 1.2rem
+    color: $text-light
 
-// Center entire empty state + pagination vertically and horizontally
-section
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
-  min-height: 80vh
-  gap: 2.5rem
-  padding: 2rem 1rem
+// Responsive Design
+@media (max-width: 1024px)
+  .history-header, .history-container
+    max-width: 98vw
+    padding: 1.2rem
 
-// Responsive adjustments
+  .modern-table table
+    min-width: 700px
+
 @media (max-width: 768px)
-  .history-container
-    width: 95%
-    padding: 1.2rem 1.5rem
-
-  table
-    font-size: 0.9rem
-
-    thead th
-      padding: 1rem 0.5rem
-
-    tbody td
-      padding: 0.8rem 0.5rem
-
-  .pagination-buttons
+  .history-header
     flex-direction: column
+    align-items: stretch
+    gap: 1rem
+    padding: 0.7rem
+
+    .search-field
+      margin-left: 0
+
+  .history-container
+    padding: 1rem 0.5rem
+
+  .modern-table table
+    font-size: 0.95rem
+    min-width: 600px
+
+  .pagination-controls
     gap: 1rem
 
-    button
-      width: 100%
-// Add a wrapper around your table for horizontal scroll on small devices
-.table-wrapper
-  overflow-x: auto
-  -webkit-overflow-scrolling: touch // smooth scrolling on iOS
-  border-radius: $card-radius
-  box-shadow: $shadow
-  margin-bottom: 1.5rem
+@media (max-width: 480px)
+  .history-header
+    padding: 0.3rem
+    h2
+      font-size: 1.3rem
 
-  // Optional: customize scrollbar (webkit browsers)
+  .history-container
+    padding: 0.5rem 0.1rem
+
+  .modern-table table
+    font-size: 0.85rem
+    min-width: 400px
+
+  .pagination-controls
+    gap: 0.5rem
+
+// Hide scrollbars but allow scroll
+.table-wrapper
   &::-webkit-scrollbar
     height: 6px
-
-  &::-webkit-scrollbar-track
-    background: lighten($light-bg, 10%)
-    border-radius: $card-radius
-
   &::-webkit-scrollbar-thumb
-    background: $accent-blue
-    border-radius: $card-radius
+    background: $accent
+    border-radius: $radius
+  &::-webkit-scrollbar-track
+    background: transparent
 
-// Responsive adjustments for small devices
-@media (max-width: 768px)
-  .history-container
-    width: 95%
-    padding: 1.2rem 1.5rem
 
-  .table-wrapper
-    margin-bottom: 1rem
-
-  table
-    min-width: 600px // force table to be wider than viewport on mobile for scrolling
-    font-size: 0.85rem
-
-    thead th
-      padding: 1rem 0.75rem
-
-    tbody td
-      padding: 0.7rem 0.75rem
-
-  .pagination-buttons
-    flex-direction: column
-    gap: 1rem
-
-    button
-      width: 100%
+.history-title
+  text-align: center
+  font-weight: 700
+  font-size: 2.6rem
+  color: #1a73e8
+  margin: 2rem 0
+  font-family: 'Outfit', sans-serif
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  letter-spacing: 0.5px

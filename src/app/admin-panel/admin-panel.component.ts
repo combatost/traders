@@ -26,6 +26,7 @@ export class AdminPanelComponent implements OnInit {
   onlineCount$!: Observable<number>
   loading = false
   error = ''
+  displayedColumns: string[] = ['user', 'locked', 'unlockSince', 'online', 'role', 'actions'];
   protected currentAdminId = 'admin-id-placeholder'
   private currentUserId: string | null = null
 
