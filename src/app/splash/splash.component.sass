@@ -243,7 +243,7 @@ body, :host
     margin: 0 auto
     flex-direction: column
   .splash-hero-media
-    align-items: flex-start
+    align-items: center
     width: 100%
     .splash-video
       width: 100%
@@ -306,3 +306,50 @@ body, :host
 .bold
   font-weight: 800
 
+.feature-icon
+  width: 24px
+  height: 24px
+  margin-right: 2px
+  color: #3f51b5
+  transition: transform 0.3s ease, color 0.3s ease
+
+.spin-icon
+  animation: spin 4s linear infinite
+
+.pulse-icon
+  animation: pulse 2s infinite
+
+.slide-icon
+  animation: slide 2s infinite
+
+.bounce-icon
+  animation: bounce 2s infinite
+
+@keyframes spin
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+
+.cta-btn
+  background: linear-gradient(145deg, #2196f3, #21cbf3)
+  color: white
+  border: none
+  padding: 12px 24px
+  border-radius: 30px
+  font-size: 1.1rem
+  cursor: pointer
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1)
+  transition: transform 0.2s ease, box-shadow 0.2s ease
+
+  &:hover
+    transform: translateY(-3px)
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15)
+
+
+.icon-text
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  justify-content: flex-start

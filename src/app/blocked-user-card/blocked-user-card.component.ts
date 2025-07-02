@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
 })
 export class BlockedUserCardComponent {
  paySubscription() {
-    window.open('https://whish.money', '_blank');
+    window.open('https://wa.me/+96181015424', '_blank');
   }
 } 

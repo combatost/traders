@@ -67,7 +67,7 @@ $letter-spacing: 0.02em
   font-size: $font-size-base
   cursor: pointer
   transition: color $transition
-  margin-left: auto
+  // Removed margin-left: auto; replaced with flex alignment in parent
 
   &:hover
     color: $accent-color
@@ -120,7 +120,9 @@ $letter-spacing: 0.02em
   display: flex
   align-items: center
   gap: 1rem
-  margin-left: auto
+  // Removed margin-left: auto;
+  justify-content: flex-end
+  flex: 1 1 auto
 
 .navbar__profile
   display: flex
@@ -262,7 +264,7 @@ $letter-spacing: 0.02em
   stroke-width: 2
   fill: none
   transition: stroke $transition
-  margin-right: 0.5rem
+  margin-right: 0.5rem // You can replace margin with gap in flex parents if needed
 
   &.dropdown-icon
     transform: rotate(0deg)
@@ -277,10 +279,12 @@ $letter-spacing: 0.02em
 @media (max-width: 768px)
   .navbar
     flex-direction: row
-    padding: 1rem
+    padding: 2.2rem
 
+    // Toggler aligned to flex-end
     &__toggle
       display: block
+      // Removed margin-left: auto; use flex alignment in parent
 
     &__menu
       flex-direction: column
@@ -318,10 +322,9 @@ $letter-spacing: 0.02em
     padding: 0.25rem 0
 
   .navbar__profile
-    position: absolute
     top: 10px
     right: 10px
-    margin-right: 0
+    // Removed margin-right: 0;
     gap: 0.4rem
     z-index: 1100
 

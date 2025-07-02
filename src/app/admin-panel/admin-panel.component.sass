@@ -1,203 +1,368 @@
-// admin-panel.component.sass
-
-// Palette
+// Colors & variables
 $primary: #1565c0
-$accent: #ff6f00
+$accent: #1565c0
 $warn: #e53935
-$bg: #f4f8fb
-$card-bg: #fff
-$radius: 16px
-$shadow: 0 2px 16px rgba(21, 101, 192, 0.10)
-$transition: all 0.18s cubic-bezier(.4,0,.2,1)
-$toolbar-h: 60px
+$gray-light: #f4f8fb
+$gray-medium: #7a7a7a
+$gray-dark: #444
+$white: #fff
+$radius: 12px
+$shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
+$transition: all 0.3s cubic-bezier(.4, 0, .2, 1)
+$font-family: 'Roboto', sans-serif
+$toolbar-height: 64px
 
+// Root
 :host
   display: block
-  background: $bg
+  background: $gray-light
   min-height: 100vh
+  font-family: $font-family
+  color: $gray-dark
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
 
+// Toolbar
 .admin-toolbar
-  height: $toolbar-h
+  position: sticky
+  top: 0
+  z-index: 100
+  height: $toolbar-height
+  padding: 0 1.5rem
   background: linear-gradient(90deg, $primary 70%, $accent 100%)
-  color: #fff
-  border-radius: 0 0 $radius $radius
-  box-shadow: $shadow
   display: flex
   align-items: center
-  padding: 0 28px
-  font-size: 1.15rem
-  .mat-icon
-    margin-right: 7px
-    font-size: 1.8rem
-  .spacer
-    flex: 1 1 auto
-  button[mat-icon-button]
-    color: #fff
+  justify-content: flex-end
+  gap: 1rem
+  box-shadow: $shadow
+  border-radius: 0 0 $radius $radius
+
+  .btn-icon
+    background: transparent
+    border: none
+    cursor: pointer
+    padding: 0.5rem
+    border-radius: 50%
+    display: flex
+    align-items: center
+    justify-content: center
     transition: $transition
+
     &:hover
-      background: rgba(255,255,255,0.10)
+      background: rgba(255, 255, 255, 0.15)
+      transform: scale(1.1)
 
-mat-progress-bar
-  margin-bottom: 0.5rem
+  .icon-logout
+    width: 28px
+    height: 28px
+    stroke: $white
+    fill: none
+    stroke-width: 2.2
+    stroke-linecap: round
+    stroke-linejoin: round
+
+// Progress bar
+.progress-bar
   height: 4px
-  border-radius: 2px
-  background: lighten($primary, 38%)
+  width: 100%
+  background: lighten($primary, 45%)
+  position: relative
+  overflow: hidden
 
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -40%
+    width: 40%
+    height: 100%
+    background: $primary
+    animation: progress-indeterminate 1.5s infinite ease-in-out
+
+@keyframes progress-indeterminate
+  0%
+    left: -40%
+  50%
+    left: 100%
+  100%
+    left: 100%
+
+// Main container
 .admin-content
   max-width: 1000px
-  margin: 28px auto
+  margin: 2rem auto
+  padding: 0 1rem
   display: flex
   flex-direction: column
-  gap: 20px
+  gap: 2.5rem
 
+// Summary bar
 .summary-bar
   display: flex
-  gap: 36px
-  align-items: center
+  justify-content: space-around
   background: linear-gradient(90deg, $primary 85%, $accent 100%)
-  color: #fff
+  color: $white
+  padding: 1.5rem 2rem
   border-radius: $radius
   box-shadow: $shadow
-  padding: 18px 26px
+  user-select: none
+
   .summary-item
     display: flex
     align-items: center
-    gap: 12px
-    .mat-icon
-      font-size: 2.1rem
-      background: rgba(255,255,255,0.13)
-      border-radius: 50%
-      padding: 7px
+    gap: 1rem
+
+    .icon
+      width: 48px
+      height: 48px
+      stroke: $white
+      fill: none
+      stroke-width: 2
+      stroke-linejoin: round
+      stroke-linecap: round
+      flex-shrink: 0
+
     .count
-      font-size: 1.6rem
-      font-weight: 600
+      font-size: 2.2rem
+      font-weight: 700
+      line-height: 1
+
     .label
-      font-size: 0.98rem
+      font-size: 1rem
       opacity: 0.85
 
-mat-card
-  background: $card-bg
+// User table container
+.user-table-container
+  overflow-x: auto
   border-radius: $radius
   box-shadow: $shadow
-  padding: 18px 0
-  transition: $transition
+  background: $white
 
-.mat-table
-  width: 100%
-  background: transparent
-  border-radius: $radius
-  overflow: hidden
-  .mat-header-row, .mat-row
-    transition: $transition
-    &:hover
-      background: lighten($primary, 50%)
-  .mat-header-cell
-    font-weight: 600
-    font-size: 1.05rem
-    color: $primary
-    background: rgba($primary, 0.06)
-    border-bottom: 2px solid $primary
-    padding: 14px 12px
-  .mat-cell
-    font-size: 0.98rem
-    padding: 13px 12px
-    border-bottom: 1px solid #e0e6ef
+  table.user-table
+    width: 100%
+    border-collapse: collapse
+    font-size: 1rem
+    color: $gray-dark
 
+    thead
+      background: lighten($primary, 45%)
+      color: $white
+      text-transform: uppercase
+      font-weight: 600
+      letter-spacing: 0.05em
+      user-select: none
+
+      th
+        padding: 1rem 1.2rem
+        white-space: nowrap
+        border-bottom: 2px solid darken($primary, 10%)
+
+    tbody
+      tr
+        border-bottom: 1px solid #e1e5eb
+        transition: background-color 0.3s ease
+
+        &.locked
+          background: rgba($warn, 0.1)
+
+        &:hover
+          background: lighten($primary, 80%)
+
+        td
+          padding: 1rem 1rem
+          vertical-align: middle
+          white-space: nowrap
+
+// User cell
 .user-cell
   display: flex
   align-items: center
-  gap: 11px
-  .user-avatar
-    font-size: 1.7rem
-    background: linear-gradient(135deg, $primary 65%, $accent 100%)
-    color: #fff
-    border-radius: 50%
-    padding: 7px
-    box-shadow: 0 1px 6px rgba($primary, 0.13)
-  .user-name
-    font-weight: 500
-    font-size: 1.05rem
-    color: $primary
-  .user-email
-    font-size: 0.93rem
-    color: #7a7a7a
+  gap: 1rem
 
-mat-chip
-  font-size: 0.96rem
-  font-weight: 500
-  border-radius: 7px
-  padding: 0 9px
-  height: 26px
-  &.mat-primary
-    background: lighten($primary, 38%)
-    color: $primary
-  &.mat-warn
-    background: lighten($warn, 38%)
+  .icon-person
+    width: 40px
+    height: 40px
+    stroke: $primary
+    fill: none
+    stroke-width: 2
+    stroke-linejoin: round
+    stroke-linecap: round
+
+  .user-info
+    display: flex
+    flex-direction: column
+    overflow: hidden
+
+    .user-name
+      font-weight: 600
+      font-size: 1.1rem
+      color: $primary
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+
+    .user-email
+      font-size: 0.9rem
+      color: $gray-medium
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+
+// Status icon with animation
+// Status icon with animation
+.icon-status
+  width: 24px
+  height: 24px
+  fill: gray
+  transition: fill 0.3s ease
+
+  &.online
+    fill: $accent
+
+    .pulse
+      fill: $accent
+      transform-origin: center
+      animation: pulseBlink 1.6s infinite ease-in-out
+
+  &.offline
+    fill: gray
+
+  .pulse
+    // This won't animate unless inside .online
+    // So no animation here by default
+
+@keyframes pulseBlink
+  0%, 100%
+    r: 4
+    opacity: 1
+  50%
+    r: 6
+    opacity: 0.3
+
+// Chips for Locked & Role
+.chip
+  display: inline-block
+  padding: 0.25rem 0.8rem
+  border-radius: 9999px
+  font-weight: 600
+  font-size: 0.85rem
+  user-select: none
+  transition: background-color 0.3s ease, color 0.3s ease
+
+  &.locked
+    background: lighten($warn, 40%)
     color: $warn
-  &.mat-accent
-    background: lighten($accent, 38%)
+
+  &.unlocked
+    background: lighten($primary, 40%)
+    color: $primary
+
+  &.admin
+    background: lighten($accent, 50%)
     color: $accent
 
-mat-icon[color="warn"]
-  color: $warn !important
-mat-icon[color="primary"]
-  color: $primary !important
-mat-icon[color="accent"]
-  color: $accent !important
+  &.user
+    background: lighten($gray-medium, 30%)
+    color: $gray-medium
 
-button[mat-icon-button]
-  margin-right: 5px
-  border-radius: 50%
-  transition: $transition
-  &:hover
-    background: rgba($primary, 0.09)
-    transform: scale(1.07)
-
-.error-card
+// Action buttons in table
+.actions-cell
   display: flex
+  gap: 0.5rem
+  justify-content: center
   align-items: center
-  gap: 10px
-  background: lighten($warn, 38%)
+
+  .btn-icon
+    background: transparent
+    border: none
+    cursor: pointer
+    padding: 0.35rem
+    border-radius: 50%
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: $transition
+    color: $primary
+
+    &:hover
+      background: lighten($primary, 40%)
+      transform: scale(1.1)
+
+  svg.icon-lock,
+  svg.icon-unlock,
+  svg.icon-delete
+    width: 22px
+    height: 22px
+    stroke-width: 2.5
+    stroke-linecap: round
+    stroke-linejoin: round
+    fill: none
+
+  svg.icon-lock,
+  svg.icon-delete
+    stroke: $warn
+
+  svg.icon-unlock
+    stroke: $primary
+
+// Error card
+.error-card
+  background: lighten($warn, 40%)
   color: $warn
   border-radius: $radius
+  padding: 1rem 1.5rem
+  margin-top: 1rem
+  display: flex
+  align-items: center
+  gap: 0.75rem
   box-shadow: $shadow
-  padding: 14px 22px
-  font-size: 1.05rem
+  font-weight: 600
+  user-select: none
+
+  svg.icon-error
+    width: 24px
+    height: 24px
+    stroke: $warn
+    fill: none
+    stroke-width: 3
+    stroke-linecap: round
+    stroke-linejoin: round
 
 // Responsive
 @media (max-width: 900px)
-  .admin-content
-    max-width: 99vw
-    margin: 12px auto
-    gap: 12px
   .summary-bar
     flex-direction: column
-    gap: 12px
-    padding: 12px 8px
-  mat-card
-    padding: 8px 0
-  .mat-header-cell, .mat-cell
-    padding: 8px 4px
+    align-items: center
+    gap: 1rem
+    padding: 1rem
+
+  .user-table-container
+    margin: 0 -1rem
+    overflow-x: auto
 
 @media (max-width: 600px)
   .admin-toolbar
-    flex-direction: column
-    height: auto
-    padding: 8px 4px
-    font-size: 0.98rem
+    justify-content: space-between
+    padding: 0 1rem
+
   .summary-bar
-    padding: 7px 2px
-    .summary-item
-      .mat-icon
-        font-size: 1.5rem
-  .mat-header-cell, .mat-cell
-    font-size: 0.93rem
-    padding: 5px 1px
+    gap: 0.75rem
+
+  table.user-table
+    font-size: 0.85rem
+
+    thead th,
+    tbody td
+      padding: 0.75rem 0.5rem
+
   .user-cell
-    .user-avatar
-      font-size: 1.1rem
-      padding: 2px
-    .user-name
-      font-size: 0.95rem
-    .user-email
-      font-size: 0.8rem
+    flex-direction: column
+    align-items: flex-start
+    gap: 0.25rem
+
+    .user-info
+      width: 100%
+      white-space: normal
+
+  .actions-cell
+    justify-content: flex-start

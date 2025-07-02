@@ -16,36 +16,79 @@
       <div class="splash-hero-text">
         <h1>Welcome to <span class="brand">SheinTraders</span></h1>
         <h2>Smart tools for smart resellers</h2>
+
         <p>
-          <mat-icon color="accent">verified_user</mat-icon>
+          <svg
+            class="feature-icon spin-icon"
+            width="15"
+            height="15"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8.009 8.009 0 0 1-8 8zm1-13h-2v6h6v-2h-4z"
+            />
+          </svg>
           <b>100% Private & Secure</b>
         </p>
+
         <p>
-          <mat-icon color="accent">analytics</mat-icon>
+          <svg
+            class="feature-icon pulse-icon"
+            width="15"
+            height="15"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M3 12h3l3 8 4-16 3 8h4"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+            />
+          </svg>
           <b>Powerful Analytics</b>
         </p>
+
         <p>
-          <mat-icon color="accent">history</mat-icon>
+          <svg
+            class="feature-icon slide-icon"
+            width="15"
+            height="15"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M13 3a9 9 0 1 0 9 9h-9V3z" />
+          </svg>
           <b>Order History & Image Upload</b>
         </p>
+
         <p>
-          <mat-icon color="accent">attach_money</mat-icon>
+          <svg
+            class="feature-icon bounce-icon"
+            width="15"
+            height="15"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 17a5 5 0 1 1 5-5 5 5 0 0 1-5 5z"
+            />
+          </svg>
           <b>Subscribe for just $1/month</b>
         </p>
-        <button
-          mat-raised-button
-          color="accent"
-          class="cta-btn"
-          (click)="goToWindowSplash()"
-        >
-          Start Now
-        </button>
+
+        <button class="cta-btn" (click)="goToWindowSplash()">Start Now</button>
       </div>
+
       <div class="splash-hero-media">
         <video
           width="320"
           height="200"
-          controls
+          autoplay
+          muted
+          loop
+          playsinline
           poster="assets/subscribe-preview.jpg"
           class="splash-video"
         >
@@ -60,51 +103,77 @@
   <mat-card class="splash-features-card">
     <mat-card-title>Features</mat-card-title>
     <mat-list>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">track_changes</mat-icon>
-        <h4 matLine>Effortless Order Management</h4>
-        <p matLine>Track, update, and manage orders in real time.</p>
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">track_changes</mat-icon>
+          <h4>Effortless Order Management</h4>
+        </div>
+        <p>Track, update, and manage orders in real time.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">insights</mat-icon>
-        <h4 matLine>Daily & Weekly Analytics</h4>
-        <p matLine>Visualize your sales and growth with beautiful charts.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">insights</mat-icon>
+          <h4>Daily & Weekly Analytics</h4>
+        </div>
+        <p>Visualize your sales and growth with beautiful charts.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">security</mat-icon>
-        <h4 matLine>Private & Secure</h4>
-        <p matLine>Your data is encrypted and never shared.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">security</mat-icon>
+          <h4>Private & Secure</h4>
+        </div>
+        <p>Your data is encrypted and never shared.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">cloud_upload</mat-icon>
-        <h4 matLine>Image Upload</h4>
-        <p matLine>Attach images to orders for better tracking.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">cloud_upload</mat-icon>
+          <h4>Image Upload</h4>
+        </div>
+        <p>Attach images to orders for better tracking.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">history</mat-icon>
-        <h4 matLine>Order History</h4>
-        <p matLine>Access your complete order history anytime.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">history</mat-icon>
+          <h4>Order History</h4>
+        </div>
+        <p>Access your complete order history anytime.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">support_agent</mat-icon>
-        <h4 matLine>24/7 Support</h4>
-        <p matLine>Contact us anytime for help and guidance.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">support_agent</mat-icon>
+          <h4>24/7 Support</h4>
+        </div>
+        <p>Contact us anytime for help and guidance.</p>
       </mat-list-item>
+
       <!-- Additional Features -->
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">notifications_active</mat-icon>
-        <h4 matLine>Instant Notifications</h4>
-        <p matLine>Get real-time alerts for new orders and updates.</p>
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">notifications_active</mat-icon>
+          <h4>Instant Notifications</h4>
+        </div>
+        <p>Get real-time alerts for new orders and updates.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">group</mat-icon>
-        <h4 matLine>Multi-User Collaboration</h4>
-        <p matLine>Invite team members and manage together.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">group</mat-icon>
+          <h4>Multi-User Collaboration</h4>
+        </div>
+        <p>Invite team members and manage together.</p>
       </mat-list-item>
-      <mat-list-item>
-        <mat-icon matListIcon color="primary">language</mat-icon>
-        <h4 matLine>Multi-Language Support</h4>
-        <p matLine>Use the platform in your preferred language.</p>
+
+      <mat-list-item class="feature-item">
+        <div class="icon-text">
+          <mat-icon matListIcon color="primary">language</mat-icon>
+          <h4>Multi-Language Support</h4>
+        </div>
+        <p>Use the platform in your preferred language.</p>
       </mat-list-item>
     </mat-list>
   </mat-card>
@@ -233,17 +302,15 @@
     <mat-card-content style="display: flex; gap: 16px; align-items: flex-start">
       <!-- Text and CTA -->
       <div>
-      <p style="margin: 0 0 12px; font-size: 1rem; color: #333">
-        <strong style="color: #1976d2">Free for 1 month!</strong>
-        Get full access to real-time order tracking, image uploads, detailed
-        analytics, and premium support.
-        <br />
-        After your free trial, continue with a simple monthly plan.
-      </p>
-   
+        <p style="margin: 0 0 12px; font-size: 1rem; color: #333">
+          <strong style="color: #1976d2">Free for 1 month!</strong>
+          Get full access to real-time order tracking, image uploads, detailed
+          analytics, and premium support.
+          <br />
+          After your free trial, continue with a simple monthly plan.
+        </p>
       </div>
-      
     </mat-card-content>
   </mat-card>
 </div>
-<br>
+<br />
