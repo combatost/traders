@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline" class="location-input">
+  <mat-label>Location</mat-label>
+  <mat-icon matPrefix>location_on</mat-icon>
+  <input
+    matInput
+    placeholder="Enter location"
+    [value]="value"
+    [disabled]="isDisabled"
+    (input)="updateValue($event)"
+    (blur)="onTouched()"
+    id="location"
+  />
+</mat-form-field>

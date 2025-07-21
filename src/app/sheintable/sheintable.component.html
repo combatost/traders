@@ -1,6 +1,8 @@
 <app-navigation></app-navigation>
-<br>
-<br>
+
+<br />
+<br />
+
 <section>
   <div class="card-container">
     <!-- FORM CARD -->
@@ -33,7 +35,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
+            <mat-form-field appearance="fill" *ngIf="loginMode() !== 'traders'">
               <mat-icon matPrefix>percent</mat-icon>
               <mat-label>{{ "form.discount" | translate }}</mat-label>
               <input
@@ -44,7 +46,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
+            <mat-form-field appearance="fill" *ngIf="loginMode() !== 'traders'">
               <mat-icon matPrefix>flight</mat-icon>
               <mat-label>{{ "form.shippingCost" | translate }}</mat-label>
               <input
@@ -66,7 +68,7 @@
               />
             </mat-form-field>
 
-            <mat-form-field appearance="fill" *ngIf="loginMode !== 'traders'">
+            <mat-form-field appearance="fill" *ngIf="loginMode() !== 'traders'">
               <mat-icon matPrefix>receipt_long</mat-icon>
               <mat-label>{{ "form.tax" | translate }}</mat-label>
               <input matInput type="number" formControlName="tax" required />
@@ -82,11 +84,12 @@
                 <mat-option value="Done">{{
                   "table.done" | translate
                 }}</mat-option>
-                <mat-option *ngIf="switch" value="Cancelled">{{
+                <mat-option *ngIf="switch()" value="Cancelled">{{
                   "table.cancelled" | translate
                 }}</mat-option>
               </mat-select>
             </mat-form-field>
+
             <div class="slide-toggle-wrapper">
               <mat-slide-toggle
                 formControlName="includeQuantityInProfit"
@@ -104,20 +107,23 @@
           <div class="form-actions">
             <button mat-raised-button color="primary" type="submit">
               {{
-                switch ? ("form.update" | translate) : ("form.add" | translate)
+                switch()
+                  ? ("form.update" | translate)
+                  : ("form.add" | translate)
               }}
             </button>
 
             <button
-              *ngIf="showCancelButton"
+              *ngIf="showCancelButton()"
               mat-stroked-button
               type="button"
               (click)="onCancel()"
             >
               {{ "form.cancel" | translate }}
             </button>
+
             <button
-              *ngIf="!switch"
+              *ngIf="!switch()"
               mat-stroked-button
               type="button"
               (click)="onClear()"
@@ -128,20 +134,22 @@
         </form>
       </mat-card-content>
     </mat-card>
+
     <br />
     <br />
+
     <mat-form-field appearance="outline" class="search-bar">
       <mat-label>{{ "form.search" | translate }}</mat-label>
       <mat-icon matPrefix>search</mat-icon>
       <input
         matInput
         type="text"
-        [(ngModel)]="searchTerm"
-        (input)="applyFilter()"
+        [value]="searchTerm()"
+        (input)="searchTerm.set($any($event.target).value); applyFilter()"
         [placeholder]="'form.searchPlaceholder' | translate"
       />
       <button
-        *ngIf="searchTerm"
+        *ngIf="searchTerm()"
         matSuffix
         mat-icon-button
         aria-label="Clear"
@@ -156,7 +164,7 @@
       <mat-card-title>{{ "table.title" | translate }}</mat-card-title>
       <br />
       <mat-card-content>
-        <table mat-table [dataSource]="pagedData" [ngClass]="currentClass">
+        <table mat-table [dataSource]="pagedData()" [ngClass]="currentClass()">
           <!-- Client -->
           <ng-container matColumnDef="client">
             <th mat-header-cell *matHeaderCellDef>
@@ -182,7 +190,10 @@
           </ng-container>
 
           <!-- Discount -->
-          <ng-container matColumnDef="discount" *ngIf="loginMode !== 'traders'">
+          <ng-container
+            matColumnDef="discount"
+            *ngIf="loginMode() !== 'traders'"
+          >
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.discount" | translate }}
             </th>
@@ -197,10 +208,10 @@
             <td mat-cell *matCellDef="let element">{{ element.delivery }}</td>
           </ng-container>
 
-          <!-- Shipping -->
+          <!-- Shipping Cost -->
           <ng-container
             matColumnDef="shippingCost"
-            *ngIf="loginMode !== 'traders'"
+            *ngIf="loginMode() !== 'traders'"
           >
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.shippingCost" | translate }}
@@ -211,7 +222,7 @@
           </ng-container>
 
           <!-- Tax -->
-          <ng-container matColumnDef="tax" *ngIf="loginMode !== 'traders'">
+          <ng-container matColumnDef="tax" *ngIf="loginMode() !== 'traders'">
             <th mat-header-cell *matHeaderCellDef>
               {{ "form.tax" | translate }}
             </th>
@@ -244,11 +255,11 @@
               {{ "table.actions" | translate }}
             </th>
             <td mat-cell *matCellDef="let element; let i = index">
-              <ng-container *ngIf="editingRowId !== element.id">
+              <ng-container *ngIf="editingRowId() !== element.id">
                 <button
                   mat-icon-button
                   color="accent"
-                  (click)="onEdit(pageIndex * pageSize + i)"
+                  (click)="onEdit(pageIndex() * pageSize() + i)"
                   aria-label="Edit"
                 >
                   <svg
@@ -260,8 +271,8 @@
                   >
                     <path
                       d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 
-              7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 
-              1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
+                      7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 
+                      1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
                     />
                   </svg>
                 </button>
@@ -269,7 +280,7 @@
                 <button
                   mat-icon-button
                   color="warn"
-                  (click)="onClean(pageIndex * pageSize + i)"
+                  (click)="onClean(pageIndex() * pageSize() + i)"
                   aria-label="Delete"
                 >
                   <svg
@@ -281,8 +292,8 @@
                   >
                     <path
                       d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1zM18 
-              7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 
-              2-2V7z"
+                      7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 
+                      2-2V7z"
                     />
                   </svg>
                 </button>
@@ -290,15 +301,15 @@
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr
             mat-row
-            *matRowDef="let row; columns: displayedColumns"
+            *matRowDef="let row; columns: displayedColumns()"
             [class.matched]="
-              searchTerm &&
-              row.client.toLowerCase().includes(searchTerm.toLowerCase())
+              searchTerm() &&
+              row.client.toLowerCase().includes(searchTerm().toLowerCase())
             "
-            [class.editing-row]="row.id === editingRowId"
+            [class.editing-row]="row.id === editingRowId()"
             [class.canceled-row]="row.choice === 'Cancelled'"
             [class.done-row]="row.choice === 'Done'"
           ></tr>
@@ -309,14 +320,15 @@
             <strong>{{ "table.revenue" | translate }}:</strong>
             {{ calculateOverallTotal() }}
           </p>
+
           <div
-            *ngIf="filteredData.length > pageSize"
+            *ngIf="filteredData().length > pageSize()"
             class="pagination-controls"
           >
             <button
               class="nav-btn"
               (click)="previousPage()"
-              [disabled]="pageIndex === 0"
+              [disabled]="pageIndex() === 0"
               aria-label="Previous Page"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -331,14 +343,13 @@
             </button>
 
             <span class="page-count">
-              {{ pageIndex + 1 }} /
-              {{ Math.ceil(filteredData.length / pageSize) }}
+              {{ pageIndex() + 1 }} / {{ maxPageIndex() + 1 }}
             </span>
 
             <button
               class="nav-btn"
               (click)="nextPage()"
-              [disabled]="(pageIndex + 1) * pageSize >= filteredData.length"
+              [disabled]="pageIndex() >= maxPageIndex()"
               aria-label="Next Page"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -357,4 +368,5 @@
     </mat-card>
   </div>
 </section>
+
 <app-footer></app-footer>

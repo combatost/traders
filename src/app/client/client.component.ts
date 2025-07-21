@@ -98,27 +98,29 @@ export class ClientComponent implements OnInit {
   }
 
   // Submit new or updated client data
-  public async onSubmit(): Promise<void> {
-    if (this.userForm.invalid || !this.userId) return
+public async onSubmit(): Promise<void> {
+  if (this.userForm.invalid || !this.userId) return
 
-    const formValue = this.userForm.value
-    const clientRef = this.firestore.collection(`clients/${this.userId}/records`)
+  const formValue = this.userForm.value
+  const clientRef = this.firestore.collection(`clients/${this.userId}/records`)
 
-    try {
-      if (this.selectedClient) {
-        await clientRef.doc(this.selectedClient.id).update(formValue)
-        console.log('Client updated successfully')
-        this.selectedClient = null
-      } else {
-        await clientRef.add(formValue)
-        console.log('Client added successfully')
-      }
-      this.userForm.reset()
-      this.isShowed = false
-    } catch (error) {
-      console.error('Error saving client:', error)
+  try {
+    if (this.selectedClient) {
+      await clientRef.doc(this.selectedClient.id).update(formValue)
+      console.log('Client updated successfully')
+      this.selectedClient = null
+    } else {
+      await clientRef.add(formValue)
+      console.log('Client added successfully')
     }
+    this.userForm.reset()
+    this.isShowed = false
+    this.filterClients() // ✅ Refresh the filtered + paginated list
+  } catch (error) {
+    console.error('Error saving client:', error)
   }
+}
+
 
   // Cancel editing and reset form
   public cancelEdit(): void {

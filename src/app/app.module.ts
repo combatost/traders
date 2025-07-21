@@ -44,6 +44,7 @@ import { BlockedUserCardComponent } from './blocked-user-card/blocked-user-card.
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCarouselModule } from '@ngmodule/material-carousel';
 import { WindowSplashComponent } from './window-splash/window-splash.component';
+import { LocationInputComponent } from './shared/location-input/location-input.component';
 
 
 
@@ -76,6 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminPanelComponent,
     BlockedUserCardComponent,
     WindowSplashComponent,
+    LocationInputComponent,
 
 
   ],

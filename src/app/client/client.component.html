@@ -33,11 +33,13 @@
               <input matInput formControlName="OtherPhoneNumber" required />
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>{{ "form.location" | translate }}</mat-label>
-              <mat-icon matPrefix>location_on</mat-icon>
-              <input matInput formControlName="location" required />
-            </mat-form-field>
+            <div class="custom-location-field">
+              <div class="location-wrapper">
+                <app-location-input
+                  formControlName="location"
+                ></app-location-input>
+              </div>
+            </div>
 
             <mat-form-field appearance="fill">
               <mat-label>{{ "form.address" | translate }}</mat-label>
