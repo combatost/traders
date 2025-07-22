@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { Router } from '@angular/router'
 import { AuthService } from '../login/auth.service' // adjust path if needed
 import { take } from 'rxjs/operators'
+
 
 @Component({
   selector: 'app-splash',
@@ -9,11 +10,13 @@ import { take } from 'rxjs/operators'
   styleUrls: ['./splash.component.sass']
 })
 export class SplashComponent implements OnInit {
-subscribe() {
+  @ViewChild('videoRef') videoElement!: ElementRef<HTMLVideoElement>;
 
-}
   constructor(private router: Router, private authService: AuthService) { }
 
+  ngAfterViewInit() {
+    this.videoElement.nativeElement.muted = true;
+  }
   ngOnInit(): void {
     this.authService.isAuthenticated$
       .pipe(take(1)) // only once on init

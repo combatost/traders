@@ -28,7 +28,7 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
   private notifSub?: Subscription
   private lockSub?: Subscription
 
-  public static appVersion = '3.5.0' // update on new release
+  public static appVersion = '3.7.0' // update on new release
   version = VersionAlertComponent.appVersion
 
   versionMessage: { svg: SafeHtml; text: string }[]
@@ -46,7 +46,7 @@ export class VersionAlertComponent implements OnInit, OnDestroy {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/>
     </svg>`,
-        text: 'Version popup redesigned with modern animation and style'
+        text: 'Vewewrsion popup redesigned with modern animation and style'
       },
       {
         svg: `<svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">

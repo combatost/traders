@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog'
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'
 import { HistoryService } from '../services/history.service'
 import { LoginModeService } from '../services/login-mode.service'
+import { ViewChild } from '@angular/core'
 
 @Component({
   selector: 'app-sheintable',

@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core'
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnInit
+} from '@angular/core'
 import { AngularFirestore } from '@angular/fire/compat/firestore'
 import { AngularFireAuth } from '@angular/fire/compat/auth'
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs'
+import { map, switchMap, catchError, finalize, tap } from 'rxjs/operators'
 import firebase from 'firebase/compat/app'
 import { Router } from '@angular/router'
 
@@ -13,35 +18,41 @@ interface User {
   online: boolean
   isLocked: boolean
   isAdmin?: boolean
-  unlockSince?: any // Firestore timestamp
+  unlockSince?: any
+}
+
+interface ViewModel {
+  users: User[]
+  onlineCount: number
+  loading: boolean
+  error: string
 }
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.sass']
+  styleUrls: ['./admin-panel.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminPanelComponent implements OnInit {
-  users$!: Observable<User[]>
-  onlineCount$!: Observable<number>
-  loading = false
-  error = ''
-  displayedColumns: string[] = ['user', 'locked', 'unlockSince', 'online', 'role', 'actions'];
+  vm$!: Observable<ViewModel>
+  private loadingSubject = new BehaviorSubject<boolean>(true)
+  private errorSubject = new BehaviorSubject<string>('')
   protected currentAdminId = 'admin-id-placeholder'
   private currentUserId: string | null = null
+
+  displayedColumns: string[] = ['user', 'locked', 'unlockSince', 'online', 'role', 'actions']
 
   constructor(
     protected firestore: AngularFirestore,
     protected router: Router,
-    protected afAuth: AngularFireAuth
+    protected afAuth: AngularFireAuth,
+    private cdr: ChangeDetectorRef
   ) {
-    // Subscribe to auth state to track online status
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.currentUserId = user.uid
         this.setOnlineStatus(user.uid, true)
-
-        // Set offline on window/tab close or reload
         window.addEventListener('beforeunload', () => {
           this.setOnlineStatus(user.uid, false)
         })
@@ -52,27 +63,39 @@ export class AdminPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers()
-  }
-
-  protected loadUsers(): void {
-    this.loading = true
-    this.error = ''
-
-    // Listen for all users except specific excluded email (example admin email)
-    this.users$ = this.firestore
-      .collection<User>('users')
-      .valueChanges({ idField: 'id' })
-      .pipe(
-        map(users => users.filter(user => user.email !== 'alikamlion@gmail.com'))
-      )
-
-    // Online users count from real-time Firestore 'online' field
-    this.onlineCount$ = this.users$.pipe(
-      map(users => users.filter(u => u.online).length)
+    this.vm$ = this.loadingSubject.pipe(
+      switchMap(() => {
+        this.errorSubject.next('')
+        return this.firestore
+          .collection<User>('users')
+          .valueChanges({ idField: 'id' })
+          .pipe(
+            map(users => users.filter(user => user.email !== 'alikamlion@gmail.com')),
+            map(users => {
+              const onlineCount = users.filter(u => u.online).length
+              return {
+                users,
+                onlineCount,
+                loading: false,
+                error: ''
+              } as ViewModel
+            }),
+            catchError(err => {
+              this.errorSubject.next('Failed to load users.')
+              return of({
+                users: [],
+                onlineCount: 0,
+                loading: false,
+                error: 'Failed to load users.'
+              } as ViewModel)
+            }),
+            finalize(() => {
+              this.loadingSubject.next(false)
+              this.cdr.markForCheck()
+            })
+          )
+      })
     )
-
-    this.loading = false
   }
 
   setOnlineStatus(uid: string, status: boolean) {
@@ -138,6 +161,9 @@ export class AdminPanelComponent implements OnInit {
       .collection('users')
       .doc(user.id)
       .delete()
+      .then(() => {
+        this.loadingSubject.next(true) // trigger reload
+      })
       .catch(err => alert('Error deleting user: ' + err.message))
   }
 
